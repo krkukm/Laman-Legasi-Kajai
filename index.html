@@ -1363,7 +1363,7 @@ tbody tr:hover{
 <div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">LEGASI</div><button class="nav-item" data-page="leadership" onclick="go('leadership')"><span class="nav-icon">♛</span><span>Kepimpinan Kajai</span></button><button class="nav-item" data-page="heritage" onclick="go('heritage')"><span class="nav-icon">⌁</span><span>Timeline Legasi</span></button><button class="nav-item" data-page="gallery" onclick="go('gallery')"><span class="nav-icon">▧</span><span>Galeri Legasi</span></button></div>
 <div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">KARISMA</div><button class="nav-item" data-page="records" onclick="go('records')"><span class="nav-icon">✓</span><span>Rekod Penglibatan</span></button><button class="nav-item" data-page="merit" onclick="go('merit')"><span class="nav-icon">★</span><span>Sistem Merit</span></button><button class="nav-item" data-page="units" onclick="go('units')"><span class="nav-icon">▦</span><span>Unit KARISMA</span></button><button class="nav-item" data-page="karismaAnalytics" onclick="go('karismaAnalytics')"><span class="nav-icon">▥</span><span>Analitik KARISMA</span></button><button class="nav-item" data-page="karismaArchive" onclick="go('karismaArchive')"><span class="nav-icon">⌂</span><span>Arkib KARISMA</span></button><button class="nav-item" data-page="alumniRequests" onclick="go('alumniRequests')"><span class="nav-icon">✉</span><span>Permohonan Alumni untuk Program</span></button></div>
 <div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">PENGURUSAN</div><button class="nav-item" data-page="suggestions" onclick="go('suggestions')"><span class="nav-icon">!</span><span>Cadangan & Pengesahan</span></button><button class="nav-item" data-page="reports" onclick="go('reports')"><span class="nav-icon">▤</span><span>Laporan & Analitik</span></button><button class="nav-item" data-page="actionCentre" onclick="go('actionCentre')"><span class="nav-icon">⚑</span><span>Action Centre</span></button><button class="nav-item" data-page="dataQuality" onclick="go('dataQuality')"><span class="nav-icon">✓</span><span>Data Quality Centre</span></button><button class="nav-item" data-page="timeCapsule" onclick="go('timeCapsule')"><span class="nav-icon">◷</span><span>Digital Time Capsule</span></button><button class="nav-item" data-page="insights" onclick="go('insights')"><span class="nav-icon">◆</span><span>Kajai Insights</span></button></div>
-<div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">SISTEM</div><button class="nav-item admin-only" data-page="users" onclick="go('users')"><span class="nav-icon">♟</span><span>Pengguna</span></button><button class="nav-item admin-only" data-page="auditPage" onclick="go('auditPage')"><span class="nav-icon">≡</span><span>Audit Log</span></button><button class="nav-item admin-only" data-page="settings" onclick="go('settings')"><span class="nav-icon">⚙</span><span>Tetapan Sistem</span></button><button class="nav-item admin-only" data-page="data" onclick="go('data')"><span class="nav-icon">⇅</span><span>Data & Sandaran</span></button></div>
+<div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">SISTEM</div><button class="nav-item admin-only" data-page="users" onclick="go('users')"><span class="nav-icon">♟</span><span>Pengguna</span></button><button class="nav-item admin-only" data-page="auditPage" onclick="go('auditPage')"><span class="nav-icon">≡</span><span>Audit Log</span></button><button class="nav-item admin-only" data-page="settings" onclick="go('settings')"><span class="nav-icon">⚙</span><span>Tetapan Sistem</span></button><button class="nav-item admin-only" data-page="data" onclick="go('data')"><span class="nav-icon">⇅</span><span>Data & Sandaran</span></button><button class="nav-item admin-only" data-page="recycleBin" onclick="go('recycleBin')"><span class="nav-icon">♻</span><span>Tong Kitar Semula</span></button></div>
   <div class="sidebar-bottom">
    <div class="demo-small">
     <strong>LAMAN LEGASI KAJAI</strong><br>
@@ -2368,7 +2368,8 @@ function render(){
       users:pageUsers,
       auditPage:pageAuditLog,
       settings:pageSettings,
-      data:pageData
+      data:pageData,
+      recycleBin:pageRecycleBin
     };
 
     const fn=pages[currentPage] || pageDashboard;
@@ -3035,6 +3036,7 @@ function pageAlumni(){
 
      const text=[
        a.fullName,
+       a.legacyId,
        a.nickname,
        a.email,
        a.phone,
@@ -9361,6 +9363,103 @@ openRecordForm=function(id=""){
  else updateMeritPreview();
 };
 </script>
+
+<style>
+/* V11 Institutional upgrade — additive UI only */
+.institution-banner{background:linear-gradient(135deg,#10284b,#173c6d);color:#fff;border-radius:24px;padding:24px 26px;margin-bottom:18px;box-shadow:0 16px 36px rgba(16,40,75,.14)}
+.institution-banner .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.78;font-weight:800}.institution-banner h2{margin:7px 0 4px;font-size:clamp(20px,4vw,31px);line-height:1.15}.institution-banner p{margin:0;opacity:.88;font-weight:700}.human-code{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;background:#eef3fb;color:#173c6d;font-size:11px;font-weight:900;letter-spacing:.05em;border:1px solid #d8e2f1}.code-dark{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.2)}
+.early-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.early-box{padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--card)}.early-box strong{font-size:22px;display:block}.early-box small{color:var(--muted)}
+.archive-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+@media(max-width:760px){.early-grid{grid-template-columns:1fr 1fr}.institution-banner{padding:20px}.table-wrap{border-radius:16px}.table-wrap table{min-width:760px}.human-code{font-size:10px}}
+</style>
+<script>
+/* =========================================================
+   V11 — Institutional hardening, human-readable codes,
+   soft archive, richer dashboard and traceable workflows.
+   No existing module is removed.
+========================================================= */
+function ensureV11Data(){
+  data.archivedRecords=data.archivedRecords||[];
+  data.config=data.config||{};
+  data.config.institutionName=data.config.institutionName||"Biro Hal Ehwal Luar Alumni dan Antarabangsa Kolej Rahim Kajai";
+  data.config.institutionTagline=data.config.institutionTagline||"Legasi Melangkaui Generasi";
+}
+function digitsFromCode(v){const m=String(v||"").match(/(\d{1,6})/);return m?Number(m[1]):0}
+function nextHumanNumber(items,fields){let max=0;(items||[]).forEach(x=>fields.forEach(f=>max=Math.max(max,digitsFromCode(x?.[f]))));return max+1}
+function five(n){return String(Number(n)||0).padStart(5,"0")}
+function requestSerial(x){const m=String(x?.requestCode||"").match(/K-(\d+)-A/);return m?Number(m[1]):0}
+function ensureInstitutionCodes(){
+ ensureV11Data();
+ let n=nextHumanNumber(data.alumni,["legacyId"]); data.alumni.forEach(a=>{if(!a.legacyId)a.legacyId=`KRK-${five(n++)}`});
+ let rn=nextHumanNumber(data.alumniRequests||[],["requestCode"]); (data.alumniRequests||[]).forEach(x=>{if(!x.requestCode)x.requestCode=`K-${five(rn++)}-A`;const serial=requestSerial(x);if(x.reportSubmittedAt&&!x.reportCode)x.reportCode=`K-${five(serial||rn++)}-L`;});
+ let mn=nextHumanNumber(data.records||[],["meritCode"]); (data.records||[]).forEach(r=>{if(!r.meritCode){const req=(data.alumniRequests||[]).find(x=>x.id===r.sourceRequestId);const serial=requestSerial(req);r.meritCode=`K-${five(serial||mn++)}-M`;}});
+}
+ensureInstitutionCodes();save();
+
+function institutionalBanner(){return `<div class="institution-banner"><div class="eyebrow">Kolej Rahim Kajai · Universiti Kebangsaan Malaysia</div><h2>${esc(data.config.institutionName)}</h2><p>${esc(data.config.institutionTagline)}</p></div>`}
+function earlyWarningPanel(){
+ const stats=unitStats(); const critical=stats.filter(x=>Number(x.average)<0||Number(x.merit)<0); const attention=stats.filter(x=>Number(x.average)>=0&&Number(x.average)<5); const stable=stats.filter(x=>Number(x.average)>=5&&Number(x.average)<15); const active=stats.filter(x=>Number(x.average)>=15);
+ return `<div class="card" style="margin-top:16px"><div class="card-head"><div><div class="card-title">Early Warning KARISMA</div><div class="small muted">Isyarat pantas berdasarkan Merit Purata semasa. Ranking rasmi kekal menggunakan Merit Purata; Total Merit dan bilangan program kekal sebagai konteks.</div></div><button class="btn btn-small" onclick="go('karismaAnalytics')">Buka Analitik</button></div><div class="early-grid"><div class="early-box"><strong>${critical.length}</strong><small>Kritikal · merit negatif</small></div><div class="early-box"><strong>${attention.length}</strong><small>Perlu perhatian · purata &lt;5</small></div><div class="early-box"><strong>${stable.length}</strong><small>Stabil · purata 5–14.99</small></div><div class="early-box"><strong>${active.length}</strong><small>Aktif · purata ≥15</small></div></div></div>`
+}
+const __v11Dashboard=pageDashboard; pageDashboard=function(){ensureInstitutionCodes();return institutionalBanner()+__v11Dashboard()+earlyWarningPanel()};
+
+// Human code visibility on profile/detail screens.
+const __v11OpenAlumniDetail=openAlumniDetail; openAlumniDetail=function(id){ensureInstitutionCodes();__v11OpenAlumniDetail(id);const a=getAlumni(id),meta=document.querySelector('.modal .profile-meta');if(a&&meta&&!meta.querySelector('.human-code'))meta.insertAdjacentHTML('afterbegin',`<span class="human-code">${esc(a.legacyId)}</span> · `)};
+const __v11ViewRequest=typeof viewAlumniRequest==='function'?viewAlumniRequest:null;if(__v11ViewRequest)viewAlumniRequest=function(id){ensureInstitutionCodes();__v11ViewRequest(id);const x=(data.alumniRequests||[]).find(v=>v.id===id),head=document.querySelector('.modal .modal-head h2');if(x&&head)head.insertAdjacentHTML('afterend',`<div style="margin-top:6px"><span class="human-code">${esc(x.requestCode||'')}</span>${x.reportCode?` <span class="human-code">${esc(x.reportCode)}</span>`:''}</div>`)};
+
+// Generate codes automatically after successful create/update actions.
+const __v11SubmitAlumni=submitAlumniForm;submitAlumniForm=async function(e,id){await __v11SubmitAlumni(e,id);ensureInstitutionCodes();const a=id?getAlumni(id):data.alumni[data.alumni.length-1];if(a){const actor=currentActor();a.updatedByName=a.updatedByName||actor.name;a.updatedByEmail=a.updatedByEmail||actor.email;a.createdByName=a.createdByName||actor.name;a.createdByEmail=a.createdByEmail||actor.email;}save();render()};
+const __v11SubmitRequest=submitAlumniRequest;submitAlumniRequest=function(e){const before=(data.alumniRequests||[]).length;const r=__v11SubmitRequest(e);if((data.alumniRequests||[]).length>before){ensureInstitutionCodes();save();render()}return r};
+const __v11SubmitReport=submitAlumniRequestReport;submitAlumniRequestReport=async function(e,id){await __v11SubmitReport(e,id);const x=(data.alumniRequests||[]).find(v=>v.id===id);if(x?.reportSubmittedAt&&!x.reportCode){const serial=requestSerial(x)||nextHumanNumber(data.alumniRequests||[],["requestCode"]);x.reportCode=`K-${five(serial)}-L`;}save();render()};
+const __v11SubmitRecord=submitRecordForm;submitRecordForm=async function(e,id){await __v11SubmitRecord(e,id);ensureInstitutionCodes();save();render()};
+
+// Add visible codes to major list pages without removing their existing columns/actions.
+const __v11PageAlumni=pageAlumni;pageAlumni=function(){ensureInstitutionCodes();let html=__v11PageAlumni();data.alumni.forEach(a=>{const needle=`>${esc(a.fullName)}<`;if(html.includes(needle))html=html.replace(needle,`><span class="human-code">${esc(a.legacyId)}</span><br>${esc(a.fullName)}<`)});return html};
+const __v11PageRequests=pageAlumniRequests;pageAlumniRequests=function(){ensureInstitutionCodes();let html=__v11PageRequests();(data.alumniRequests||[]).forEach(x=>{const needle=`<b>${esc(x.programName)}</b>`;if(html.includes(needle))html=html.replace(needle,`<span class="human-code">${esc(x.requestCode||'')}</span>${x.reportCode?` <span class="human-code">${esc(x.reportCode)}</span>`:''}<br><b>${esc(x.programName)}</b>`)});return html};
+const __v11PageRecords=pageRecords;pageRecords=function(){ensureInstitutionCodes();let html=__v11PageRecords();(data.records||[]).forEach(r=>{const needle=`<strong>${esc(r.program)}</strong>`;if(html.includes(needle))html=html.replace(needle,`<span class="human-code">${esc(r.meritCode||'')}</span><br><strong>${esc(r.program)}</strong>`)});return html};
+
+// Soft archive: protect institutional history from accidental permanent deletion.
+function archiveEntity(type,id,label,collectionName){if(!isAdmin())return;ensureV11Data();const col=data[collectionName]||[],idx=col.findIndex(x=>x.id===id);if(idx<0)return;const item=col[idx];if(!confirm(`Arkibkan rekod "${label||item.fullName||item.name||item.program||'rekod'}"? Rekod boleh dipulihkan semula melalui Data & Sandaran.`))return;const actor=currentActor();data.archivedRecords.unshift({archiveId:uid('archive'),entityType:type,collectionName,originalId:id,label:label||item.fullName||item.name||item.program||'',item:JSON.parse(JSON.stringify(item)),archivedAt:now(),archivedByName:actor.name,archivedByEmail:actor.email});col.splice(idx,1);audit('Mengarkibkan rekod',type,id);save();render();toast('Rekod dipindahkan ke arkib dan boleh dipulihkan.','success')}
+deleteAlumni=function(id){const a=getAlumni(id);if(a)archiveEntity('Alumni',id,a.fullName,'alumni')};
+deleteLeadership=function(id){const x=data.leadership.find(v=>v.id===id);if(x)archiveEntity('Kepimpinan',id,x.name,'leadership')};
+deleteRep=function(id){const x=data.reps.find(v=>v.id===id);if(x)archiveEntity('Wakil Batch',id,x.name,'reps')};
+deleteRecord=function(id){const x=data.records.find(v=>v.id===id);if(x)archiveEntity('KARISMA',id,x.program,'records')};
+deleteUnit=function(id){const x=data.units.find(v=>v.id===id);if(x)archiveEntity('Unit',id,x.name,'units')};
+deleteActivity=function(id){const x=data.activities.find(v=>v.id===id);if(x)archiveEntity('Aktiviti',id,x.name||x.title,'activities')};
+deleteAchievement=function(id){const x=data.achievements.find(v=>v.id===id);if(x)archiveEntity('Pencapaian',id,x.title||x.name,'achievements')};
+deleteGallery=function(id){const x=data.gallery.find(v=>v.id===id);if(x)archiveEntity('Galeri',id,x.title||x.caption,'gallery')};
+function restoreArchived(archiveId){if(!isAdmin())return;const i=(data.archivedRecords||[]).findIndex(x=>x.archiveId===archiveId);if(i<0)return;const a=data.archivedRecords[i];data[a.collectionName]=data[a.collectionName]||[];if(data[a.collectionName].some(x=>x.id===a.originalId)){toast('ID asal sudah wujud. Pemulihan dibatalkan.','error');return}data[a.collectionName].push(a.item);data.archivedRecords.splice(i,1);audit('Memulihkan rekod arkib',a.entityType,a.originalId);save();render();toast('Rekod berjaya dipulihkan.','success')}
+function archivePanel(){if(!isAdmin())return '';const rows=(data.archivedRecords||[]);return `<div class="card v11-archive" style="margin-top:16px"><div class="card-head"><div><div class="card-title">Arkib Rekod & Recovery</div><div class="small muted">Rekod yang dipadam daripada paparan utama disimpan di sini untuk melindungi sejarah institusi.</div></div><span class="badge">${rows.length} rekod</span></div><div style="margin-top:10px">${rows.slice(0,100).map(x=>`<div class="archive-row"><div><b>${esc(x.label||x.entityType)}</b><div class="small muted">${esc(x.entityType)} · ${dateMY(x.archivedAt)} · ${esc(x.archivedByName||'')}</div></div><button class="btn btn-small" onclick="restoreArchived('${esc(x.archiveId)}')">Pulihkan</button></div>`).join('')||'<div class="small muted">Tiada rekod dalam arkib.</div>'}</div></div>`}
+
+// Keep audit identity visible on newly touched records.
+function backfillVisibleActors(){const actor=currentActor();['alumni','leadership','reps','records','activities','achievements','gallery'].forEach(k=>(data[k]||[]).forEach(x=>{if(x.updatedAt&&!x.updatedByName&&x.createdByName){x.updatedByName=x.createdByName;x.updatedByEmail=x.createdByEmail||''}}))}
+backfillVisibleActors();
+
+// Dedicated Recycle Bin / Tong Kitar Semula. This is additive: existing archive/recovery remains intact.
+function pageRecycleBin(){
+  if(!isAdmin()) return `<div class="card"><div class="empty">Akses Pentadbir diperlukan.</div></div>`;
+  ensureV11Data();
+  const rows=(data.archivedRecords||[]).slice().sort((a,b)=>String(b.archivedAt||'').localeCompare(String(a.archivedAt||'')));
+  const typeOptions=[...new Set(rows.map(x=>x.type).filter(Boolean))].sort();
+  return `<div class="page-head"><div><h1 class="page-title">Tong Kitar Semula</h1><div class="page-subtitle">Rekod yang dipadam tidak hilang terus. Pentadbir boleh mencari dan memulihkannya ke bahagian asal.</div></div><div class="page-actions"><span class="badge badge-gray">${rows.length} rekod</span></div></div>
+  <div class="card" style="margin-bottom:16px"><div class="grid-2"><div class="field"><label>Cari rekod dipadam</label><input id="recycleSearch" placeholder="Cari nama, program, kod atau jenis rekod…" oninput="filterRecycleBin()"></div><div class="field"><label>Jenis rekod</label><select id="recycleType" onchange="filterRecycleBin()"><option value="">Semua jenis</option>${typeOptions.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('')}</select></div></div><div class="small muted">Nota: fungsi ini menggunakan kaedah <em>soft delete</em>. Lampiran/gambar yang tersimpan bersama rekod akan kembali bersama rekod apabila dipulihkan.</div></div>
+  <div class="card"><div class="card-head"><div><div class="card-title">Rekod Dipadam</div><div class="small muted">Tekan <strong>Pulihkan</strong> untuk mengembalikan rekod ke modul asal.</div></div></div><div id="recycleRows">${renderRecycleRows(rows)}</div></div>`;
+}
+function renderRecycleRows(rows){
+  if(!rows.length) return `<div class="empty">Tong Kitar Semula kosong. Tiada rekod dipadam.</div>`;
+  return rows.map(a=>{const item=a.item||{};const label=a.label||item.fullName||item.name||item.program||item.title||item.caption||'Rekod';const actor=a.archivedByName||a.archivedBy||a.deletedByName||'Pentadbir';const email=a.archivedByEmail||a.deletedByEmail||'';return `<div class="archive-row recycle-item" data-search="${esc([a.type,label,item.alumniCode,item.requestCode,item.reportCode,item.meritCode,actor,email].filter(Boolean).join(' ').toLowerCase())}" data-type="${esc(a.type||'')}"><div><strong>${esc(label)}</strong><div class="small muted">${esc(a.type||'Rekod')} • Dipadam ${esc(formatDateTime(a.archivedAt)||a.archivedAt||'-')}</div><div class="small muted">Oleh: ${esc(actor)}${email?` • ${esc(email)}`:''}</div></div><div><button class="btn btn-primary" onclick="restoreArchived('${a.archiveId}')">Pulihkan</button></div></div>`}).join('');
+}
+function filterRecycleBin(){
+  const q=(document.getElementById('recycleSearch')?.value||'').trim().toLowerCase();
+  const t=document.getElementById('recycleType')?.value||'';
+  document.querySelectorAll('#recycleRows .recycle-item').forEach(el=>{const okQ=!q||(el.dataset.search||'').includes(q);const okT=!t||(el.dataset.type||'')===t;el.style.display=(okQ&&okT)?'grid':'none';});
+}
+
+// Post-render enhancement: Data page archive/recovery + production readiness warning.
+const __v11Render=render;render=function(){ensureInstitutionCodes();__v11Render();if(currentPage==='data'&&isAdmin()){const c=document.getElementById('content');if(c&&!c.querySelector('.v11-archive'))c.insertAdjacentHTML('beforeend',archivePanel())}if(currentPage==='users'&&isAdmin()){const c=document.getElementById('content');if(c&&!c.querySelector('.v11-security'))c.insertAdjacentHTML('beforeend',`<div class="card v11-security" style="margin-top:16px"><div class="card-title">Production Security Gate</div><p class="small muted">UI role, passcode dan localStorage sesuai untuk prototaip sahaja. Sebelum penggunaan rasmi multi-peranti, aktifkan Supabase Auth + Row Level Security (RLS) dan pindahkan CRUD/Storage ke cloud. Service-role key tidak boleh diletakkan dalam HTML.</p><span class="badge pending">Cloud migration required</span></div>`)} };
+render();
+</script>
+
 </body>
 </html>
 
