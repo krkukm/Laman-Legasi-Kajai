@@ -1376,6 +1376,7 @@ tbody tr:hover{
 <div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">LEGASI</div><button class="nav-item" data-page="leadership" onclick="go('leadership')"><span class="nav-icon">♛</span><span>Kepimpinan Kajai</span></button><button class="nav-item" data-page="heritage" onclick="go('heritage')"><span class="nav-icon">⌁</span><span>Timeline Legasi</span></button><button class="nav-item" data-page="gallery" onclick="go('gallery')"><span class="nav-icon">▧</span><span>Galeri Legasi</span></button></div>
 <div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">KARISMA</div><button class="nav-item" data-page="records" onclick="go('records')"><span class="nav-icon">✓</span><span>Rekod Penglibatan</span></button><button class="nav-item" data-page="merit" onclick="go('merit')"><span class="nav-icon">★</span><span>Sistem Merit</span></button><button class="nav-item" data-page="units" onclick="go('units')"><span class="nav-icon">▦</span><span>Unit KARISMA</span></button><button class="nav-item" data-page="karismaAnalytics" onclick="go('karismaAnalytics')"><span class="nav-icon">▥</span><span>Analitik KARISMA</span></button><button class="nav-item" data-page="karismaArchive" onclick="go('karismaArchive')"><span class="nav-icon">⌂</span><span>Arkib KARISMA</span></button><button class="nav-item" data-page="alumniRequests" onclick="go('alumniRequests')"><span class="nav-icon">✉</span><span>Permohonan Alumni untuk Program</span></button></div>
 <div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">PENGURUSAN</div><button class="nav-item" data-page="suggestions" onclick="go('suggestions')"><span class="nav-icon">!</span><span>Cadangan & Pengesahan</span></button><button class="nav-item" data-page="reports" onclick="go('reports')"><span class="nav-icon">▤</span><span>Laporan & Analitik</span></button><button class="nav-item" data-page="actionCentre" onclick="go('actionCentre')"><span class="nav-icon">⚑</span><span>Action Centre</span></button><button class="nav-item" data-page="dataQuality" onclick="go('dataQuality')"><span class="nav-icon">✓</span><span>Data Quality Centre</span></button><button class="nav-item" data-page="timeCapsule" onclick="go('timeCapsule')"><span class="nav-icon">◷</span><span>Digital Time Capsule</span></button><button class="nav-item" data-page="insights" onclick="go('insights')"><span class="nav-icon">◆</span><span>Kajai Insights</span></button></div>
+<div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">HUBUNGAN</div><button class="nav-item" data-page="contact" onclick="go('contact')"><span class="nav-icon">✉</span><span>Hubungi Kami</span></button></div>
 <div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">SISTEM</div><button class="nav-item admin-only" data-page="users" onclick="go('users')"><span class="nav-icon">♟</span><span>Pengguna</span></button><button class="nav-item admin-only" data-page="auditPage" onclick="go('auditPage')"><span class="nav-icon">≡</span><span>Audit Log</span></button><button class="nav-item admin-only" data-page="settings" onclick="go('settings')"><span class="nav-icon">⚙</span><span>Tetapan Sistem</span></button><button class="nav-item admin-only" data-page="data" onclick="go('data')"><span class="nav-icon">⇅</span><span>Data & Sandaran</span></button><button class="nav-item admin-only" data-page="recycleBin" onclick="go('recycleBin')"><span class="nav-icon">♻</span><span>Tong Kitar Semula</span></button></div>
   <div class="sidebar-bottom">
    <div class="demo-small">
@@ -1474,7 +1475,7 @@ tbody tr:hover{
   </div>
 
   <form id="loginForm" onsubmit="handleLogin(event)">
-   <div class="form-group"><label for="loginName">Nama</label><input id="loginName" type="text" placeholder="Nama anda" required autocomplete="name"></div>
+   <input id="loginName" type="hidden" value="">
    <div class="form-group">
     <label for="loginEmail">E-mel</label>
     <input id="loginEmail" type="email" placeholder="contoh@email.com" required>
@@ -1511,7 +1512,7 @@ tbody tr:hover{
    <span style="font-weight:800;font-size:16px">G</span>
    Teruskan dengan Google
   </button>
-  <div class="small muted" style="margin-top:8px;text-align:center">Log masuk Google akan membuka akses Alumni. Akses Admin/Pentadbir kekal melalui kawalan peranan berasingan.</div>
+  <div class="small muted" style="margin-top:8px;text-align:center">Google digunakan untuk mengesahkan identiti. Akses selepas log masuk mengikut peranan yang dipilih; Admin dan Pentadbir masih memerlukan kod akses tambahan.</div>
 
   <div class="auth-footer">
    <span>Belum mempunyai akaun alumni?</span>
@@ -2396,7 +2397,8 @@ function render(){
       auditPage:pageAuditLog,
       settings:pageSettings,
       data:pageData,
-      recycleBin:pageRecycleBin
+      recycleBin:pageRecycleBin,
+      contact:pageContact
     };
 
     const fn=pages[currentPage] || pageDashboard;
@@ -9519,31 +9521,20 @@ function alumniRegistrationBadge(status){
 
 function registerAlumni(){
   closeLogin();
-  openModal("Daftar Akaun Alumni",`
-    <form class="form-grid" onsubmit="submitAlumniAccountRegistration(event)">
-      <div class="form-group full">
-        <div class="revision-note">
-          Akaun ini khusus untuk alumni Kolej Rahim Kajai. Selepas akaun diwujudkan,
-          log masuk sebagai <strong>Alumni</strong> dan lengkapkan pendaftaran diri untuk pengesahan HELAA/Pentadbir.
-        </div>
-      </div>
-      ${inputField("Nama Penuh","name","","text",true)}
-      ${inputField("E-mel","email","","email",true)}
-      <div class="form-group">
-        <label>Kata Laluan *</label>
-        <input name="password" type="password" minlength="8" required autocomplete="new-password">
-        <small>Minimum 8 aksara.</small>
-      </div>
-      <div class="form-group">
-        <label>Sahkan Kata Laluan *</label>
-        <input name="confirmPassword" type="password" minlength="8" required autocomplete="new-password">
-      </div>
-      <div class="form-actions">
-        <button type="button" class="btn" onclick="closeModal();openLogin()">Kembali</button>
-        <button type="submit" class="btn btn-primary">Daftar Akaun Alumni</button>
-      </div>
-    </form>
-  `,"Supabase Authentication • Alumni",false);
+  openModal("Daftar sebagai Alumni KRK",`
+    <div class="card" style="margin-bottom:14px;background:#f8fafc">
+      <div class="card-title">Sertai Direktori Alumni Kajai</div>
+      <div class="small muted" style="margin-top:6px;line-height:1.6">Cipta akaun untuk menghantar maklumat alumni anda kepada HELAA bagi tujuan semakan dan pengesahan.</div>
+    </div>
+    <button type="button" class="btn" onclick="closeModal();signInWithGoogle('Alumni')" style="width:100%;justify-content:center;margin-bottom:14px"><strong style="font-size:16px">G</strong>&nbsp;&nbsp;Teruskan dengan Google</button>
+    <div style="display:flex;align-items:center;gap:10px;margin:4px 0 14px"><div style="height:1px;background:var(--line);flex:1"></div><span class="small muted">atau daftar dengan e-mel</span><div style="height:1px;background:var(--line);flex:1"></div></div>
+    <form id="alumniAccountRegisterForm" class="form-grid" onsubmit="submitAlumniAccountRegistration(event)">
+      ${inputField("Nama Penuh","registerName","","text",true)}
+      ${inputField("E-mel","registerEmail","","email",true)}
+      ${inputField("Kata Laluan","registerPassword","","password",true)}
+      ${inputField("Sahkan Kata Laluan","registerPassword2","","password",true)}
+      <div class="form-actions"><button class="btn" type="button" onclick="closeModal();openLogin()">Sudah Ada Akaun? Log Masuk</button><button class="btn btn-primary" type="submit">Daftar Akaun Alumni</button></div>
+    </form>`,'Pendaftaran Alumni');
 }
 
 async function submitAlumniAccountRegistration(e){
@@ -9631,16 +9622,15 @@ handleLogin=async function(e){
   }
 };
 
-async function signInWithGoogle(){
+async function signInWithGoogle(forcedRole=null){
   const btn=document.getElementById("googleSignInButton");
   try{
+    const selectedRole=forcedRole || document.getElementById("loginRole")?.value || "Pelawat";
     if(btn){btn.disabled=true;btn.textContent="Membuka Google…";}
     sessionStorage.setItem("laman_legasi_kajai_oauth_pending","1");
+    sessionStorage.setItem("laman_legasi_kajai_oauth_role",selectedRole);
     const redirectTo=window.location.origin+window.location.pathname;
-    const {error}=await supabaseClient.auth.signInWithOAuth({
-      provider:"google",
-      options:{redirectTo}
-    });
+    const {error}=await supabaseClient.auth.signInWithOAuth({provider:"google",options:{redirectTo}});
     if(error) throw error;
   }catch(err){
     console.error(err);
@@ -9650,34 +9640,60 @@ async function signInWithGoogle(){
   }
 }
 
+function completeGoogleRoleAccess(role,user){
+  const email=(user?.email||"").trim().toLowerCase();
+  const meta=user?.user_metadata||{};
+  const name=meta.full_name||meta.name||email.split("@")[0]||"Pengguna";
+  currentRole=role;
+  sessionStorage.setItem(ROLE_KEY,role);
+  sessionStorage.setItem("laman_legasi_kajai_email",email);
+  sessionStorage.setItem("laman_legasi_kajai_name",name);
+  sessionStorage.setItem("laman_legasi_kajai_authenticated","1");
+  closeLogin(); renderNav(); render();
+  if(role==="Alumni") go("myAlumniProfile"); else go("dashboard");
+  toast(`Selamat datang, ${name}. Akses ${roleLabel(role)} aktif.`,"success");
+}
+
+function requestGoogleAccessCode(role,user){
+  const isPentadbir=role==="Pentadbir";
+  const expected=isPentadbir?"19711983":"011983";
+  const digits=isPentadbir?8:6;
+  openModal(`Pengesahan ${isPentadbir?"Pentadbir":"Admin"}`,`
+    <form onsubmit="event.preventDefault();verifyGoogleAccessCode('${role}',${isPentadbir?'true':'false'})" class="form-grid">
+      <div class="form-group full"><div class="revision-note">Identiti Google telah disahkan. Masukkan kod akses ${digits} digit untuk meneruskan sebagai <strong>${isPentadbir?"Pentadbir":"Admin / Pasukan HELAA"}</strong>.</div></div>
+      <div class="form-group full"><label>Kod Akses ${digits} Digit</label><input id="googleRoleAccessCode" type="password" inputmode="numeric" maxlength="${digits}" required autocomplete="one-time-code" placeholder="${'•'.repeat(digits)}"></div>
+      <div class="form-actions"><button class="btn" type="button" onclick="cancelGoogleRoleAccess()">Batal</button><button class="btn btn-primary" type="submit">Sahkan Akses</button></div>
+    </form>`,'Keselamatan tambahan');
+  window.__pendingGoogleRoleUser=user;
+  window.__pendingGoogleExpectedCode=expected;
+}
+function verifyGoogleAccessCode(role){
+  const code=(document.getElementById("googleRoleAccessCode")?.value||"").trim();
+  if(code!==window.__pendingGoogleExpectedCode){toast("Kod akses tidak tepat.","error");return;}
+  const user=window.__pendingGoogleRoleUser; closeModal();
+  window.__pendingGoogleRoleUser=null; window.__pendingGoogleExpectedCode=null;
+  completeGoogleRoleAccess(role,user);
+}
+async function cancelGoogleRoleAccess(){
+  closeModal();
+  try{await supabaseClient.auth.signOut();}catch(e){}
+  sessionStorage.removeItem("laman_legasi_kajai_authenticated");
+  currentRole="Pelawat"; renderNav(); render(); openLogin();
+}
+
 async function restoreGoogleOAuthSession(){
   try{
     const {data:{session},error}=await supabaseClient.auth.getSession();
     if(error) throw error;
     if(!session?.user) return;
-
-    const user=session.user;
-    const email=(user.email||"").trim().toLowerCase();
-    const meta=user.user_metadata||{};
-    const name=meta.full_name||meta.name||email.split("@")[0]||"Alumni";
-
-    currentRole="Alumni";
-    sessionStorage.setItem(ROLE_KEY,"Alumni");
-    sessionStorage.setItem("laman_legasi_kajai_email",email);
-    sessionStorage.setItem("laman_legasi_kajai_name",name);
-    sessionStorage.setItem("laman_legasi_kajai_authenticated","1");
-    closeLogin();
-    renderNav();
-    render();
-
-    if(sessionStorage.getItem("laman_legasi_kajai_oauth_pending")==="1"){
-      sessionStorage.removeItem("laman_legasi_kajai_oauth_pending");
-      toast(`Selamat datang, ${name}. Log masuk Google berjaya.`,"success");
-      go("myAlumniProfile");
-    }
-  }catch(err){
-    console.error("OAuth session restore failed",err);
-  }
+    const role=sessionStorage.getItem("laman_legasi_kajai_oauth_role") || sessionStorage.getItem(ROLE_KEY) || "Pelawat";
+    const wasPending=sessionStorage.getItem("laman_legasi_kajai_oauth_pending")==="1";
+    sessionStorage.removeItem("laman_legasi_kajai_oauth_pending");
+    sessionStorage.removeItem("laman_legasi_kajai_oauth_role");
+    if(!wasPending && sessionStorage.getItem("laman_legasi_kajai_authenticated")==="1") return;
+    if(role==="Pasukan" || role==="Pentadbir") requestGoogleAccessCode(role,session.user);
+    else completeGoogleRoleAccess(role,session.user);
+  }catch(err){console.error("OAuth session restore failed",err);}
 }
 
 supabaseClient.auth.onAuthStateChange((event,session)=>{
@@ -10075,6 +10091,45 @@ const __v2PageAlumniWithCTA=pageAlumni;
 pageAlumni=function(){
   return adminPendingAlumniDirectoryQueue()+__v2PageAlumniWithCTA();
 };
+
+
+/* ===== HUBUNGI KAMI ===== */
+function contactSave(kind,payload){
+  const key="laman_legasi_kajai_contact_submissions";
+  const arr=JSON.parse(localStorage.getItem(key)||"[]");
+  arr.unshift({id:"HUB"+String(Date.now()).slice(-8),kind,status:"Baharu",createdAt:new Date().toISOString(),...payload});
+  localStorage.setItem(key,JSON.stringify(arr));
+  toast("Terima kasih! Maklumat anda telah berjaya dihantar kepada pentadbir Laman Legasi Kajai.","success");
+}
+function formObject(form){return Object.fromEntries(new FormData(form).entries());}
+function submitContactInfo(e,kind){e.preventDefault();contactSave(kind,formObject(e.target));e.target.reset();}
+function scrollToContactHelAA(){document.getElementById("helaaDirectory")?.scrollIntoView({behavior:"smooth",block:"start"});}
+function openCollaborationForm(){
+ openModal("Cadangkan Kerjasama",`<form class="form-grid" onsubmit="submitContactInfo(event,'Kerjasama');closeModal()">
+ ${inputField("Nama Individu / Wakil","nama","","text",true)}${inputField("Nama Organisasi / Institusi","organisasi","","text",true)}${inputField("Jawatan","jawatan","")}${inputField("E-mel","email","","email",true)}${inputField("No. Telefon","telefon","")}
+ ${selectField("Jenis Kerjasama","jenis",["CSR","Akademik","Industri","Alumni","Penajaan","Antarabangsa","Program / Acara","Lain-lain"],"",true)}${inputField("Tajuk Cadangan","tajuk","","text",true)}
+ <div class="form-group full"><label>Penerangan Cadangan Kerjasama</label><textarea name="penerangan" required></textarea></div><div class="form-actions"><button class="btn btn-primary">Hantar Cadangan</button></div></form>`,`Jaringan & Kerjasama`,true);
+}
+function pageContact(){return `
+ <div class="page-header"><div><h1 class="page-title">Hubungi Kami</h1><p class="page-subtitle">Terdapat sebarang pertanyaan, maklumat berkaitan Laman Legasi Alumni, alumni dan legasi Kajai, atau ingin menjalinkan kerjasama bersama Kolej Rahim Kajai? Hubungi kami melalui saluran berikut.</p></div></div>
+ <div class="grid grid-2">
+  <div class="card"><div class="card-title">Maklumat Rasmi Kolej</div><p><strong>Kolej Rahim Kajai, Universiti Kebangsaan Malaysia (KRK UKM)</strong></p><p class="small"><strong>Alamat</strong><br>Kolej Rahim Kajai<br>Universiti Kebangsaan Malaysia<br>43600 UKM Bangi<br>Selangor Darul Ehsan, Malaysia</p><p class="small"><strong>Telefon Pejabat</strong><br>03-8921 3103</p><p class="small"><strong>E-mel Rasmi</strong><br>pgtkrk@ukm.edu.my</p></div>
+  <div class="card"><div class="card-title">Waktu Operasi Pejabat</div><p class="small"><strong>Isnin – Khamis</strong><br>8.00 pagi – 1.00 petang<br>2.00 petang – 5.00 petang</p><p class="small"><strong>Jumaat</strong><br>8.00 pagi – 12.15 tengah hari<br>2.45 petang – 5.00 petang</p><p class="small"><strong>Sabtu, Ahad & Cuti Umum</strong><br>Tutup (tertakluk kepada pekeliling semasa)</p></div>
+ </div>
+ <div class="card" id="helaaDirectory" style="margin-top:16px"><div class="card-head"><div><div class="card-title">Direktori Hubungan HELAA</div><div class="small muted">Biro Hal Ehwal Luar, Alumni dan Antarabangsa</div></div></div><div class="grid grid-3">
+  <div class="detail-item"><div class="detail-label">Felo HELAA</div><div class="detail-value"><strong>Felo Yamin</strong><br>p159289@siswa.ukm.edu.my<br>+60 12-619 2513</div></div>
+  <div class="detail-item"><div class="detail-label">MEP HELAA</div><div class="detail-value"><strong>MEP Fatihah</strong><br>a219513@siswa.ukm.edu.my<br>+60 17-205 2884</div></div>
+  <div class="detail-item"><div class="detail-label">Timbalan Ketua Pengarah Eksekutif 1</div><div class="detail-value"><strong>Amirah</strong><br>Pembangunan & Legasi, Biro HELAA<br>a218720@siswa.ukm.edu.my</div></div>
+ </div></div>
+ <div class="card" style="margin-top:16px"><div class="card-title">Bantu Kami Melengkapkan Legasi Kajai</div><p class="small muted">Anda merupakan alumni KRK atau mempunyai maklumat mengenai mantan kepimpinan, alumni lain atau sejarah Kolej Rahim Kajai sejak 1983? Sumbangan anda amat dihargai untuk melengkapkan, mengesahkan dan memelihara rekod legasi Kajai.</p>
+ <form class="form-grid" onsubmit="submitContactInfo(event,'Maklumat Legasi')"><div class="form-group"><label>Jenis Maklumat</label><select name="jenis" required><option>Memberi Maklumat Baharu</option><option>Melaporkan Kesilapan Maklumat</option></select></div>${inputField("Nama Pengirim","nama","","text",true)}${inputField("E-mel / No. Telefon","hubungan","","text",true)}<div class="form-group"><label>Kategori Maklumat</label><select name="kategori" required>${["Mantan Kepimpinan","Alumni","Sejarah Kolej","Program / Aktiviti","Gambar / Bahan Arkib","Lain-lain"].map(x=>`<option>${x}</option>`).join("")}</select></div>${inputField("Individu / Rekod Berkaitan","rekod","")}<div class="form-group full"><label>Maklumat / Pembetulan yang Ingin Dikemukakan</label><textarea name="maklumat" required></textarea></div>${inputField("Sumber / Rujukan Maklumat (jika ada)","sumber","")}<div class="form-group"><label>Muat Naik Bahan Sokongan (jika ada)</label><input type="file" name="bahan"></div><div class="form-actions"><button class="btn btn-primary">Hantar Maklumat</button></div></form></div>
+ <div class="card" style="margin-top:16px"><div class="card-title">Alumni Kajai</div><p class="small muted">Teruskan hubungan anda bersama Kajai dan bantu kami membina rekod alumni yang lebih lengkap.</p><div class="quick-actions">
+  <button class="quick-action" onclick="go('myAlumniProfile')"><strong>Daftar / Kemas Kini Maklumat Alumni</strong><span>Profil, kerjaya dan maklumat terkini.</span></button><button class="quick-action" onclick="go('achievements')"><strong>Kongsi Pencapaian</strong><span>Akademik, kerjaya, profesional dan komuniti.</span></button><button class="quick-action" onclick="go('gallery')"><strong>Sumbang Bahan Legasi</strong><span>Gambar, penerbitan, memorabilia dan bahan sejarah.</span></button><button class="quick-action" onclick="scrollToContactHelAA()"><strong>Hubungi HELAA</strong><span>Kembali ke direktori hubungan HELAA.</span></button></div>
+ <hr style="border:0;border-top:1px solid var(--line);margin:20px 0"><div class="card-title">Cadangkan Program Alumni</div><form class="form-grid" onsubmit="submitContactInfo(event,'Cadangan Program Alumni')">${inputField("Nama","nama","","text",true)}${inputField("Tahun / Generasi di Kajai (jika berkenaan)","generasi","")}${inputField("Nama Program yang Dicadangkan","program","","text",true)}${inputField("Kategori Program","kategori","")}<div class="form-group full"><label>Cadangan / Penerangan Ringkas</label><textarea name="cadangan" required></textarea></div><div class="form-actions"><button class="btn btn-primary">Hantar Cadangan</button></div></form></div>
+ <div class="card" style="margin-top:16px"><div class="card-head"><div><div class="card-title">Jaringan & Kerjasama</div><div class="small muted">Jalin Kerjasama Bersama Kajai</div></div></div><p class="small">Kolej Rahim Kajai mengalu-alukan peluang jaringan dan kerjasama dalam CSR, kolaborasi universiti, syarikat dan industri, NGO dan komuniti, institusi pendidikan, jaringan alumni, penajaan dan program antarabangsa.</p><div class="action-row"><button class="btn" onclick="scrollToContactHelAA()">Hubungi HELAA</button><button class="btn btn-primary" onclick="openCollaborationForm()">Cadangkan Kerjasama</button></div></div>
+ <div class="card" style="margin-top:16px"><div class="card-title">Borang Hubungi Kami</div><p class="small muted">Tidak menemui saluran yang sesuai di atas? Hantarkan pertanyaan anda melalui borang berikut.</p><form class="form-grid" onsubmit="submitContactInfo(event,'Pertanyaan Umum')">${inputField("Nama","nama","","text",true)}${inputField("E-mel","email","","email",true)}${inputField("No. Telefon (Pilihan)","telefon","")}<div class="form-group"><label>Kategori Pertanyaan</label><select name="kategori">${["Pertanyaan Umum","Alumni","Pembetulan Maklumat Legasi","Jaringan & Kerjasama","Media / Publisiti","Program","Lain-lain"].map(x=>`<option>${x}</option>`).join("")}</select></div>${inputField("Subjek","subjek","","text",true)}<div class="form-group full"><label>Mesej</label><textarea name="mesej" required></textarea></div><div class="form-actions"><button class="btn btn-primary">Hantar</button></div></form></div>
+ <div class="card" style="margin-top:16px"><div class="card-title">Ikuti Media Sosial Kolej Rahim Kajai</div><div class="detail-grid" style="margin-top:14px"><div class="detail-item"><div class="detail-label">Instagram</div><div class="detail-value">Kolej Rahim Kajai — @kolejrahimkajai<br>HELAA KRK — @helaa_krk</div></div><div class="detail-item"><div class="detail-label">TikTok</div><div class="detail-value">Kolej Rahim Kajai — @kolejrahimkajai<br>HELAA KRK — @helaa_krk</div></div><div class="detail-item"><div class="detail-label">Facebook / YouTube</div><div class="detail-value">Kolej Rahim Kajai - UKM KRK<br>KajaiTV</div></div></div></div>
+ <div class="hero" style="margin-top:16px"><h1>Laman Legasi Kajai</h1><p>Memelihara sejarah. Menghubungkan generasi. Meneruskan legasi.</p></div>`;}
 
 render();
 restoreGoogleOAuthSession();
