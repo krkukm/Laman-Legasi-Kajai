@@ -65,6 +65,15 @@ html:not(.auth-access-granted) body{background:var(--bg);}
 html:not(.auth-access-granted) .auth-backdrop{background:#fff!important;}
 html:not(.auth-access-granted) #authBackdrop{display:flex!important;}
 
+/* FIX: benarkan modal Daftar Alumni dibuka sebelum pengguna log masuk.
+   Hard gate kekal aktif untuk kandungan aplikasi. */
+html.alumni-registration-open:not(.auth-access-granted) #authBackdrop{
+  display:none!important;
+}
+html.alumni-registration-open #modalBackdrop{
+  z-index:4000!important;
+}
+
 /* =========================================================
    SIDEBAR
 ========================================================= */
@@ -2347,6 +2356,13 @@ function openModal(title,body,subtitle="",large=false){
 function closeModal(){
 
     document.getElementById("modalBackdrop").classList.add("hidden");
+
+    if(document.documentElement.classList.contains("alumni-registration-open")){
+      document.documentElement.classList.remove("alumni-registration-open");
+      if(sessionStorage.getItem("laman_legasi_kajai_authenticated")!=="1"){
+        document.getElementById("authBackdrop")?.classList.remove("hidden");
+      }
+    }
 
 }
 
@@ -9754,8 +9770,9 @@ function alumniRegistrationBadge(status){
 }
 
 function registerAlumni(){
-  // Pendaftaran mesti boleh dibuka walaupun hard authentication gate sedang aktif.
-  // Ini hanya menyembunyikan modal log masuk; ia TIDAK memberikan akses ke aplikasi.
+  // Benarkan borang pendaftaran muncul di atas hard authentication gate
+  // TANPA memberi akses kepada kandungan aplikasi.
+  document.documentElement.classList.add("alumni-registration-open");
   const authGate=document.getElementById("authBackdrop");
   if(authGate) authGate.classList.add("hidden");
   openModal("Daftar sebagai Alumni KRK",`
