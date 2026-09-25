@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ms">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,11 +58,6 @@ button{
 .app{
   min-height:100vh;
 }
-
-/* HARD AUTH GATE: aplikasi tidak dipaparkan sehingga akses disahkan */
-html:not(.auth-access-granted) body{background:var(--bg);}
-html:not(.auth-access-granted) .auth-backdrop{background:#fff!important;}
-html:not(.auth-access-granted) #authBackdrop{display:flex!important;}
 
 /* =========================================================
    SIDEBAR
@@ -1349,129 +1343,9 @@ tbody tr:hover{
 
 .record-trace{margin-top:10px;padding:9px 11px;border-radius:10px;background:#f7f8fb;border:1px solid var(--line);font-size:11px;line-height:1.55;color:var(--muted)}
 .karisma-session-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}.karisma-session-bar .action-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.karisma-session-bar select{min-width:140px}@media(max-width:700px){.karisma-session-bar{align-items:flex-start;flex-direction:column}.karisma-session-bar .action-row{width:100%}.karisma-session-bar select{width:100%}}
-
-
-/* =========================================================
-   KAJAI BURGUNDY DESIGN SYSTEM — 2026
-   White-first interface with Kajai maroon/burgundy identity
-========================================================= */
-:root{
-  --navy:#65152d;
-  --navy2:#821d3d;
-  --gold:#b98a4a;
-  --gold2:#d8b77a;
-  --cream:#fbf6f7;
-  --bg:#fcfafb;
-  --card:#ffffff;
-  --text:#2b1b20;
-  --muted:#78666c;
-  --line:#eadde1;
-  --blue:#821d3d;
-  --blue-bg:#f8eaee;
-  --shadow:0 10px 30px rgba(101,21,45,.08);
-  --shadow2:0 4px 14px rgba(101,21,45,.07);
-}
-
-body{background:#fcfafb;color:var(--text)}
-html:not(.auth-access-granted) body{background:#fff}
-html:not(.auth-access-granted) .app{pointer-events:none;user-select:none;}
-html:not(.auth-access-granted) .auth-backdrop{
-  background:linear-gradient(135deg,#fff 0%,#fcf7f8 52%,#f5e8ec 100%);
-}
-
-.sidebar{
-  background:linear-gradient(180deg,#581126 0%,#711731 48%,#4b0d20 100%);
-  box-shadow:8px 0 30px rgba(79,13,32,.14);
-}
-.brand{border-bottom-color:rgba(255,255,255,.14)}
-.brand-title{color:#fff}
-.brand-college,.brand-subtitle{color:#ead8de!important}
-.heritage-line{color:#f0cfd8}
-.heritage-line:before{background:#d9a7b5}
-.nav-label{color:#d8aeba}
-.nav-item{color:#f1e3e7}
-.nav-item:hover{background:rgba(255,255,255,.10);color:#fff}
-.nav-item.active{
-  background:linear-gradient(90deg,rgba(255,255,255,.20),rgba(255,255,255,.08));
-  color:#fff;
-  box-shadow:inset 4px 0 0 #e6b5c2;
-}
-.sidebar-bottom{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.14)}
-.demo-small{color:#e2cbd2}.demo-small strong{color:#fff}
-.brand-logo{filter:none}
-
-.topbar{background:rgba(255,255,255,.96);border-bottom-color:#eadde1;box-shadow:0 2px 14px rgba(101,21,45,.04)}
-.menu-btn{background:#65152d}
-.top-search input{background:#fff;border-color:#e6d7dc}
-.top-search input:focus{border-color:#8c2343;box-shadow:0 0 0 3px rgba(130,29,61,.08)}
-.role-box{border-color:#e6d7dc}.role-box select{color:#65152d}
-
-.btn-primary{background:#701832;border-color:#701832;color:#fff}
-.btn-primary:hover{background:#571126;border-color:#571126}
-.btn-gold{background:#9b3854;border-color:#9b3854;color:#fff}
-.btn{border-color:#e6d7dc}
-.link-button{color:#821d3d}
-
-.card,.stat-card,.quick-card,.legacy-event,.network-node,.heat-node{border-color:#eadde1}
-.card{box-shadow:0 5px 18px rgba(101,21,45,.045)}
-.quick-card:hover{border-color:#d6a8b5;background:#fcf4f6}
-
-.hero{background:linear-gradient(135deg,#5a1028 0%,#7b1b3a 58%,#9b3854 100%)}
-.hero-identity{background:linear-gradient(135deg,#5a1028,#821d3d)!important}
-.hero-identity p{color:#f2dfe5!important}
-.merit-preview{background:linear-gradient(135deg,#5a1028,#821d3d)!important}
-.unit-bar-track span{background:linear-gradient(90deg,#65152d,#ad536d)!important}
-.review-title>span{background:#701832!important}
-.legacy-year-label,.network-node strong,.heat-node strong,.audit-actor{color:#701832!important}
-.insight-callout{border-left-color:#8c2343;background:#fcf4f6}
-.cloud-banner{background:#fbf1f4;border-color:#e8cdd5}
-
-.auth-backdrop{background:rgba(72,12,30,.42)}
-.auth-modal{
-  background:#fff;
-  border:1px solid #eadde1;
-  box-shadow:0 30px 80px rgba(78,13,32,.18);
-}
-.auth-head h2{color:#4f1024}
-.auth-logo{
-  width:76px;height:76px;border-radius:18px;
-  background:linear-gradient(135deg,#5a1028,#821d3d);
-  padding:10px;box-shadow:0 10px 24px rgba(101,21,45,.18);
-}
-.auth-logo img{width:100%;height:100%;object-fit:contain;display:block}
-.auth-user{border-color:#eadde1}
-.auth-user-text strong{color:#65152d}
-
-input,select,textarea{accent-color:#7b1b3a}
-.form-group input,.form-group select,.form-group textarea{border-color:#e2d3d8}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#8c2343!important;box-shadow:0 0 0 3px rgba(130,29,61,.08)}
-
-.badge-info{background:#f5e4e9;color:#701832}
-.progress-fill{background:linear-gradient(90deg,#65152d,#a84964)!important}
-.global-results{box-shadow:0 18px 45px rgba(101,21,45,.14)!important}
-.search-result:hover{background:#fcf4f6!important}
-
-.institution-banner{background:linear-gradient(135deg,#5a1028,#821d3d)!important;box-shadow:0 16px 36px rgba(101,21,45,.14)!important}
-.human-code{background:#f7e9ed!important;color:#701832!important;border-color:#e5cbd3!important}
-
-/* White logo is intentionally placed only on burgundy surfaces. */
-.brand-logo,.hero-identity img{object-fit:contain}
-
 </style>
 </head>
 
-<script>
-  const SUPABASE_URL = 'https://fqneyiyxoajzklhpxalb.supabase.co';
-
-  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_6Ov_iuckZnMkURKiNgpB6g_TSi12nkM';
-
-  const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
-
-  console.log('Supabase client berjaya dimulakan:', !!supabaseClient);
-</script>
 <body>
 
 <div class="app">
@@ -1482,15 +1356,14 @@ input,select,textarea{accent-color:#7b1b3a}
 
  <aside class="sidebar" id="sidebar">
 
-     <div class="brand"><div class="brand-header" onclick="go('dashboard')" title="Kembali ke Dashboard"><img src="./logokajaiputih.PNG" class="brand-logo" alt="Logo Kolej Rahim Kajai"><div><div class="brand-title">LAMAN LEGASI KAJAI</div><div class="brand-college">Kolej Rahim Kajai • UKM</div></div></div><div class="brand-subtitle" id="brandSubtitle">KARISMA • Alumni • Sejarah • Jaringan</div><div class="heritage-line">1983 → KINI</div></div>
+     <div class="brand"><div class="brand-header" onclick="go('dashboard')" title="Kembali ke Dashboard"><div><div class="brand-title">LAMAN LEGASI KAJAI</div><div class="brand-college">Kolej Rahim Kajai • UKM</div></div></div><div class="brand-subtitle" id="brandSubtitle">KARISMA • Alumni • Sejarah • Jaringan</div><div class="heritage-line">1983 → KINI</div></div>
 
      <div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">UTAMA</div><button class="nav-item active" data-page="dashboard" onclick="go('dashboard')"><span class="nav-icon">⌂</span><span>Dashboard</span></button><button class="nav-item" data-page="timeline" onclick="go('timeline')"><span class="nav-icon">◈</span><span>Peta Legasi</span></button><button class="nav-item" data-page="search" onclick="go('search')"><span class="nav-icon">⌕</span><span>Cari Legasi</span></button></div>
-<div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">ALUMNI</div><button class="nav-item alumni-self-only hidden" data-page="myAlumniProfile" onclick="go('myAlumniProfile')"><span class="nav-icon">◉</span><span>Profil Saya</span></button><button class="nav-item" data-page="alumni" onclick="go('alumni')"><span class="nav-icon">♙</span><span>Direktori Alumni</span></button><button class="nav-item" data-page="reps" onclick="go('reps')"><span class="nav-icon">◎</span><span>Wakil Batch</span></button><button class="nav-item" data-page="activities" onclick="go('activities')"><span class="nav-icon">◉</span><span>Aktiviti Alumni</span></button><button class="nav-item" data-page="achievements" onclick="go('achievements')"><span class="nav-icon">✦</span><span>Pencapaian Alumni</span></button></div>
+<div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">ALUMNI</div><button class="nav-item" data-page="alumni" onclick="go('alumni')"><span class="nav-icon">♙</span><span>Direktori Alumni</span></button><button class="nav-item" data-page="reps" onclick="go('reps')"><span class="nav-icon">◎</span><span>Wakil Batch</span></button><button class="nav-item" data-page="activities" onclick="go('activities')"><span class="nav-icon">◉</span><span>Aktiviti Alumni</span></button><button class="nav-item" data-page="achievements" onclick="go('achievements')"><span class="nav-icon">✦</span><span>Pencapaian Alumni</span></button></div>
 <div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">LEGASI</div><button class="nav-item" data-page="leadership" onclick="go('leadership')"><span class="nav-icon">♛</span><span>Kepimpinan Kajai</span></button><button class="nav-item" data-page="heritage" onclick="go('heritage')"><span class="nav-icon">⌁</span><span>Timeline Legasi</span></button><button class="nav-item" data-page="gallery" onclick="go('gallery')"><span class="nav-icon">▧</span><span>Galeri Legasi</span></button></div>
-<div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">KARISMA</div><button class="nav-item" data-page="records" onclick="go('records')"><span class="nav-icon">✓</span><span>Rekod Penglibatan</span></button><button class="nav-item" data-page="merit" onclick="go('merit')"><span class="nav-icon">★</span><span>Sistem Merit</span></button><button class="nav-item" data-page="units" onclick="go('units')"><span class="nav-icon">▦</span><span>Unit KARISMA</span></button><button class="nav-item" data-page="karismaAnalytics" onclick="go('karismaAnalytics')"><span class="nav-icon">▥</span><span>Analitik KARISMA</span></button><button class="nav-item" data-page="karismaArchive" onclick="go('karismaArchive')"><span class="nav-icon">⌂</span><span>Arkib KARISMA</span></button><button class="nav-item" data-page="alumniRequests" onclick="go('alumniRequests')"><span class="nav-icon">✉</span><span>Permohonan Alumni untuk Program</span></button></div>
+<div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">KARISMA</div><button class="nav-item" data-page="records" onclick="go('records')"><span class="nav-icon">✓</span><span>Rekod Penglibatan</span></button><button class="nav-item" data-page="alumniRequests" onclick="go('alumniRequests')"><span class="nav-icon">✉</span><span>Permohonan Alumni Program</span></button><button class="nav-item" data-page="merit" onclick="go('merit')"><span class="nav-icon">★</span><span>Sistem Merit</span></button><button class="nav-item" data-page="units" onclick="go('units')"><span class="nav-icon">▦</span><span>Unit KARISMA</span></button><button class="nav-item" data-page="karismaAnalytics" onclick="go('karismaAnalytics')"><span class="nav-icon">▥</span><span>Analitik KARISMA</span></button><button class="nav-item" data-page="karismaArchive" onclick="go('karismaArchive')"><span class="nav-icon">⌂</span><span>Arkib KARISMA</span></button></div>
 <div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">PENGURUSAN</div><button class="nav-item" data-page="suggestions" onclick="go('suggestions')"><span class="nav-icon">!</span><span>Cadangan & Pengesahan</span></button><button class="nav-item" data-page="reports" onclick="go('reports')"><span class="nav-icon">▤</span><span>Laporan & Analitik</span></button><button class="nav-item" data-page="actionCentre" onclick="go('actionCentre')"><span class="nav-icon">⚑</span><span>Action Centre</span></button><button class="nav-item" data-page="dataQuality" onclick="go('dataQuality')"><span class="nav-icon">✓</span><span>Data Quality Centre</span></button><button class="nav-item" data-page="timeCapsule" onclick="go('timeCapsule')"><span class="nav-icon">◷</span><span>Digital Time Capsule</span></button><button class="nav-item" data-page="insights" onclick="go('insights')"><span class="nav-icon">◆</span><span>Kajai Insights</span></button></div>
-<div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">HUBUNGAN</div><button class="nav-item" data-page="contact" onclick="go('contact')"><span class="nav-icon">✉</span><span>Hubungi Kami</span></button></div>
-<div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">SISTEM</div><button class="nav-item admin-only" data-page="users" onclick="go('users')"><span class="nav-icon">♟</span><span>Pengguna</span></button><button class="nav-item admin-only" data-page="auditPage" onclick="go('auditPage')"><span class="nav-icon">≡</span><span>Audit Log</span></button><button class="nav-item admin-only" data-page="settings" onclick="go('settings')"><span class="nav-icon">⚙</span><span>Tetapan Sistem</span></button><button class="nav-item admin-only" data-page="data" onclick="go('data')"><span class="nav-icon">⇅</span><span>Data & Sandaran</span></button><button class="nav-item admin-only" data-page="recycleBin" onclick="go('recycleBin')"><span class="nav-icon">♻</span><span>Tong Kitar Semula</span></button></div>
+<div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">SISTEM</div><button class="nav-item admin-only" data-page="users" onclick="go('users')"><span class="nav-icon">♟</span><span>Pengguna</span></button><button class="nav-item admin-only" data-page="auditPage" onclick="go('auditPage')"><span class="nav-icon">≡</span><span>Audit Log</span></button><button class="nav-item admin-only" data-page="settings" onclick="go('settings')"><span class="nav-icon">⚙</span><span>Tetapan Sistem</span></button><button class="nav-item admin-only" data-page="data" onclick="go('data')"><span class="nav-icon">⇅</span><span>Data & Sandaran</span></button></div>
   <div class="sidebar-bottom">
    <div class="demo-small">
     <strong>LAMAN LEGASI KAJAI</strong><br>
@@ -1580,7 +1453,7 @@ input,select,textarea{accent-color:#7b1b3a}
  <div class="auth-modal">
   <div class="auth-head">
    <div>
-    <div class="auth-logo"><img src="./logokajaiputih.PNG" alt="Logo Kolej Rahim Kajai"></div>
+    <div class="auth-logo">LK</div>
     <h2>Selamat Datang ke Laman Legasi Kajai</h2>
     <p>Log masuk untuk mengakses fungsi berdasarkan peranan pengguna.</p>
    </div>
@@ -1588,7 +1461,7 @@ input,select,textarea{accent-color:#7b1b3a}
   </div>
 
   <form id="loginForm" onsubmit="handleLogin(event)">
-   <input id="loginName" type="hidden" value="">
+   <div class="form-group"><label for="loginName">Nama</label><input id="loginName" type="text" placeholder="Nama anda" required autocomplete="name"></div>
    <div class="form-group">
     <label for="loginEmail">E-mel</label>
     <input id="loginEmail" type="email" placeholder="contoh@email.com" required>
@@ -1614,18 +1487,6 @@ input,select,textarea{accent-color:#7b1b3a}
     Log Masuk
    </button>
   </form>
-
-  <div style="display:flex;align-items:center;gap:10px;margin:16px 0 12px">
-   <div style="height:1px;background:var(--border);flex:1"></div>
-   <span class="small muted">atau</span>
-   <div style="height:1px;background:var(--border);flex:1"></div>
-  </div>
-
-  <button type="button" class="btn" id="googleSignInButton" onclick="signInWithGoogle()" style="width:100%;justify-content:center;gap:10px;background:#fff;color:#1f2937;border:1px solid #d1d5db">
-   <span style="font-weight:800;font-size:16px">G</span>
-   Teruskan dengan Google
-  </button>
-  <div class="small muted" style="margin-top:8px;text-align:center">Google digunakan untuk mengesahkan identiti. Akses selepas log masuk mengikut peranan yang dipilih; Admin dan Pentadbir masih memerlukan kod akses tambahan.</div>
 
   <div class="auth-footer">
    <span>Belum mempunyai akaun alumni?</span>
@@ -1925,8 +1786,8 @@ function defaultData(){
      gallery:[],
 
      suggestions:[],
-     alumniRequests:[],
      notifications:[],
+     alumniRequests:[],
 
       audit:[]
     };
@@ -1958,9 +1819,8 @@ function normalize(d){
       "achievements",
       "gallery",
       "suggestions",
-      "alumniRegistrations",
-      "alumniRequests",
       "notifications",
+      "alumniRequests",
       "audit"
     ];
 
@@ -2151,7 +2011,7 @@ function toast(message,type=""){
 }
 
 function currentActor(){const email=sessionStorage.getItem("laman_legasi_kajai_email")||"";const name=sessionStorage.getItem("laman_legasi_kajai_name")||email.split("@")[0]||roleLabel(currentRole);return{name,email,role:currentRole}}
-function stampRecordById(id){if(!id)return;const a=currentActor();for(const list of [data.alumni,data.leadership,data.reps,data.activities,data.achievements,data.gallery,data.records,data.suggestions,data.units,data.scores,data.bonuses,data.penalties]){if(!Array.isArray(list))continue;const x=list.find(v=>v&&v.id===id);if(x){if(!x.createdByName){x.createdByName=a.name;x.createdByEmail=a.email;x.createdByRole=a.role;x.createdAt=x.createdAt||now();}x.updatedByName=a.name;x.updatedByEmail=a.email;x.updatedByRole=a.role;x.updatedAt=now();return}}}
+function stampRecordById(id){if(!id)return;const a=currentActor();for(const list of [data.alumni,data.leadership,data.reps,data.activities,data.achievements,data.gallery,data.records,data.suggestions,data.alumniRequests,data.units,data.scores,data.bonuses,data.penalties]){if(!Array.isArray(list))continue;const x=list.find(v=>v&&v.id===id);if(x){if(!x.createdByName){x.createdByName=a.name;x.createdByEmail=a.email;x.createdByRole=a.role;x.createdAt=x.createdAt||now();}x.updatedByName=a.name;x.updatedByEmail=a.email;x.updatedByRole=a.role;x.updatedAt=now();return}}}
 function audit(action,type,id=""){const a=currentActor();stampRecordById(id);data.audit.unshift({id:uid("audit"),action,type,targetId:id,role:a.role,actorName:a.name,actorEmail:a.email,at:now()});data.audit=data.audit.slice(0,300)}
 
 function approvedRecords(){
@@ -2487,7 +2347,6 @@ function render(){
       search:pageSearchLegacy,
       heritage:pageHeritageTimeline,
       alumni:pageAlumni,
-      myAlumniProfile:pageMyAlumniProfile,
       leadership:pageLeadership,
       reps:pageReps,
       records:pageRecords,
@@ -2509,9 +2368,7 @@ function render(){
       users:pageUsers,
       auditPage:pageAuditLog,
       settings:pageSettings,
-      data:pageData,
-      recycleBin:pageRecycleBin,
-      contact:pageContact
+      data:pageData
     };
 
     const fn=pages[currentPage] || pageDashboard;
@@ -2871,7 +2728,7 @@ function pageTimeline(){
 
     return `
 
-     <div class="hero-identity"><img src="./logokajaiputih.PNG" alt="Logo Kolej Rahim Kajai"><div><h2>Laman Legasi Kajai</h2><p>Menghimpun Nama. Menyusun Sejarah. Menjaga Legasi — sejak 1983.</p></div></div>
+     <div class="hero-identity"><div><h2>Laman Legasi Kajai</h2><p>Menghimpun Nama. Menyusun Sejarah. Menjaga Legasi — sejak 1983.</p></div></div>
 
  <div class="page-header">
 
@@ -3178,7 +3035,6 @@ function pageAlumni(){
 
      const text=[
        a.fullName,
-       a.legacyId,
        a.nickname,
        a.email,
        a.phone,
@@ -5337,181 +5193,6 @@ function deleteRecord(id){
 
 }
 
-
-
-/* =========================================================
-   PERMOHONAN ALUMNI UNTUK PROGRAM
-   Pelawat/pengguna boleh memohon HELAA menghubungi alumni.
-   Maklumat hubungan alumni tidak pernah dipaparkan kepada pemohon.
-========================================================= */
-function alumniRequestStatusBadge(status){
-  const cls=status==="Selesai"||status==="Dipersetujui Alumni"||status==="Permohonan Diterima"?"badge badge-green":status==="Ditolak"||status==="Tidak Berjaya"||status==="Permohonan Ditolak"?"badge badge-red":"badge badge-gold";
-  return `<span class="${cls}">${esc(status||"Menunggu Semakan HELAA")}</span>`;
-}
-function alumniRequestTable(list,canManage){
-  if(!list.length)return empty("✉","Tiada permohonan","Belum ada permohonan dalam bahagian ini.");
-  return `<div class="table-wrap"><table><thead><tr><th>Program</th><th>Tarikh</th><th>Alumni Dimohon</th><th>Pemohon</th><th>Status</th><th>Tindakan</th></tr></thead><tbody>${list.map(x=>`<tr><td><b>${esc(x.programName)}</b><div class="small muted">${esc(x.organiser||"")}</div></td><td>${dateMY(x.programStartDate||x.programDate)}</td><td>${(x.alumniIds||[]).map(id=>getAlumni(id)?.fullName).filter(Boolean).map(esc).join("<br>")||"-"}</td><td>${esc(x.requesterName||"-")}<div class="small muted">${esc(x.requesterEmail||"")}${x.requesterPhone?`<br>${esc(x.requesterPhone)}`:""}</div></td><td>${alumniRequestStatusBadge(x.decision||x.status)}</td><td><div class="action-row"><button class="btn btn-small" onclick="viewAlumniRequest('${x.id}')">Lihat</button>${canManage?`<button class="btn btn-small btn-primary" onclick="manageAlumniRequest('${x.id}')">Urus</button>`:""}${x.decision==="Permohonan Diterima"?`<button class="btn btn-small" onclick="openAlumniRequestReport('${x.id}')">${x.reportSubmittedAt?"Lihat / Kemas Kini Laporan":"Hantar Laporan"}</button>`:""}${canManage&&x.reportSubmittedAt&&!x.karismaRecordId?`<button class="btn btn-small btn-primary" onclick="openTransferRequestToKarisma('${x.id}')">Pindah ke Merit KARISMA</button>`:""}${x.karismaRecordId?`<span class="badge badge-green">✓ Merit dipindahkan</span>`:""}</div></td></tr>`).join("")}</tbody></table></div>`;
-}
-function pageAlumniRequests(){
-  const actor=currentActor(); const canManage=currentRole==="Pentadbir"||currentRole==="Pasukan";
-  let list=[...(data.alumniRequests||[])];
-  if(!canManage){const em=(actor.email||"").toLowerCase();list=list.filter(x=>em&&String(x.requesterEmail||"").toLowerCase()===em)}
-  list.sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
-  const reported=list.filter(x=>x.decision==="Permohonan Diterima"&&x.reportSubmittedAt);
-  const accepted=list.filter(x=>x.decision==="Permohonan Diterima"&&!x.reportSubmittedAt);
-  const rejected=list.filter(x=>x.decision==="Permohonan Ditolak");
-  const action=list.filter(x=>x.decision!=="Permohonan Diterima"&&x.decision!=="Permohonan Ditolak");
-  return `<div class="page-header"><div><h1 class="page-title">Permohonan Alumni untuk Program</h1><p class="page-subtitle">Mohon bantuan HELAA untuk mendapatkan penglibatan alumni dalam program. Maklumat hubungan alumni kekal sulit; HELAA akan menghubungi alumni terlebih dahulu.</p></div><div class="header-actions"><button class="btn btn-primary" onclick="openAlumniRequestForm()">+ Buat Permohonan</button></div></div>
-  <div class="card" style="margin-bottom:16px"><div class="card-title">Tempoh Permohonan</div><div class="small muted" style="margin-top:8px"><b>Permohonan hendaklah dihantar sekurang-kurangnya 14 hari sebelum Tarikh Mula Program.</b> Sistem akan menyemak tempoh ini semasa penghantaran.</div></div>
-  <div class="card" style="margin-bottom:16px"><div class="card-title">Telah Menghantar Laporan</div><div class="small muted" style="margin:5px 0 12px">${reported.length} permohonan • Laporan telah diterima. HELAA/Pentadbir boleh memindahkan rekod ini terus ke Sistem Merit KARISMA.</div>${alumniRequestTable(reported,canManage)}</div>
-  <div class="card" style="margin-bottom:16px"><div class="card-title">Permohonan Diterima</div><div class="small muted" style="margin:5px 0 12px">${accepted.length} permohonan • Menunggu laporan selepas program selesai.</div>${alumniRequestTable(accepted,canManage)}</div>
-  <div class="card" style="margin-bottom:16px"><div class="card-title">Permohonan Dalam Tindakan</div><div class="small muted" style="margin:5px 0 12px">${action.length} permohonan</div>${alumniRequestTable(action,canManage)}</div>
-  <div class="card"><div class="card-title">Permohonan Ditolak</div><div class="small muted" style="margin:5px 0 12px">${rejected.length} permohonan</div>${alumniRequestTable(rejected,canManage)}</div>`;
-}
-function openAlumniRequestForm(){
-  const actor=currentActor();
-  const options=data.alumni.filter(a=>a.isActive!==false).sort((a,b)=>String(a.fullName||"").localeCompare(String(b.fullName||""))).map(a=>`<label style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line)"><input type="checkbox" name="alumniIds" value="${esc(a.id)}" style="margin-top:4px"><span><b>${esc(a.fullName||"-")}</b><span class="small muted" style="display:block">Batch ${esc(a.batch||"-")} • ${esc(a.jobTitle||a.jobField||"Bidang belum direkod")}${a.employer?` • ${esc(a.employer)}`:""}</span></span></label>`).join("");
-  openModal("Permohonan Alumni untuk Program",`<form class="form-grid" onsubmit="submitAlumniRequest(event)">
-    ${inputField("Nama Program","programName","","text",true)}
-    <div class="form-group"><label>Penganjur / Biro / Kelab / Unit *</label><select name="organiser" required><option value="">-- Pilih penganjur --</option>${["Pentadbiran",...data.units.map(u=>u.name),"Lain-lain"].filter((v,i,a)=>a.indexOf(v)===i).map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join("")}</select></div>
-    <div class="form-group full"><div class="revision-note"><b>Notis 14 Hari:</b> Permohonan perlu dihantar sekurang-kurangnya 14 hari sebelum tarikh mula program.</div></div>
-    ${inputField("Tarikh Mula Program","programStartDate","","date",true)}
-    ${inputField("Tarikh Akhir Program","programEndDate","","date",true)}
-    ${inputField("Masa Mula Program","programStartTime","","time",false)}
-    ${inputField("Masa Akhir Program","programEndTime","","time",false)}
-    ${inputField("Lokasi / Platform","venue","","text",true)}
-    <div class="form-group full"><label>Alumni yang ingin dimohon *</label><div style="max-height:280px;overflow:auto;border:1px solid var(--line);border-radius:14px;padding:8px 14px">${options||'<div class="small muted">Direktori alumni masih kosong.</div>'}</div><small>Boleh pilih lebih daripada seorang. HELAA akan menghubungi mereka terlebih dahulu; maklumat hubungan tidak akan dipaparkan kepada pemohon.</small></div>
-    <div class="form-group full"><label>Tujuan / Bentuk Penglibatan *</label><textarea name="purpose" required placeholder="Contoh: panel forum, penceramah, mentor, juri, rakan strategik, jaringan industri..."></textarea></div>
-    <div class="form-group full"><label>Penerangan Program *</label><textarea name="description" required placeholder="Terangkan objektif program, sasaran peserta, skop dan sebab alumni ini diperlukan."></textarea></div>
-    <div class="form-group full"><label>Peruntukan untuk Alumni (jika ada)</label><textarea name="alumniProvision" placeholder="Contoh: honorarium panel/penceramah, pengangkutan, penginapan, makan minum, token penghargaan atau peruntukan lain."></textarea><small>Nyatakan bentuk atau anggaran peruntukan sekiranya disediakan. Boleh dibiarkan kosong jika tiada.</small></div>
-    <div class="form-group full"><label>Catatan / Keperluan Tambahan</label><textarea name="notes" placeholder="Contoh: tempoh slot, format fizikal/atas talian, keperluan khas."></textarea></div>
-    <div class="form-group"><label>Nama Pemohon *</label><input name="requesterName" value="${esc(actor.name||"")}" required autocomplete="name"></div>
-    <div class="form-group"><label>No. Telefon Pemohon *</label><input name="requesterPhone" type="tel" required placeholder="Contoh: 0123456789" autocomplete="tel"></div>
-    <div class="form-group"><label>E-mel Pemohon *</label><input name="requesterEmail" type="email" value="${esc(actor.email||"")}" required autocomplete="email"></div>
-    <div class="form-actions full"><button type="button" class="btn" onclick="closeModal()">Batal</button><button class="btn btn-primary">Hantar Permohonan</button></div>
-  </form>`,`HELAA akan menyemak dan menghubungi alumni bagi pihak pemohon.`,true);
-}
-function submitAlumniRequest(e){
-  e.preventDefault(); const fd=new FormData(e.target); const ids=fd.getAll("alumniIds"); if(!ids.length){toast("Pilih sekurang-kurangnya seorang alumni.","error");return;}
-  const startRaw=fd.get("programStartDate"); if(startRaw){const start=new Date(startRaw+"T00:00:00"),today=new Date();today.setHours(0,0,0,0);const days=Math.ceil((start-today)/86400000);if(days<14){toast("Permohonan mesti dihantar sekurang-kurangnya 14 hari sebelum tarikh mula program.","error");return;}}
-  const a=currentActor(); const obj=Object.fromEntries(fd.entries()); obj.id=uid("alreq"); obj.alumniIds=ids; obj.requesterName=(obj.requesterName||a.name||"").trim(); obj.requesterEmail=(obj.requesterEmail||a.email||"").trim().toLowerCase(); obj.requesterPhone=(obj.requesterPhone||"").trim(); obj.requesterRole=a.role; obj.status="Menunggu Semakan"; obj.decision="Permohonan Dalam Tindakan"; obj.createdAt=now(); obj.updatedAt=now(); obj.createdByName=a.name; obj.createdByEmail=a.email; obj.createdByRole=a.role; obj.statusHistory=[{status:obj.status,decision:obj.decision,at:now(),byName:a.name,byEmail:a.email}];
-  data.alumniRequests=data.alumniRequests||[]; data.alumniRequests.push(obj);
-  addNotification({recipientRole:"Pasukan",title:"Permohonan alumni baharu",message:`${obj.requesterName} memohon penglibatan alumni untuk program ${obj.programName}.`,requestId:obj.id});
-  addNotification({recipientRole:"Pentadbir",title:"Permohonan alumni baharu",message:`${obj.requesterName} memohon penglibatan alumni untuk program ${obj.programName}.`,requestId:obj.id});
-  audit("Menghantar permohonan alumni untuk program","Permohonan Alumni",obj.id); save(); closeModal(); render(); toast("Permohonan dihantar. HELAA dan Pentadbir telah menerima notifikasi.","success");
-}
-function viewAlumniRequest(id){
- const x=(data.alumniRequests||[]).find(v=>v.id===id); if(!x)return; const names=(x.alumniIds||[]).map(i=>getAlumni(i)?.fullName).filter(Boolean);
- const startDate=x.programStartDate||x.programDate||"", endDate=x.programEndDate||x.programDate||"";
- const startTime=x.programStartTime||x.programTime||"", endTime=x.programEndTime||"";
- openModal("Butiran Permohonan",`<div class="form-grid"><div class="form-group"><label>Program</label><div>${esc(x.programName||"-")}</div></div><div class="form-group"><label>Penganjur</label><div>${esc(x.organiser||"-")}</div></div><div class="form-group"><label>Tarikh Mula</label><div>${startDate?dateMY(startDate):"-"}</div></div><div class="form-group"><label>Tarikh Akhir</label><div>${endDate?dateMY(endDate):"-"}</div></div><div class="form-group"><label>Masa Mula</label><div>${esc(startTime||"-")}</div></div><div class="form-group"><label>Masa Akhir</label><div>${esc(endTime||"-")}</div></div><div class="form-group full"><label>Alumni Dimohon</label><div>${names.map(esc).join("<br>")||"-"}</div></div><div class="form-group"><label>Lokasi / Platform</label><div>${esc(x.venue||"-")}</div></div><div class="form-group full"><label>Tujuan / Bentuk Penglibatan</label><div>${esc(x.purpose||"-")}</div></div><div class="form-group full"><label>Penerangan</label><div>${esc(x.description||"-")}</div></div><div class="form-group full"><label>Peruntukan untuk Alumni</label><div>${esc(x.alumniProvision||"Tiada / tidak dinyatakan")}</div></div><div class="form-group"><label>Status Proses</label><div>${alumniRequestStatusBadge(x.status)}</div></div><div class="form-group"><label>Keputusan / Kelulusan</label><div>${alumniRequestStatusBadge(x.decision||"Permohonan Dalam Tindakan")}</div></div>${x.publicUpdate?`<div class="form-group full"><label>Maklum Balas HELAA</label><div>${esc(x.publicUpdate)}</div></div>`:""}<div class="form-group full"><label>Dihantar oleh</label><div>${esc(x.requesterName||"-")} • ${esc(x.requesterEmail||"-")} • ${esc(x.requesterPhone||"-")}</div></div></div>`,`Maklumat hubungan alumni kekal sulit.`);
-}
-function manageAlumniRequest(id){
- if(!(currentRole==="Pentadbir"||currentRole==="Pasukan"))return; const x=(data.alumniRequests||[]).find(v=>v.id===id); if(!x)return;
- const statuses=["Menunggu Semakan","Dalam Tindakan","Selesai"];
- const decisions=["Permohonan Diterima","Permohonan Dalam Tindakan","Permohonan Ditolak"];
- openModal("Urus Permohonan Alumni",`<form class="form-grid" onsubmit="saveAlumniRequestManagement(event,'${esc(id)}')">
- <div class="form-group"><label>Status Proses *</label><select name="status" required>${statuses.map(v=>`<option ${x.status===v?"selected":""}>${esc(v)}</option>`).join("")}</select><small>Menunjukkan tahap tindakan HELAA terhadap permohonan.</small></div>
- <div class="form-group"><label>Keputusan / Kelulusan *</label><select name="decision" required>${decisions.map(v=>`<option ${(x.decision||"Permohonan Dalam Tindakan")===v?"selected":""}>${esc(v)}</option>`).join("")}</select><small>Boleh dikemas kini oleh Pasukan HELAA/Admin atau Pentadbir.</small></div>
- <div class="form-group full"><label>Maklum Balas kepada Pemohon</label><textarea name="publicUpdate" placeholder="Contoh: Permohonan diterima dan HELAA sedang menghubungi alumni. / Permohonan ditolak kerana ...">${esc(x.publicUpdate||"")}</textarea><small>Maklum balas ini boleh dilihat oleh pemohon dan akan dihantar sebagai notifikasi apabila disimpan.</small></div>
- <div class="form-group full"><label>Catatan Dalaman HELAA</label><textarea name="internalNote" placeholder="Untuk Pasukan HELAA / Pentadbir sahaja. Jangan masukkan maklumat sulit jika tidak perlu.">${esc(x.internalNote||"")}</textarea></div>
- <div class="form-actions full"><button type="button" class="btn" onclick="closeModal()">Batal</button><button class="btn btn-primary">Simpan & Hantar Maklum Balas</button></div></form>`,`Maklumat hubungan alumni tidak didedahkan melalui halaman permohonan.`);
-}
-function saveAlumniRequestManagement(e,id){
- e.preventDefault(); if(!(currentRole==="Pentadbir"||currentRole==="Pasukan"))return; const x=(data.alumniRequests||[]).find(v=>v.id===id); if(!x)return;
- const o=Object.fromEntries(new FormData(e.target).entries()),a=currentActor();
- const oldStatus=x.status||"", oldDecision=x.decision||"", oldUpdate=x.publicUpdate||"";
- x.status=o.status; x.decision=o.decision; x.publicUpdate=o.publicUpdate||""; x.internalNote=o.internalNote||""; x.updatedAt=now(); x.updatedByName=a.name;x.updatedByEmail=a.email;x.updatedByRole=a.role;
- x.statusHistory=x.statusHistory||[];x.statusHistory.push({status:x.status,decision:x.decision,publicUpdate:x.publicUpdate,at:now(),byName:a.name,byEmail:a.email});
- const changed=oldStatus!==x.status||oldDecision!==x.decision||oldUpdate!==x.publicUpdate;
- if(changed && x.requesterEmail){
-   const feedback=x.publicUpdate?` Maklum balas HELAA: ${x.publicUpdate}`:"";
-   addNotification({recipientEmail:x.requesterEmail,recipientRole:x.requesterRole||"Pelawat",title:`Kemas kini permohonan: ${x.programName}`,message:`${x.decision} • Status: ${x.status}.${feedback}`,requestId:x.id});
- }
- audit("Mengemas kini permohonan alumni","Permohonan Alumni",id); save(); closeModal(); render(); toast("Status, keputusan dan maklum balas disimpan. Pemohon telah menerima notifikasi.","success");
-}
-
-function reportMeritAssignmentsHTML(x){
- const saved=Array.isArray(x.reportMeritAssignments)&&x.reportMeritAssignments.length?x.reportMeritAssignments:(x.alumniIds||[]).map(aid=>({alumniId:aid,scoreId:""}));
- const rows=saved.length?saved:[{alumniId:"",scoreId:""}];
- return rows.map(r=>`<div class="report-merit-row" style="display:grid;grid-template-columns:1.15fr 1.35fr auto;gap:8px;align-items:center;margin-top:8px"><select class="report-merit-alumni" onchange="updateReportMeritPreview()"><option value="">-- Pilih alumni --</option>${data.alumni.map(a=>`<option value="${a.id}" ${r.alumniId===a.id?"selected":""}>${esc(a.fullName)} — ${esc(a.batch||"")}</option>`).join("")}</select><select class="report-merit-role" onchange="updateReportMeritPreview()"><option value="">-- Pilih peranan / merit --</option>${data.scores.map(sc=>`<option value="${sc.id}" data-points="${Number(sc.points||0)}" ${r.scoreId===sc.id?"selected":""}>${esc(sc.name)} — ${Number(sc.points||0)} merit</option>`).join("")}</select><button type="button" class="btn btn-small" onclick="this.closest('.report-merit-row').remove();updateReportMeritPreview()">×</button></div>`).join("");
-}
-function addReportMeritRow(){const w=document.getElementById("reportMeritRows");if(!w)return;w.insertAdjacentHTML("beforeend",reportMeritAssignmentsHTML({alumniIds:[]}));updateReportMeritPreview()}
-function collectReportMeritAssignments(){return [...document.querySelectorAll("#reportMeritRows .report-merit-row")].map(row=>{const aid=row.querySelector(".report-merit-alumni")?.value||"",a=getAlumni(aid),sel=row.querySelector(".report-merit-role"),opt=sel?.selectedOptions?.[0];return{alumniId:aid,alumniName:a?.fullName||"",scoreId:sel?.value||"",roleName:opt?.textContent?.replace(/\s+—\s+[\d.]+\s+merit\s*$/i,"")||"",points:Number(opt?.dataset?.points||0)}}).filter(v=>v.alumniId&&v.scoreId)}
-function updateReportMeritPreview(){const aa=collectReportMeritAssignments(),base=aa.reduce((s,a)=>s+a.points,0),b=document.getElementById("reportMeritBase");if(b)b.textContent=base.toFixed(1);const list=document.getElementById("reportMeritBreakdown");if(list)list.innerHTML=aa.length?aa.map(a=>`<div class="small"><b>${esc(a.alumniName)}</b> — ${esc(a.roleName)} = ${a.points} merit</div>`).join(""):'<div class="small muted">Belum ada pemetaan alumni dan peranan.</div>'}
-function openAlumniRequestReport(id){
- const x=(data.alumniRequests||[]).find(v=>v.id===id); if(!x||x.decision!=="Permohonan Diterima")return;
- const actor=currentActor(), owner=String(x.requesterEmail||"").toLowerCase()===String(actor.email||"").toLowerCase();
- const canManage=currentRole==="Pentadbir"||currentRole==="Pasukan";
- if(!owner&&!canManage)return denyAction();
- openModal("Laporan Program Alumni",`<form class="form-grid" onsubmit="submitAlumniRequestReport(event,'${esc(id)}')">
- <div class="form-group full"><label>Program</label><div><b>${esc(x.programName||"-")}</b></div><small>Laporan boleh berupa laporan iSTAR atau format laporan program lain yang berkaitan.</small></div>
- <div class="form-group full"><label>Ringkasan Laporan *</label><textarea name="reportSummary" required placeholder="Ringkaskan pelaksanaan program, penglibatan alumni, hasil dan impak.">${esc(x.reportSummary||"")}</textarea></div>
- <div class="form-group full"><label>Cadangan Alumni, Peranan & Merit *</label><small>Pemohon perlu padankan setiap alumni dengan peranan sebenar. Nilai merit diambil terus daripada Sistem Merit KARISMA. HELAA/Pentadbir akan menyemak dan boleh membetulkannya sebelum diluluskan.</small><div id="reportMeritRows">${reportMeritAssignmentsHTML(x)}</div><button type="button" class="btn btn-small" style="margin-top:8px" onclick="addReportMeritRow()">+ Tambah Alumni / Peranan</button></div>
- <div class="form-group full"><div class="merit-preview"><div><span>Jumlah Cadangan Wajaran Merit</span><strong id="reportMeritBase">0.0</strong></div><div id="reportMeritBreakdown" style="margin-top:8px"></div><div class="small muted" style="margin-top:10px">Ini ialah cadangan pemohon. Merit muktamad hanya direkod selepas semakan dan kelulusan HELAA/Pentadbir.</div></div></div>
- <div class="form-group full"><label>Fail Laporan</label><input type="file" id="alumniRequestReportFiles" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv" multiple><small>Muat naik laporan iSTAR atau dokumen laporan lain. Boleh pilih lebih daripada satu fail.</small>${attachmentHTML(x.reportFiles)}</div>
- <div class="form-group full"><label>Gambar / Bukti Penglibatan Alumni</label><input type="file" id="alumniRequestReportImages" accept="image/*" multiple><small>Muat naik gambar program, gambar bersama alumni, screenshot perbincangan WhatsApp atau bukti visual berkaitan. Boleh pilih lebih daripada satu gambar.</small>${attachmentHTML(x.reportImages)}</div>
- <div class="form-actions full"><button type="button" class="btn" onclick="closeModal()">Batal</button><button class="btn btn-primary">Hantar / Kemas Kini Laporan</button></div></form>`,x.reportSubmittedAt?`Laporan terakhir dihantar pada ${dateMY(x.reportSubmittedAt)}.`:"Laporan dihantar melalui sistem selepas program selesai.",true); updateReportMeritPreview();
-}
-
-async function submitAlumniRequestReport(e,id){
- e.preventDefault(); const x=(data.alumniRequests||[]).find(v=>v.id===id); if(!x||x.decision!=="Permohonan Diterima")return;
- const actor=currentActor(),owner=String(x.requesterEmail||"").toLowerCase()===String(actor.email||"").toLowerCase(),canManage=currentRole==="Pentadbir"||currentRole==="Pasukan";if(!owner&&!canManage)return denyAction();
- const fd=new FormData(e.target),newFiles=await prepareAttachments(document.getElementById("alumniRequestReportFiles")),newImages=await prepareAttachments(document.getElementById("alumniRequestReportImages"));
- const meritAssignments=collectReportMeritAssignments();if(!meritAssignments.length){toast("Pilih sekurang-kurangnya seorang alumni dan peranan/meritnya.","error");return;}
- x.reportSummary=String(fd.get("reportSummary")||"").trim();x.reportMeritAssignments=meritAssignments;x.reportProposedBasePoints=meritAssignments.reduce((sum,a)=>sum+a.points,0);x.reportMeritReviewStatus="Menunggu Semakan HELAA";x.reportFiles=[...(x.reportFiles||[]),...newFiles];x.reportImages=[...(x.reportImages||[]),...newImages];x.reportSubmittedAt=now();x.reportSubmittedByName=actor.name;x.reportSubmittedByEmail=actor.email;x.reportStatus="Telah Menghantar Laporan";x.requesterSettled=true;x.updatedAt=now();
- addNotification({recipientRole:"Pasukan",title:"Laporan program alumni diterima",message:`Laporan bagi ${x.programName} telah dihantar oleh ${actor.name}.`,requestId:x.id});
- addNotification({recipientRole:"Pentadbir",title:"Laporan program alumni diterima",message:`Laporan bagi ${x.programName} telah dihantar oleh ${actor.name}.`,requestId:x.id});
- if(x.requesterEmail)addNotification({recipientEmail:x.requesterEmail,recipientRole:x.requesterRole||"Pelawat",title:"Laporan berjaya dihantar",message:`Laporan bagi ${x.programName} telah direkodkan dalam sistem.`,requestId:x.id});
- audit("Menghantar laporan program alumni","Permohonan Alumni",id);save();closeModal();render();toast("Laporan berjaya dihantar dan direkodkan.","success");
-}
-
-
-/* =========================================================
-   LAPORAN PERMOHONAN -> REKOD MERIT KARISMA
-   Hanya HELAA/Admin/Pentadbir. Rekod laporan kekal sebagai sumber bukti.
-========================================================= */
-function openTransferRequestToKarisma(id){
- const x=(data.alumniRequests||[]).find(v=>v.id===id);
- const canManage=currentRole==="Pentadbir"||currentRole==="Pasukan";
- if(!x||!x.reportSubmittedAt||!canManage)return denyAction();
- if(x.karismaRecordId){toast("Permohonan ini telah dipindahkan ke Sistem Merit KARISMA.","error");return}
- const matched=data.units.find(u=>String(u.name||"").trim().toLowerCase()===String(x.organiser||"").trim().toLowerCase());
- const proposed=Array.isArray(x.reportMeritAssignments)?x.reportMeritAssignments:[];
- const alumni=(x.alumniIds||[]).map(id=>getAlumni(id)).filter(Boolean);
- const rows=proposed.length?proposed:(alumni.length?alumni.map(a=>({alumniId:a.id,scoreId:""})):[{alumniId:"",scoreId:""}]);
- const startDate=x.programStartDate||x.programDate||"";
- const endDate=x.programEndDate||x.programStartDate||x.programDate||"";
- openModal("Tambah Rekod Penglibatan",`<form class="form-grid" id="requestMeritTransferForm" onsubmit="submitRequestToKarisma(event,'${esc(id)}')">
- ${inputField("Nama Program","program",x.programName||"","text",true)}
- ${inputField("Tarikh Mula","startDate",startDate?String(startDate).slice(0,10):"","date",true)}
- ${inputField("Tarikh Akhir","endDate",endDate?String(endDate).slice(0,10):"","date",true)}
- <div class="form-group"><label>Unit</label><select name="unitId" required><option value="">-- Pilih unit --</option>${data.units.map(u=>`<option value="${u.id}" ${matched?.id===u.id?"selected":""}>${esc(u.name)}</option>`).join("")}</select><small>Diisi automatik berdasarkan unit/penganjur permohonan. Semak jika perlu.</small></div>
- <div class="form-group"><label>Sesi KARISMA *</label><select name="session" required>${academicSessionOptions(data.config.currentKarismaSession||"2026/2027")}</select></div>
- <div class="form-group full"><label>Alumni & Peranan dalam Program *</label><small>Nama alumni dan peranan dimuatkan automatik daripada laporan. Nilai merit setiap peranan turut dikira automatik. HELAA/Pentadbir hanya perlu semak dan betulkan jika perlu.</small><div id="transferAssignmentRows">${rows.map((a,i)=>`<div class="transfer-assignment-row" style="display:grid;grid-template-columns:1.2fr 1.2fr;gap:8px;margin-top:8px"><select class="transfer-alumni"><option value="">-- Pilih alumni --</option>${data.alumni.map(z=>`<option value="${z.id}" ${a?.alumniId===z.id?"selected":""}>${esc(z.fullName)} — ${esc(z.batch||"")}</option>`).join("")}</select><select class="transfer-role" onchange="updateTransferMeritPreview()"><option value="">-- Pilih peranan --</option>${data.scores.map(sc=>`<option value="${sc.id}" data-points="${Number(sc.points||0)}" ${a?.scoreId===sc.id?"selected":""}>${esc(sc.name)} — ${Number(sc.points||0)} mata</option>`).join("")}</select></div>`).join("")}</div><button type="button" class="btn btn-small" style="margin-top:8px" onclick="addTransferAssignmentRow()">+ Tambah Alumni / Peranan</button></div>
- ${selectField("Skala","scale",[{value:"1",label:"1.0 — Aktiviti biasa"},{value:"1.5",label:"1.5 — Skala sederhana"},{value:"2",label:"2.0 — Skala tinggi"}],"1")}
- ${selectField("Bonus","bonusPoints",[{value:"0",label:"0 — Tiada bonus"},...data.bonuses.map(b=>({value:String(b.points),label:`${b.points} — ${b.name}`}))],"0")}
- ${selectField("Penalti","penaltyPoints",[{value:"0",label:"0 — Tiada penalti"},...data.penalties.map(p=>({value:String(p.points),label:`${p.points} — ${p.name}`}))],"0")}
- <div class="form-group full"><div class="merit-preview"><div><span>Jumlah Wajaran Peranan</span><strong id="transferPreviewBase">0.0</strong></div><div><span>Formula</span><strong id="transferPreviewFormula">(0 + 0) × 1 − 0</strong></div><div class="merit-total"><span>Jumlah Merit / Demerit</span><strong id="transferPreviewMerit">0.0</strong></div></div></div>
- <div class="form-group full"><div class="small muted">Data program, tarikh, unit, alumni dan peranan telah dipraisi daripada permohonan/laporan. Semak dahulu sebelum dihantar ke rekod rasmi KARISMA.</div></div>
- <div class="form-actions full"><button type="button" class="btn" onclick="closeModal()">Batal</button><button class="btn btn-primary">Hantar ke Merit KARISMA</button></div></form>`,`Semakan akhir sebelum rekod dimasukkan ke Sistem Merit KARISMA.`,true);
- const f=document.getElementById("requestMeritTransferForm");["scale","bonusPoints","penaltyPoints"].forEach(n=>f?.elements[n]?.addEventListener("change",updateTransferMeritPreview));updateTransferMeritPreview();
-}
-function addTransferAssignmentRow(){
- const wrap=document.getElementById("transferAssignmentRows");if(!wrap)return;
- wrap.insertAdjacentHTML("beforeend",`<div class="transfer-assignment-row" style="display:grid;grid-template-columns:1.2fr 1.2fr;gap:8px;margin-top:8px"><select class="transfer-alumni"><option value="">-- Pilih alumni --</option>${data.alumni.map(a=>`<option value="${a.id}">${esc(a.fullName)} — ${esc(a.batch||"")}</option>`).join("")}</select><select class="transfer-role" onchange="updateTransferMeritPreview()"><option value="">-- Pilih peranan --</option>${data.scores.map(sc=>`<option value="${sc.id}" data-points="${Number(sc.points||0)}">${esc(sc.name)} — ${Number(sc.points||0)} mata</option>`).join("")}</select></div>`);updateTransferMeritPreview();
-}
-function collectTransferAssignments(){return [...document.querySelectorAll("#transferAssignmentRows .transfer-assignment-row")].map(row=>{const aid=row.querySelector(".transfer-alumni")?.value||"",a=getAlumni(aid),sel=row.querySelector(".transfer-role"),opt=sel?.selectedOptions?.[0];return{alumniId:aid,alumniName:a?.fullName||"",scoreId:sel?.value||"",roleName:opt?.textContent?.replace(/\s+—\s+[\d.]+\s+mata\s*$/i,"")||"",points:Number(opt?.dataset?.points||0)}}).filter(v=>v.alumniId&&v.scoreId)}
-function updateTransferMeritPreview(){const f=document.getElementById("requestMeritTransferForm");if(!f)return;const aa=collectTransferAssignments(),base=aa.reduce((s,a)=>s+a.points,0),bonus=Number(f.elements.bonusPoints?.value||0),penalty=Number(f.elements.penaltyPoints?.value||0),scale=Number(f.elements.scale?.value||1),total=((base+bonus)*scale)-penalty;const b=document.getElementById("transferPreviewBase"),fm=document.getElementById("transferPreviewFormula"),m=document.getElementById("transferPreviewMerit");if(b)b.textContent=base.toFixed(1);if(fm)fm.textContent=`(${base} + ${bonus}) × ${scale} − ${penalty}`;if(m)m.textContent=total.toFixed(1)}
-function submitRequestToKarisma(e,id){
- e.preventDefault();const x=(data.alumniRequests||[]).find(v=>v.id===id);const canManage=currentRole==="Pentadbir"||currentRole==="Pasukan";if(!x||!x.reportSubmittedAt||!canManage)return denyAction();if(x.karismaRecordId)return toast("Rekod merit telah dipindahkan sebelum ini.","error");
- const f=e.target,fd=new FormData(f),assignments=collectTransferAssignments();if(!assignments.length){toast("Pilih sekurang-kurangnya seorang alumni dan peranannya.","error");return}
- const actor=currentActor(),base=assignments.reduce((s,a)=>s+a.points,0),record={id:uid("record"),program:String(fd.get("program")||x.programName||""),date:String(fd.get("date")||x.programStartDate||x.programDate||""),endDate:String(fd.get("endDate")||x.programEndDate||x.programStartDate||x.programDate||""),unitId:String(fd.get("unitId")||""),session:String(fd.get("session")||data.config.currentKarismaSession||"2026/2027"),assignments,roleEntries:assignments.map(a=>({scoreId:a.scoreId,name:a.roleName,points:a.points,alumniId:a.alumniId,alumniName:a.alumniName})),role:[...new Set(assignments.map(a=>a.roleName))].join(" + "),basePoints:base,alumniId:assignments[0]?.alumniId||"",alumniName:assignments.map(a=>a.alumniName).join(", "),bonusPoints:Number(fd.get("bonusPoints")||0),penaltyPoints:Number(fd.get("penaltyPoints")||0),scale:Number(fd.get("scale")||1),evidence:`Laporan Permohonan Alumni: ${x.id}`,notes:`Dipindahkan terus daripada laporan permohonan alumni untuk program. Ringkasan laporan: ${x.reportSummary||"-"}`,attachments:[...(x.reportFiles||[]),...(x.reportImages||[])],status:"Diluluskan",sourceRequestId:x.id,createdAt:now(),updatedAt:now(),createdByName:actor.name,createdByEmail:actor.email,createdByRole:actor.role,updatedByName:actor.name,updatedByEmail:actor.email,updatedByRole:actor.role};
- data.records.push(record);x.reportMeritAssignments=assignments;x.reportMeritReviewStatus="Diluluskan";x.reportMeritReviewedAt=now();x.reportMeritReviewedByName=actor.name;x.reportMeritReviewedByEmail=actor.email;x.karismaRecordId=record.id;x.karismaTransferredAt=now();x.karismaTransferredByName=actor.name;x.karismaTransferredByEmail=actor.email;x.updatedAt=now();
- if(x.requesterEmail)addNotification({recipientEmail:x.requesterEmail,recipientRole:x.requesterRole||"Pelawat",title:"Laporan selesai diproses",message:`Laporan ${x.programName} telah disahkan dan rekod merit KARISMA telah dipindahkan kepada unit berkaitan.`,requestId:x.id});
- addNotification({recipientRole:"Pentadbir",title:"Merit KARISMA dipindahkan",message:`${x.programName} telah dipindahkan ke Sistem Merit KARISMA oleh ${actor.name}.`,requestId:x.id});
- audit("Memindahkan laporan permohonan ke Merit KARISMA","Rekod Penglibatan",record.id);save();closeModal();render();toast("Laporan berjaya dipindahkan terus ke Sistem Merit KARISMA.","success");
-}
 
 /* =========================================================
    MERIT SETTINGS
@@ -8636,6 +8317,118 @@ function updateLegacySearchInput(el){window.legacyQ=el.value;const box=document.
 function pageSearchLegacy(){const q=window.legacyQ||"";return `<div class="page-header"><div><h1 class="page-title">Cari Legasi</h1><p class="page-subtitle">Carian merentas alumni, kepimpinan, aktiviti, pencapaian dan KARISMA.</p></div></div><div class="card"><div class="field"><label>Carian</label><input id="legacySearchInput" value="${esc(q)}" placeholder="Contoh: Yamin, 2015, PETRONAS, Ketua Eksekutif..." oninput="updateLegacySearchInput(this)" autocomplete="off"></div><div id="legacySearchList">${renderLegacySearchList(q)}</div></div>`}
 
 function pageHeritageTimeline(){const years=new Set();data.leadership.forEach(x=>x.startYear&&years.add(Number(x.startYear)));data.activities.forEach(x=>x.year&&years.add(Number(x.year)));data.achievements.forEach(x=>x.year&&years.add(Number(x.year)));data.gallery.forEach(x=>x.year&&years.add(Number(x.year)));const sorted=[...years].filter(Boolean).sort((a,b)=>a-b),blocks=sorted.map(y=>{const ev=[];data.leadership.filter(x=>Number(x.startYear)===y).forEach(x=>ev.push(["Kepimpinan",`${x.name||"-"} — ${x.position||x.positionName||"Jawatan"}`]));data.activities.filter(x=>Number(x.year)===y).forEach(x=>ev.push(["Aktiviti",x.title]));data.achievements.filter(x=>Number(x.year)===y).forEach(x=>ev.push(["Pencapaian",x.title]));data.gallery.filter(x=>Number(x.year)===y).forEach(x=>ev.push(["Galeri",x.caption||x.event||"Foto legasi"]));return `<div class="legacy-year"><div class="legacy-year-label">${y}</div><span class="legacy-year-dot"></span><div>${ev.map(e=>`<div class="legacy-event"><b>${esc(e[0])}</b><span class="small muted">${esc(e[1])}</span></div>`).join("")}</div></div>`}).join("");return `<div class="page-header"><div><h1 class="page-title">Timeline Legasi Kajai</h1><p class="page-subtitle">Arkib kronologi digital Kolej Rahim Kajai dari 1983 hingga kini.</p></div></div><div class="card">${blocks||empty("⌁","Timeline masih kosong","Tambah kepimpinan, aktiviti, pencapaian atau galeri untuk membina sejarah.")}</div>`}
+
+/* =========================================================
+   PERMOHONAN ALUMNI UNTUK PROGRAM — HELAA GATEKEEPER
+   Pelawat tidak melihat nombor telefon / e-mel alumni.
+========================================================= */
+function alumniRequestStatusBadge(status){
+  const map={
+    "Menunggu Semakan":"badge pending",
+    "Sedang Dihubungi HELAA":"badge pending",
+    "Alumni Bersetuju":"badge approved",
+    "Tidak Tersedia":"badge rejected",
+    "Selesai":"badge approved",
+    "Ditolak":"badge rejected"
+  };
+  return `<span class="${map[status]||"badge"}">${esc(status||"Menunggu Semakan")}</span>`;
+}
+function requestAlumniNames(r){
+  const ids=Array.isArray(r.alumniIds)?r.alumniIds:(r.alumniId?[r.alumniId]:[]);
+  const names=ids.map(id=>data.alumni.find(a=>a.id===id)?.fullName).filter(Boolean);
+  return names.length?names.join(", "):(r.alumniName||"—");
+}
+function canManageAlumniRequests(){ return currentRole==="Pasukan" || currentRole==="Pentadbir"; }
+function myAlumniRequests(){
+  const actor=currentActor(), email=(actor.email||"").toLowerCase();
+  if(canManageAlumniRequests()) return [...data.alumniRequests];
+  return data.alumniRequests.filter(r=>(r.requesterEmail||r.createdByEmail||"").toLowerCase()===email);
+}
+function pageAlumniRequests(){
+  const list=myAlumniRequests().sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+  const pending=data.alumniRequests.filter(r=>["Menunggu Semakan","Sedang Dihubungi HELAA"].includes(r.status)).length;
+  return `
+  <div class="page-header"><div><h1 class="page-title">Permohonan Alumni untuk Program</h1>
+  <p class="page-subtitle">Mohon penglibatan alumni tanpa mendedahkan maklumat perhubungan mereka. HELAA akan menyemak permohonan dan menghubungi alumni terlebih dahulu.</p></div>
+  <div class="header-actions"><button class="btn btn-primary" onclick="openAlumniRequestForm()">+ Buat Permohonan</button></div></div>
+  <div class="grid grid-3">
+   ${statCard("✉",list.length,canManageAlumniRequests()?"Jumlah Permohonan":"Permohonan Saya","Rekod permohonan program")}
+   ${statCard("!",canManageAlumniRequests()?pending:list.filter(r=>["Menunggu Semakan","Sedang Dihubungi HELAA"].includes(r.status)).length,"Dalam Tindakan","Menunggu / sedang dihubungi")}
+   ${statCard("✓",list.filter(r=>r.status==="Alumni Bersetuju"||r.status==="Selesai").length,"Berjaya","Alumni bersetuju / selesai")}
+  </div><div style="height:16px"></div>
+  <div class="card"><div class="card-head"><div><div class="card-title">${canManageAlumniRequests()?"Senarai Permohonan Masuk":"Status Permohonan Saya"}</div><div class="small muted">Maklumat telefon dan e-mel alumni kekal sulit. HELAA menjadi pengantara komunikasi.</div></div></div>
+  ${list.length?`<div class="table-wrap"><table><thead><tr><th>Program</th><th>Alumni Dimohon</th><th>Tarikh</th><th>Pemohon</th><th>Status</th><th>Tindakan</th></tr></thead><tbody>${list.map(r=>`<tr>
+    <td><strong>${esc(r.programName||"—")}</strong><div class="small muted">${esc(r.organiser||"")}</div></td>
+    <td>${esc(requestAlumniNames(r))}<div class="small muted">${esc(r.requestedRole||"")}</div></td>
+    <td>${esc(r.programDate||"—")}${r.programTime?`<div class="small muted">${esc(r.programTime)}</div>`:""}</td>
+    <td>${esc(r.requesterName||r.createdByName||"—")}<div class="small muted">${esc(r.requesterEmail||r.createdByEmail||"")}</div></td>
+    <td>${alumniRequestStatusBadge(r.status)}</td>
+    <td><button class="btn btn-small" onclick="viewAlumniRequest('${r.id}')">Lihat</button>${canManageAlumniRequests()?` <button class="btn btn-small" onclick="openManageAlumniRequest('${r.id}')">Urus</button>`:""}</td>
+  </tr>`).join("")}</tbody></table></div>`:empty("✉","Belum ada permohonan","Buat permohonan pertama untuk mendapatkan penglibatan alumni dalam program.")}
+  </div>`;
+}
+function openAlumniRequestForm(prefillId=""){
+  const actor=currentActor();
+  const eligible=[...data.alumni].sort((a,b)=>(a.fullName||"").localeCompare(b.fullName||""));
+  openModal("Permohonan Alumni untuk Program",`<form id="alumniRequestForm" class="form-grid" onsubmit="submitAlumniRequest(event)">
+   ${inputField("Nama Program","programName","","text",true)}
+   ${inputField("Penganjur / Biro / Kelab / Unit","organiser","","text",true)}
+   ${inputField("Tarikh Program","programDate","","date",true)}
+   ${inputField("Masa Program","programTime","","time",false)}
+   ${inputField("Lokasi / Platform","location","","text",true)}
+   ${inputField("Peranan Alumni yang Diperlukan","requestedRole","","text",true)}
+   <div class="form-group full"><label>Pilih Alumni *</label><div style="max-height:280px;overflow:auto;border:1px solid var(--border);border-radius:14px;padding:12px">${eligible.map(a=>`<label style="display:flex;gap:10px;align-items:flex-start;padding:9px 4px;border-bottom:1px solid var(--border)"><input type="checkbox" name="requestAlumni" value="${a.id}" ${prefillId===a.id?"checked":""}><span><strong>${esc(a.fullName)}</strong><br><span class="small muted">${esc(a.jobTitle||"Bidang belum direkod")} ${a.employer?"• "+esc(a.employer):""} ${a.jobField?"• "+esc(a.jobField):""}</span></span></label>`).join("")||`<div class="muted">Belum ada alumni dalam direktori.</div>`}</div><small>Boleh pilih lebih daripada seorang. Maklumat perhubungan alumni tidak didedahkan kepada pemohon.</small></div>
+   <div class="form-group full"><label>Tujuan / Justifikasi Permohonan *</label><textarea name="purpose" required placeholder="Terangkan mengapa alumni ini diperlukan dan bentuk penglibatan yang diharapkan."></textarea></div>
+   <div class="form-group full"><label>Maklumat Ringkas Program *</label><textarea name="description" required placeholder="Objektif program, sasaran peserta, skala program dan maklumat penting untuk HELAA/alumni."></textarea></div>
+   ${inputField("Nama Pemohon","requesterName",actor.name,"text",true)}
+   ${inputField("E-mel Pemohon","requesterEmail",actor.email,"email",true)}
+   ${inputField("No. Telefon Pemohon","requesterPhone","","tel",true)}
+   <div class="form-group"><label>Status</label><input value="Menunggu Semakan" readonly class="readonly-status"><small>HELAA akan menyemak dan menghubungi alumni terlebih dahulu.</small></div>
+   <div class="form-group full"><label style="display:flex;gap:10px;align-items:flex-start"><input type="checkbox" name="privacyAck" required><span>Saya faham maklumat perhubungan alumni adalah sulit dan HELAA akan menjadi pengantara awal bagi permohonan ini.</span></label></div>
+   <div class="form-actions full"><button type="button" class="btn" onclick="closeModal()">Batal</button><button class="btn btn-primary" type="submit">Hantar Permohonan</button></div>
+  </form>`,"HELAA akan menghubungi alumni bagi pihak pemohon. Nombor telefon/e-mel alumni tidak dipaparkan.",true);
+}
+function submitAlumniRequest(e){
+  e.preventDefault(); const f=e.target, actor=currentActor();
+  const alumniIds=[...f.querySelectorAll('input[name="requestAlumni"]:checked')].map(x=>x.value);
+  if(!alumniIds.length){toast("Pilih sekurang-kurangnya seorang alumni.","error");return;}
+  const r={id:uid("req"),programName:f.programName.value.trim(),organiser:f.organiser.value.trim(),programDate:f.programDate.value,programTime:f.programTime.value,location:f.location.value.trim(),requestedRole:f.requestedRole.value.trim(),alumniIds,purpose:f.purpose.value.trim(),description:f.description.value.trim(),requesterName:f.requesterName.value.trim(),requesterEmail:f.requesterEmail.value.trim(),requesterPhone:f.requesterPhone.value.trim(),status:"Menunggu Semakan",helaNote:"",createdByName:actor.name,createdByEmail:actor.email,createdByRole:actor.role,createdAt:now(),updatedByName:actor.name,updatedByEmail:actor.email,updatedAt:now()};
+  data.alumniRequests.unshift(r); audit("Hantar permohonan alumni program","alumni_request",r.id);
+  addNotification({recipientRole:"Pasukan",title:"Permohonan alumni baharu",message:`${r.requesterName} memohon ${requestAlumniNames(r)} untuk ${r.programName}.`});
+  addNotification({recipientRole:"Pentadbir",title:"Permohonan alumni baharu",message:`${r.requesterName} memohon ${requestAlumniNames(r)} untuk ${r.programName}.`});
+  save(); closeModal(); render(); updateNotificationUI(); toast("Permohonan dihantar kepada HELAA.","success");
+}
+function viewAlumniRequest(id){
+ const r=data.alumniRequests.find(x=>x.id===id); if(!r)return;
+ openModal("Butiran Permohonan Alumni",`<div class="detail-grid">
+  <div><span>Program</span><strong>${esc(r.programName||"—")}</strong></div><div><span>Penganjur</span><strong>${esc(r.organiser||"—")}</strong></div>
+  <div><span>Tarikh</span><strong>${esc(r.programDate||"—")} ${esc(r.programTime||"")}</strong></div><div><span>Lokasi</span><strong>${esc(r.location||"—")}</strong></div>
+  <div class="full"><span>Alumni Dimohon</span><strong>${esc(requestAlumniNames(r))}</strong></div><div class="full"><span>Peranan</span><strong>${esc(r.requestedRole||"—")}</strong></div>
+  <div class="full"><span>Tujuan</span><strong>${esc(r.purpose||"—")}</strong></div><div class="full"><span>Maklumat Program</span><strong>${esc(r.description||"—")}</strong></div>
+  <div><span>Pemohon</span><strong>${esc(r.requesterName||"—")}</strong></div><div><span>E-mel Pemohon</span><strong>${esc(r.requesterEmail||"—")}</strong></div>
+  <div><span>Status</span><strong>${alumniRequestStatusBadge(r.status)}</strong></div><div><span>Dikemas kini oleh</span><strong>${esc(r.updatedByName||r.createdByName||"—")}</strong><div class="small muted">${esc(r.updatedByEmail||r.createdByEmail||"")}</div></div>
+  ${r.helaNote?`<div class="full"><span>Catatan HELAA</span><strong>${esc(r.helaNote)}</strong></div>`:""}
+ </div><div class="notice" style="margin-top:16px"><strong>Privasi alumni</strong><br>Maklumat telefon dan e-mel alumni tidak dipaparkan. HELAA mengurus hubungan awal dengan alumni.</div>`);
+}
+function openManageAlumniRequest(id){
+ if(!canManageAlumniRequests())return; const r=data.alumniRequests.find(x=>x.id===id); if(!r)return;
+ const statuses=["Menunggu Semakan","Sedang Dihubungi HELAA","Alumni Bersetuju","Tidak Tersedia","Selesai","Ditolak"];
+ openModal("Urus Permohonan Alumni",`<form class="form-grid" onsubmit="saveManagedAlumniRequest(event,'${id}')">
+  <div class="form-group full"><label>Program</label><input value="${esc(r.programName)}" readonly></div>
+  <div class="form-group full"><label>Alumni Dimohon</label><input value="${esc(requestAlumniNames(r))}" readonly></div>
+  <div class="form-group"><label>Status *</label><select name="status" required>${statuses.map(x=>`<option ${r.status===x?"selected":""}>${x}</option>`).join("")}</select></div>
+  <div class="form-group full"><label>Catatan HELAA kepada Pemohon</label><textarea name="helaNote" placeholder="Contoh: HELAA sedang menghubungi alumni / alumni bersetuju dan urusan seterusnya akan dimaklumkan.">${esc(r.helaNote||"")}</textarea></div>
+  <div class="form-actions full"><button type="button" class="btn" onclick="closeModal()">Batal</button><button class="btn btn-primary" type="submit">Simpan Status</button></div>
+ </form>`,`Pemohon akan menerima notifikasi apabila status dikemas kini.`);
+}
+function saveManagedAlumniRequest(e,id){
+ e.preventDefault(); const r=data.alumniRequests.find(x=>x.id===id); if(!r)return; const actor=currentActor();
+ r.status=e.target.status.value; r.helaNote=e.target.helaNote.value.trim(); r.updatedByName=actor.name;r.updatedByEmail=actor.email;r.updatedByRole=actor.role;r.updatedAt=now();
+ audit("Kemas kini permohonan alumni program","alumni_request",id);
+ addNotification({recipientEmail:r.requesterEmail,title:"Status permohonan alumni dikemas kini",message:`${r.programName}: ${r.status}.${r.helaNote?" "+r.helaNote:""}`});
+ save();closeModal();render();updateNotificationUI();toast("Status permohonan dikemas kini.","success");
+}
+
 function unitStats(){return data.units.map(u=>{const rec=approvedRecords().filter(r=>r.unitId===u.id),programs=new Set(rec.map(r=>(r.program||"").trim().toLowerCase()).filter(Boolean)).size,total=rec.reduce((sum,r)=>sum+merit(r),0);return{u,records:rec.length,programs,merit:total,average:programs?total/programs:0}}).sort((a,b)=>b.average-a.average||b.merit-a.merit||a.u.name.localeCompare(b.u.name))}
 function pageKarismaAnalytics(){const rows=unitStats(),max=Math.max(1,...rows.map(x=>x.average));return `<div class="page-header"><div><h1 class="page-title">Analitik KARISMA</h1><p class="page-subtitle">Ranking utama menggunakan Merit Purata supaya kuantiti program tidak mengatasi impak. Total Merit kekal dipaparkan.</p></div></div><div class="grid grid-4">${statCard("★",totalMerit().toFixed(0),"Total Merit",`${totalProgramCount()} program unik`)}${statCard("÷",overallAverageMerit().toFixed(2),"Merit Purata","Total Merit ÷ Bilangan Program")}${statCard("✓",approvedRecords().length,"Rekod Diluluskan","KARISMA")}${statCard("▦",data.units.length,"Unit","Semua kategori")}</div><div style="height:16px"></div><div class="card"><div class="card-title">Ranking Unit — Merit Purata</div><div class="small muted">Formula: Merit Purata = Total Merit ÷ Bilangan Program Diluluskan</div><div class="unit-chart" style="margin-top:14px">${rows.map((x,i)=>`<div><div class="unit-bar-label"><span style="display:flex;align-items:center;gap:9px">${rankBadge(i)} <b>${esc(x.u.name)}</b></span><b>${x.average.toFixed(2)} purata</b></div><div class="unit-bar-track"><span style="width:${(x.average/max*100).toFixed(1)}%"></span></div><div class="small muted">Pengiraan: ${x.merit.toFixed(1)} total ÷ ${x.programs} program = ${x.average.toFixed(2)} • ${x.records} rekod diluluskan • ${esc(x.u.type)}</div></div>`).join("")}</div></div>`}
 
@@ -8778,8 +8571,7 @@ function openRecordForm(id=""){
     existing ? (isAdmin()?"Edit Rekod Penglibatan":"Cadangkan Perubahan Rekod") : (isAdmin()?"Tambah Rekod Penglibatan":"Cadangkan Rekod Penglibatan"),
     `<form id="recordForm2026" class="form-grid" onsubmit="submitRecordForm(event,'${esc(id)}')">
       ${inputField("Nama Program","program",r.program,"text",true)}
-      ${inputField("Tarikh Mula","date",(r.date||r.startDate)?String(r.date||r.startDate).slice(0,10):"","date",true)}
- ${inputField("Tarikh Akhir","endDate",r.endDate?String(r.endDate).slice(0,10):"","date",true)}
+      ${inputField("Tarikh","date",r.date?String(r.date).slice(0,10):"","date",true)}
       <div class="form-group"><label>Unit *</label><select name="unitId" required><option value="">-- Pilih unit --</option>${data.units.map(u=>`<option value="${u.id}" ${r.unitId===u.id?"selected":""}>${esc(u.name)}</option>`).join("")}</select></div>
       ${inputField("Nama Alumni / Individu","alumniName",r.alumniName)}
       <div class="form-group"><label>Alumni Pautan</label><select name="alumniId"><option value="">-- Tiada pautan --</option>${data.alumni.map(a=>`<option value="${a.id}" ${r.alumniId===a.id?"selected":""}>${esc(a.fullName)} — ${esc(a.batch)}</option>`).join("")}</select></div>
@@ -8851,7 +8643,7 @@ pageRecords=function(){
 
 // Dashboard unit merit bar chart.
 function unitMeritBarChart(){const rows=unitStats(),max=Math.max(1,...rows.map(x=>x.average));return `<div style="height:16px"></div><div class="card"><div class="card-head"><div><div class="card-title">Perbandingan Merit Setiap Unit</div><div class="small muted">Ranking dashboard menggunakan Merit Purata. Total Merit turut dipaparkan.</div></div></div><div class="unit-chart">${rows.map((x,i)=>`<div class="unit-bar-row"><div class="unit-bar-label"><span style="display:flex;align-items:center;gap:9px">${rankBadge(i)} <strong>${esc(x.u.name)}</strong></span><span><b>${x.average.toFixed(2)}</b> purata • ${x.merit.toFixed(1)} total</span></div><div class="unit-bar-track"><span style="width:${(x.average/max*100).toFixed(2)}%"></span></div><div class="small muted">${x.merit.toFixed(1)} ÷ ${x.programs} program = ${x.average.toFixed(2)}</div></div>`).join("")}</div></div>`}
-function sdgDashboardStrip(){return `<div class="sdg-strip"><div class="sdg-card sdg16"><div class="sdg-num"><span style="display:block;font-size:12px;line-height:1;font-weight:800;letter-spacing:.08em;margin-bottom:5px">SDG</span>16</div><div><b>SDG 16 — Peace, Justice and Strong Institutions</b><small>Pengukuhan tadbir urus, rekod institusi, ketelusan data dan pengesahan maklumat legasi Kajai.</small></div></div><div class="sdg-card sdg17"><div class="sdg-num"><span style="display:block;font-size:12px;line-height:1;font-weight:800;letter-spacing:.08em;margin-bottom:5px">SDG</span>17</div><div><b>SDG 17 — Partnerships for the Goals</b><small>Jaringan alumni, rakan strategik, kolaborasi, sumbangan dan penglibatan komuniti melalui KARISMA.</small></div></div></div>`}
+function sdgDashboardStrip(){return `<div class="sdg-strip"><div class="sdg-card sdg16"><div class="sdg-num">16</div><div><b>SDG 16 — Peace, Justice and Strong Institutions</b><small>Pengukuhan tadbir urus, rekod institusi, ketelusan data dan pengesahan maklumat legasi Kajai.</small></div></div><div class="sdg-card sdg17"><div class="sdg-num">17</div><div><b>SDG 17 — Partnerships for the Goals</b><small>Jaringan alumni, rakan strategik, kolaborasi, sumbangan dan penglibatan komuniti melalui KARISMA.</small></div></div></div>`}
 const __pageDashboard=pageDashboard;pageDashboard=function(){return __pageDashboard()+unitMeritBarChart()+sdgDashboardStrip()};
 
 // Human-readable suggestion review + 3 workflow sections.
@@ -8910,9 +8702,9 @@ function requestRevision(id){
 }
 
 
-function addNotification({recipientEmail="",recipientRole="",title="Notifikasi",message="",suggestionId="",requestId=""}){
+function addNotification({recipientEmail="",recipientRole="",title="Notifikasi",message="",suggestionId=""}){
   if(!Array.isArray(data.notifications)) data.notifications=[];
-  data.notifications.unshift({id:uid("notif"),recipientEmail:(recipientEmail||"").toLowerCase(),recipientRole,title,message,suggestionId,requestId,createdAt:now(),read:false});
+  data.notifications.unshift({id:uid("notif"),recipientEmail:(recipientEmail||"").toLowerCase(),recipientRole,title,message,suggestionId,createdAt:now(),read:false});
   data.notifications=data.notifications.slice(0,300);
 }
 function myNotifications(){
@@ -8930,7 +8722,7 @@ function updateNotificationUI(){
 }
 function toggleNotifications(e){e?.stopPropagation();const p=document.getElementById("notificationPanel");p?.classList.toggle("hidden");updateNotificationUI()}
 function markAllNotificationsRead(e){e?.stopPropagation();myNotifications().forEach(n=>n.read=true);save();updateNotificationUI()}
-function openNotification(id){const n=(data.notifications||[]).find(x=>x.id===id);if(!n)return;n.read=true;save();document.getElementById("notificationPanel")?.classList.add("hidden");if(n.suggestionId){currentPage="suggestions";renderNav();render();setTimeout(()=>viewSuggestion(n.suggestionId),30)}else if(n.requestId){currentPage="alumniRequests";renderNav();render();setTimeout(()=>viewAlumniRequest(n.requestId),30)}else updateNotificationUI()}
+function openNotification(id){const n=(data.notifications||[]).find(x=>x.id===id);if(!n)return;n.read=true;save();document.getElementById("notificationPanel")?.classList.add("hidden");if(n.suggestionId){currentPage="suggestions";renderNav();render();setTimeout(()=>viewSuggestion(n.suggestionId),30)}else updateNotificationUI()}
 function revisionField(k,v){
   const label=humanLabel(k);
   if(k.toLowerCase().includes("photo")||k.toLowerCase().includes("image")){return `<div class="form-group full"><label>${esc(label)}</label>${typeof v==="string"&&v.startsWith("data:image")?`<img src="${v}" class="suggestion-img" alt="Imej sedia ada"><div class="small muted">Imej sedia ada dikekalkan. Ubah melalui borang asal jika perlu mengganti imej.</div>`:""}<input type="hidden" name="${esc(k)}" value="${esc(typeof v==="string"?v:JSON.stringify(v??""))}"></div>`}
@@ -9184,8 +8976,7 @@ openRecordForm=function(id=""){
  openModal(existing?(isAdmin()?"Edit Rekod Penglibatan":"Cadangkan Perubahan Rekod"):(isAdmin()?"Tambah Rekod Penglibatan":"Cadangkan Rekod Penglibatan"),`
  <form class="form-grid" id="recordForm2026" onsubmit="submitRecordForm(event,'${esc(id)}')">
  ${inputField("Nama Program","program",r.program,"text",true)}
- ${inputField("Tarikh Mula","startDate",(r.startDate||r.date)?String(r.startDate||r.date).slice(0,10):"","date",true)}
- ${inputField("Tarikh Akhir","endDate",(r.endDate||r.startDate||r.date)?String(r.endDate||r.startDate||r.date).slice(0,10):"","date",true)}
+ ${inputField("Tarikh","date",r.date?String(r.date).slice(0,10):"","date",true)}
  <div class="form-group"><label>Unit</label><select name="unitId" required><option value="">-- Pilih unit --</option>${data.units.map(u=>`<option value="${u.id}" ${r.unitId===u.id?"selected":""}>${esc(u.name)}</option>`).join("")}</select></div>
  ${recordAssignmentsHTML(r)}
  ${selectField("Skala","scale",[{value:"1",label:"1.0 — Aktiviti biasa"},{value:"1.5",label:"1.5 — Skala sederhana"},{value:"2",label:"2.0 — Skala tinggi"}],String(r.scale||1))}
@@ -9202,7 +8993,7 @@ openRecordForm=function(id=""){
  const f=document.getElementById("recordForm2026");["scale","bonusPoints","penaltyPoints"].forEach(n=>f?.elements[n]?.addEventListener("change",updateMeritPreview));updateMeritPreview();
 };
 updateMeritPreview=function(){const f=document.getElementById("recordForm2026");if(!f)return;const assignments=collectAssignments(),base=assignments.reduce((s,x)=>s+x.points,0),bonus=Number(f.elements.bonusPoints?.value||0),penalty=Number(f.elements.penaltyPoints?.value||0),scale=Number(f.elements.scale?.value||1),total=((base+bonus)*scale)-penalty;document.getElementById("previewBase").textContent=base.toFixed(1);document.getElementById("previewFormula").textContent=`(${base} + ${bonus}) × ${scale} − ${penalty}`;document.getElementById("previewMerit").textContent=total.toFixed(1);};
-submitRecordForm=async function(e,id){e.preventDefault();if(!canSuggest("record"))return denyAction();const f=e.target,fd=new FormData(f),obj=Object.fromEntries(fd.entries()),assignments=collectAssignments();obj.startDate=obj.startDate||obj.date||"";obj.endDate=obj.endDate||obj.startDate||"";obj.date=obj.startDate;const penaltySelect=f.elements.penaltyPoints;const penaltyLabel=(penaltySelect?.selectedOptions?.[0]?.textContent||"").toLowerCase();const noAlumniPenalty=penaltyLabel.includes("jemputan dibuat tetapi tiada susulan")||penaltyLabel.includes("tiada usaha mendapatkan alumni");if(!assignments.length&&!noAlumniPenalty){toast("Tambah sekurang-kurangnya seorang alumni dan pilih peranannya. Untuk penalti ‘Jemputan dibuat tetapi tiada susulan’ atau ‘Tiada usaha mendapatkan alumni’, alumni/peranan tidak diwajibkan.","error");return}obj.assignments=assignments;obj.roleEntries=assignments.map(x=>({scoreId:x.scoreId,name:x.roleName,points:x.points,alumniId:x.alumniId,alumniName:x.alumniName}));obj.role=assignments.length?[...new Set(assignments.map(x=>x.roleName))].join(" + "):"Penalti program / unit";obj.basePoints=assignments.reduce((s,x)=>s+x.points,0);obj.alumniId=assignments[0]?.alumniId||"";obj.alumniName=assignments.map(x=>x.alumniName).join(", ");obj.bonusPoints=Number(obj.bonusPoints||0);obj.penaltyPoints=Number(obj.penaltyPoints||0);obj.scale=Number(obj.scale||1);obj.status=isAdmin()?"Diluluskan":"Menunggu";obj.updatedAt=now();obj.session=(id?(data.records.find(x=>x.id===id)?.session):data.config.currentKarismaSession)||"2026/2027";const existing=id?data.records.find(x=>x.id===id):null;const imageAtt=await prepareAttachments(document.getElementById("recordImages"));const fileAtt=await prepareAttachments(document.getElementById("recordFiles"));const newAtt=[...imageAtt,...fileAtt];obj.attachments=[...(existing?.attachments||[]),...newAtt];obj.photo=obj.attachments.find(a=>a.isImage)?.data||existing?.photo||"";if(isAdmin()){const actor=currentActor();if(existing){Object.assign(existing,obj);if(!existing.createdByName&&!existing.createdByEmail){existing.createdByName=actor.name;existing.createdByEmail=actor.email;existing.createdByRole=actor.role;existing.createdAt=existing.createdAt||now()}existing.updatedByName=actor.name;existing.updatedByEmail=actor.email;existing.updatedByRole=actor.role;existing.updatedAt=now()}else{obj.id=uid("record");obj.createdAt=now();obj.createdByName=actor.name;obj.createdByEmail=actor.email;obj.createdByRole=actor.role;obj.updatedByName=actor.name;obj.updatedByEmail=actor.email;obj.updatedByRole=actor.role;data.records.push(obj)}audit(id?"Mengemas kini rekod KARISMA":"Menambah rekod KARISMA","records",id||obj.id);save();closeModal();render();toast("Rekod KARISMA disimpan.","success")}else{const reason=document.getElementById("suggestionReason")?.value||"";submitSuggestion(id?"record_edit":"record_add",id,obj,reason,existing||null);closeModal();render();toast("Cadangan rekod dihantar dan menunggu pengesahan.","success")}};
+submitRecordForm=async function(e,id){e.preventDefault();if(!canSuggest("record"))return denyAction();const f=e.target,fd=new FormData(f),obj=Object.fromEntries(fd.entries()),assignments=collectAssignments();const penaltySelect=f.elements.penaltyPoints;const penaltyLabel=(penaltySelect?.selectedOptions?.[0]?.textContent||"").toLowerCase();const noAlumniPenalty=penaltyLabel.includes("jemputan dibuat tetapi tiada susulan")||penaltyLabel.includes("tiada usaha mendapatkan alumni");if(!assignments.length&&!noAlumniPenalty){toast("Tambah sekurang-kurangnya seorang alumni dan pilih peranannya. Untuk penalti ‘Jemputan dibuat tetapi tiada susulan’ atau ‘Tiada usaha mendapatkan alumni’, alumni/peranan tidak diwajibkan.","error");return}obj.assignments=assignments;obj.roleEntries=assignments.map(x=>({scoreId:x.scoreId,name:x.roleName,points:x.points,alumniId:x.alumniId,alumniName:x.alumniName}));obj.role=assignments.length?[...new Set(assignments.map(x=>x.roleName))].join(" + "):"Penalti program / unit";obj.basePoints=assignments.reduce((s,x)=>s+x.points,0);obj.alumniId=assignments[0]?.alumniId||"";obj.alumniName=assignments.map(x=>x.alumniName).join(", ");obj.bonusPoints=Number(obj.bonusPoints||0);obj.penaltyPoints=Number(obj.penaltyPoints||0);obj.scale=Number(obj.scale||1);obj.status=isAdmin()?"Diluluskan":"Menunggu";obj.updatedAt=now();obj.session=(id?(data.records.find(x=>x.id===id)?.session):data.config.currentKarismaSession)||"2026/2027";const existing=id?data.records.find(x=>x.id===id):null;const imageAtt=await prepareAttachments(document.getElementById("recordImages"));const fileAtt=await prepareAttachments(document.getElementById("recordFiles"));const newAtt=[...imageAtt,...fileAtt];obj.attachments=[...(existing?.attachments||[]),...newAtt];obj.photo=obj.attachments.find(a=>a.isImage)?.data||existing?.photo||"";if(isAdmin()){const actor=currentActor();if(existing){Object.assign(existing,obj);if(!existing.createdByName&&!existing.createdByEmail){existing.createdByName=actor.name;existing.createdByEmail=actor.email;existing.createdByRole=actor.role;existing.createdAt=existing.createdAt||now()}existing.updatedByName=actor.name;existing.updatedByEmail=actor.email;existing.updatedByRole=actor.role;existing.updatedAt=now()}else{obj.id=uid("record");obj.createdAt=now();obj.createdByName=actor.name;obj.createdByEmail=actor.email;obj.createdByRole=actor.role;obj.updatedByName=actor.name;obj.updatedByEmail=actor.email;obj.updatedByRole=actor.role;data.records.push(obj)}audit(id?"Mengemas kini rekod KARISMA":"Menambah rekod KARISMA","records",id||obj.id);save();closeModal();render();toast("Rekod KARISMA disimpan.","success")}else{const reason=document.getElementById("suggestionReason")?.value||"";submitSuggestion(id?"record_edit":"record_add",id,obj,reason,existing||null);closeModal();render();toast("Cadangan rekod dihantar dan menunggu pengesahan.","success")}};
 
 // Attribution display: never fabricate an owner for old records; new/edited records are stamped from the signed-in session.
 updateTraceHTML=function(x){if(!canSeeAttribution()||!x)return"";const cn=x.createdByName||x.submittedByName||"",ce=x.createdByEmail||x.submittedByEmail||"",un=x.updatedByName||cn,ue=x.updatedByEmail||ce;if(!cn&&!ce&&!un&&!ue)return `<div class="record-trace"><b>Jejak rekod</b><br><span class="muted">Identiti pencipta asal tidak tersedia untuk rekod ini. Nama dan e-mel akan direkod secara automatik pada kemas kini seterusnya.</span></div>`;return `<div class="record-trace"><b>Jejak rekod</b><br>Dikey-in oleh: <strong>${esc(cn||ce)}</strong>${ce?` • ${esc(ce)}`:""}<br>Terakhir dikemas kini oleh: <strong>${esc(un||ue)}</strong>${ue?` • ${esc(ue)}`:""}${x.updatedAt?` • ${dateMY(x.updatedAt)}`:""}${attachmentHTML(x.attachments)}</div>`};
@@ -9391,1153 +9182,15 @@ function dangerUnitsDashboard(){
 }
 
 const __pageDashboardV93=pageDashboard;
-pageDashboard=function(){ return __pageDashboardV93()+dangerUnitsDashboard(); };
-
-
-// V9.8: Keep dashboard content unchanged, but place Unit dalam Bahaya before the SDG 16/17 strip.
-const __pageDashboardV98=pageDashboard;
+// Dashboard final order: main dashboard -> merit comparison -> danger list -> SDG at bottom.
+// __pageDashboard is the original dashboard captured before unitMeritBarChart/sdgDashboardStrip were appended.
 pageDashboard=function(){
-  const html=__pageDashboardV98();
-  const marker='<div class="sdg-strip">';
-  const start=html.indexOf(marker);
-  if(start<0) return html;
-  let depth=0,end=-1;
-  for(let i=start;i<html.length;i++){
-    if(html.startsWith('<div',i)){depth++; i+=3;}
-    else if(html.startsWith('</div>',i)){depth--; if(depth===0){end=i+6;break;} i+=5;}
-  }
-  if(end<0) return html;
-  const sdg=html.slice(start,end);
-  return html.slice(0,start)+html.slice(end)+sdg;
-};
-</script>
-
-<script>
-/* =========================================================
-   V10.5 — KARISMA: PILIH PROGRAM DARIPADA LAPORAN
-   Program yang telah menghantar laporan boleh dipilih terus
-   dalam borang Tambah Rekod Penglibatan. Pilihan akan autofill
-   tarikh mula/akhir, unit, alumni dan peranan.
-========================================================= */
-function karismaReportedRequests(){
-  return (data.alumniRequests||[]).filter(x=>x && x.reportSubmittedAt);
-}
-function karismaRequestUnitId(x){
-  if(!x) return "";
-  const raw=String(x.organiser||x.unit||x.organizer||"").trim().toLowerCase();
-  const exact=(data.units||[]).find(u=>String(u.name||"").trim().toLowerCase()===raw);
-  if(exact) return exact.id;
-  const loose=(data.units||[]).find(u=>raw && (String(u.name||"").trim().toLowerCase().includes(raw)||raw.includes(String(u.name||"").trim().toLowerCase())));
-  return loose?.id||"";
-}
-function karismaRequestAssignments(x){
-  if(!x) return [];
-  const proposed=Array.isArray(x.reportMeritAssignments)?x.reportMeritAssignments:[];
-  if(proposed.length){
-    return proposed.map(a=>{
-      const alum=getAlumni(a.alumniId);
-      const score=(data.scores||[]).find(sc=>sc.id===a.scoreId);
-      return {alumniId:a.alumniId||"",alumniName:alum?.fullName||a.alumniName||"",scoreId:a.scoreId||"",roleName:score?.name||a.roleName||"",points:Number(score?.points??a.points??0)};
-    });
-  }
-  return (x.alumniIds||[]).map(aid=>{const a=getAlumni(aid);return {alumniId:aid,alumniName:a?.fullName||"",scoreId:"",roleName:"",points:0};});
-}
-function applyReportedProgramToKarisma(requestId){
-  const f=document.getElementById("recordForm2026"); if(!f)return;
-  const x=karismaReportedRequests().find(v=>v.id===requestId);
-  const manual=document.getElementById("karismaManualProgramWrap");
-  if(!x){
-    if(manual) manual.style.display="block";
-    f.elements.program.value="";
-    f.elements.sourceRequestId.value="";
-    return;
-  }
-  if(manual) manual.style.display="none";
-  f.elements.sourceRequestId.value=x.id||"";
-  f.elements.program.value=x.programName||"";
-  f.elements.startDate.value=String(x.programStartDate||x.programDate||"").slice(0,10);
-  f.elements.endDate.value=String(x.programEndDate||x.programStartDate||x.programDate||"").slice(0,10);
-  const unitId=karismaRequestUnitId(x); if(unitId) f.elements.unitId.value=unitId;
-  const box=document.getElementById("assignmentRows");
-  const rows=karismaRequestAssignments(x);
-  if(box) box.innerHTML=(rows.length?rows:[{}]).map((a,i)=>assignmentRowHTML(a,i)).join("");
-  updateMeritPreview();
-  toast("Maklumat program, tarikh, unit, alumni dan peranan telah diisi automatik.","success");
-}
-
-openRecordForm=function(id=""){
- const existing=id?data.records.find(x=>x.id===id):null,r=existing||{};
- if(!isViewingCurrentSession()&&id){toast("Sesi arkib adalah paparan baca sahaja.","error");return}
- const reports=karismaReportedRequests();
- const linkedRequestId=r.sourceRequestId||"";
- openModal(existing?(isAdmin()?"Edit Rekod Penglibatan":"Cadangkan Perubahan Rekod"):(isAdmin()?"Tambah Rekod Penglibatan":"Cadangkan Rekod Penglibatan"),`
- <form class="form-grid" id="recordForm2026" onsubmit="submitRecordForm(event,'${esc(id)}')">
- <input type="hidden" name="sourceRequestId" value="${esc(linkedRequestId)}">
- <div class="form-group full">
-   <label>Pilih Program daripada Permohonan yang Telah Menghantar Laporan</label>
-   <select id="karismaReportedProgram" onchange="applyReportedProgramToKarisma(this.value)">
-     <option value="">-- Isi rekod program secara manual --</option>
-     ${reports.map(x=>`<option value="${esc(x.id)}" ${linkedRequestId===x.id?"selected":""}>${esc(x.programName||"Tanpa nama program")} — ${esc(x.organiser||"Unit tidak dinyatakan")}</option>`).join("")}
-   </select>
-   <small>Pilih program di sini untuk mengisi maklumat secara automatik daripada laporan yang telah dihantar.</small>
- </div>
- <div id="karismaManualProgramWrap" class="form-group full" style="display:${linkedRequestId?'none':'block'}">
-   <label>Nama Program *</label><input name="program" value="${esc(r.program||'')}" required>
- </div>
- ${linkedRequestId?`<input type="hidden" name="program" value="${esc(r.program||'')}">`:``}
- ${inputField("Tarikh Mula","startDate",(r.startDate||r.date)?String(r.startDate||r.date).slice(0,10):"","date",true)}
- ${inputField("Tarikh Akhir","endDate",(r.endDate||r.startDate||r.date)?String(r.endDate||r.startDate||r.date).slice(0,10):"","date",true)}
- <div class="form-group"><label>Unit</label><select name="unitId" required><option value="">-- Pilih unit --</option>${data.units.map(u=>`<option value="${u.id}" ${r.unitId===u.id?"selected":""}>${esc(u.name)}</option>`).join("")}</select></div>
- ${recordAssignmentsHTML(r)}
- ${selectField("Skala","scale",[{value:"1",label:"1.0 — Aktiviti biasa"},{value:"1.5",label:"1.5 — Skala sederhana"},{value:"2",label:"2.0 — Skala tinggi"}],String(r.scale||1))}
- ${selectField("Bonus","bonusPoints",[{value:"0",label:"0 — Tiada bonus"},...data.bonuses.map(s=>({value:String(s.points),label:`${s.points} — ${s.name}`}))],String(r.bonusPoints||0))}
- ${selectField("Penalti","penaltyPoints",[{value:"0",label:"0 — Tiada penalti"},...data.penalties.map(s=>({value:String(s.points),label:`${s.points} — ${s.name}`}))],String(r.penaltyPoints||0))}
- <div class="form-group"><label>Status</label><input value="${esc(r.status||"Menunggu")}" readonly class="readonly-status"><small>Status ditetapkan automatik.</small></div>
- ${inputField("Bukti / Pautan Evidence","evidence",r.evidence)}
- <div class="form-group full"><label>Gambar Program / Rekod</label><input type="file" id="recordImages" accept="image/*" multiple><small>Boleh pilih lebih daripada satu gambar dalam satu masa.</small></div>
- <div class="form-group full"><label>Fail Lampiran</label><input type="file" id="recordFiles" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv" multiple><small>Boleh pilih lebih daripada satu fail dalam satu masa. Lampiran sedia ada tidak akan hilang apabila menambah lampiran baharu.</small>${attachmentHTML(r.attachments)}</div>
- ${textareaField("Catatan / Ulasan","notes",r.notes)}
- <div class="form-group full"><div class="merit-preview"><div><span>Jumlah Wajaran Peranan</span><strong id="previewBase">0</strong></div><div><span>Formula</span><strong id="previewFormula">(0 + 0) × 1 − 0</strong></div><div class="merit-total"><span>Jumlah Merit / Demerit</span><strong id="previewMerit">0.0</strong></div></div></div>
- ${!isAdmin()?`<div class="form-group full"><label>Nota Cadangan</label><textarea id="suggestionReason" required></textarea></div>`:""}
- <div class="form-actions"><button type="button" class="btn" onclick="closeModal()">Batal</button><button class="btn btn-primary">${isAdmin()?"Simpan":"Hantar Cadangan"}</button></div></form>`,"Pilih program daripada laporan untuk autofill, kemudian semak Skala, Bonus, Penalti dan ulasan.",true);
- const f=document.getElementById("recordForm2026");["scale","bonusPoints","penaltyPoints"].forEach(n=>f?.elements[n]?.addEventListener("change",updateMeritPreview));
- if(linkedRequestId){ applyReportedProgramToKarisma(linkedRequestId); }
- else updateMeritPreview();
-};
-</script>
-
-<style>
-/* V11 Institutional upgrade — additive UI only */
-.institution-banner{background:linear-gradient(135deg,#10284b,#173c6d);color:#fff;border-radius:24px;padding:24px 26px;margin-bottom:18px;box-shadow:0 16px 36px rgba(16,40,75,.14)}
-.institution-banner .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.78;font-weight:800}.institution-banner h2{margin:7px 0 4px;font-size:clamp(20px,4vw,31px);line-height:1.15}.institution-banner p{margin:0;opacity:.88;font-weight:700}.human-code{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;background:#eef3fb;color:#173c6d;font-size:11px;font-weight:900;letter-spacing:.05em;border:1px solid #d8e2f1}.code-dark{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.2)}
-.early-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.early-box{padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--card)}.early-box strong{font-size:22px;display:block}.early-box small{color:var(--muted)}
-.archive-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
-@media(max-width:760px){.early-grid{grid-template-columns:1fr 1fr}.institution-banner{padding:20px}.table-wrap{border-radius:16px}.table-wrap table{min-width:760px}.human-code{font-size:10px}}
-</style>
-<script>
-/* =========================================================
-   V11 — Institutional hardening, human-readable codes,
-   soft archive, richer dashboard and traceable workflows.
-   No existing module is removed.
-========================================================= */
-function ensureV11Data(){
-  data.archivedRecords=data.archivedRecords||[];
-  data.config=data.config||{};
-  data.config.institutionName="Biro Hal Ehwal Luar, Alumni dan Antarabangsa KRK UKM";
-  data.config.institutionTagline=data.config.institutionTagline||"Legasi Melangkaui Generasi";
-}
-function digitsFromCode(v){const m=String(v||"").match(/(\d{1,6})/);return m?Number(m[1]):0}
-function nextHumanNumber(items,fields){let max=0;(items||[]).forEach(x=>fields.forEach(f=>max=Math.max(max,digitsFromCode(x?.[f]))));return max+1}
-function five(n){return String(Number(n)||0).padStart(5,"0")}
-function requestSerial(x){const m=String(x?.requestCode||"").match(/K-(\d+)-A/);return m?Number(m[1]):0}
-function ensureInstitutionCodes(){
- ensureV11Data();
- let n=nextHumanNumber(data.alumni,["legacyId"]); data.alumni.forEach(a=>{if(!a.legacyId)a.legacyId=`KRK-${five(n++)}`});
- let rn=nextHumanNumber(data.alumniRequests||[],["requestCode"]); (data.alumniRequests||[]).forEach(x=>{if(!x.requestCode)x.requestCode=`K-${five(rn++)}-A`;const serial=requestSerial(x);if(x.reportSubmittedAt&&!x.reportCode)x.reportCode=`K-${five(serial||rn++)}-L`;});
- let mn=nextHumanNumber(data.records||[],["meritCode"]); (data.records||[]).forEach(r=>{if(!r.meritCode){const req=(data.alumniRequests||[]).find(x=>x.id===r.sourceRequestId);const serial=requestSerial(req);r.meritCode=`K-${five(serial||mn++)}-M`;}});
-}
-ensureInstitutionCodes();save();
-
-function institutionalBanner(){return `<div class="institution-banner"><div class="eyebrow">Kolej Rahim Kajai · Universiti Kebangsaan Malaysia</div><h2>${esc(data.config.institutionName)}</h2><p>${esc(data.config.institutionTagline)}</p></div>`}
-function earlyWarningPanel(){
- const stats=unitStats(); const critical=stats.filter(x=>Number(x.average)<0||Number(x.merit)<0); const attention=stats.filter(x=>Number(x.average)>=0&&Number(x.average)<5); const stable=stats.filter(x=>Number(x.average)>=5&&Number(x.average)<15); const active=stats.filter(x=>Number(x.average)>=15);
- return `<div class="card" style="margin-top:16px"><div class="card-head"><div><div class="card-title">Early Warning KARISMA</div><div class="small muted">Isyarat pantas berdasarkan Merit Purata semasa. Ranking rasmi kekal menggunakan Merit Purata; Total Merit dan bilangan program kekal sebagai konteks.</div></div><button class="btn btn-small" onclick="go('karismaAnalytics')">Buka Analitik</button></div><div class="early-grid"><div class="early-box"><strong>${critical.length}</strong><small>Kritikal · merit negatif</small></div><div class="early-box"><strong>${attention.length}</strong><small>Perlu perhatian · purata &lt;5</small></div><div class="early-box"><strong>${stable.length}</strong><small>Stabil · purata 5–14.99</small></div><div class="early-box"><strong>${active.length}</strong><small>Aktif · purata ≥15</small></div></div></div>`
-}
-const __v11Dashboard=pageDashboard; pageDashboard=function(){ensureInstitutionCodes();return institutionalBanner()+__v11Dashboard()+earlyWarningPanel()};
-
-// Human code visibility on profile/detail screens.
-const __v11OpenAlumniDetail=openAlumniDetail; openAlumniDetail=function(id){ensureInstitutionCodes();__v11OpenAlumniDetail(id);const a=getAlumni(id),meta=document.querySelector('.modal .profile-meta');if(a&&meta&&!meta.querySelector('.human-code'))meta.insertAdjacentHTML('afterbegin',`<span class="human-code">${esc(a.legacyId)}</span> · `)};
-const __v11ViewRequest=typeof viewAlumniRequest==='function'?viewAlumniRequest:null;if(__v11ViewRequest)viewAlumniRequest=function(id){ensureInstitutionCodes();__v11ViewRequest(id);const x=(data.alumniRequests||[]).find(v=>v.id===id),head=document.querySelector('.modal .modal-head h2');if(x&&head)head.insertAdjacentHTML('afterend',`<div style="margin-top:6px"><span class="human-code">${esc(x.requestCode||'')}</span>${x.reportCode?` <span class="human-code">${esc(x.reportCode)}</span>`:''}</div>`)};
-
-// Generate codes automatically after successful create/update actions.
-const __v11SubmitAlumni=submitAlumniForm;submitAlumniForm=async function(e,id){await __v11SubmitAlumni(e,id);ensureInstitutionCodes();const a=id?getAlumni(id):data.alumni[data.alumni.length-1];if(a){const actor=currentActor();a.updatedByName=a.updatedByName||actor.name;a.updatedByEmail=a.updatedByEmail||actor.email;a.createdByName=a.createdByName||actor.name;a.createdByEmail=a.createdByEmail||actor.email;}save();render()};
-const __v11SubmitRequest=submitAlumniRequest;submitAlumniRequest=function(e){const before=(data.alumniRequests||[]).length;const r=__v11SubmitRequest(e);if((data.alumniRequests||[]).length>before){ensureInstitutionCodes();save();render()}return r};
-const __v11SubmitReport=submitAlumniRequestReport;submitAlumniRequestReport=async function(e,id){await __v11SubmitReport(e,id);const x=(data.alumniRequests||[]).find(v=>v.id===id);if(x?.reportSubmittedAt&&!x.reportCode){const serial=requestSerial(x)||nextHumanNumber(data.alumniRequests||[],["requestCode"]);x.reportCode=`K-${five(serial)}-L`;}save();render()};
-const __v11SubmitRecord=submitRecordForm;submitRecordForm=async function(e,id){await __v11SubmitRecord(e,id);ensureInstitutionCodes();save();render()};
-
-// Add visible codes to major list pages without removing their existing columns/actions.
-const __v11PageAlumni=pageAlumni;pageAlumni=function(){ensureInstitutionCodes();let html=__v11PageAlumni();data.alumni.forEach(a=>{const needle=`>${esc(a.fullName)}<`;if(html.includes(needle))html=html.replace(needle,`><span class="human-code">${esc(a.legacyId)}</span><br>${esc(a.fullName)}<`)});return html};
-const __v11PageRequests=pageAlumniRequests;pageAlumniRequests=function(){ensureInstitutionCodes();let html=__v11PageRequests();(data.alumniRequests||[]).forEach(x=>{const needle=`<b>${esc(x.programName)}</b>`;if(html.includes(needle))html=html.replace(needle,`<span class="human-code">${esc(x.requestCode||'')}</span>${x.reportCode?` <span class="human-code">${esc(x.reportCode)}</span>`:''}<br><b>${esc(x.programName)}</b>`)});return html};
-const __v11PageRecords=pageRecords;pageRecords=function(){ensureInstitutionCodes();let html=__v11PageRecords();(data.records||[]).forEach(r=>{const needle=`<strong>${esc(r.program)}</strong>`;if(html.includes(needle))html=html.replace(needle,`<span class="human-code">${esc(r.meritCode||'')}</span><br><strong>${esc(r.program)}</strong>`)});return html};
-
-// Soft archive: protect institutional history from accidental permanent deletion.
-function archiveEntity(type,id,label,collectionName){if(!isAdmin())return;ensureV11Data();const col=data[collectionName]||[],idx=col.findIndex(x=>x.id===id);if(idx<0)return;const item=col[idx];if(!confirm(`Arkibkan rekod "${label||item.fullName||item.name||item.program||'rekod'}"? Rekod boleh dipulihkan semula melalui Data & Sandaran.`))return;const actor=currentActor();data.archivedRecords.unshift({archiveId:uid('archive'),entityType:type,collectionName,originalId:id,label:label||item.fullName||item.name||item.program||'',item:JSON.parse(JSON.stringify(item)),archivedAt:now(),archivedByName:actor.name,archivedByEmail:actor.email});col.splice(idx,1);audit('Mengarkibkan rekod',type,id);save();render();toast('Rekod dipindahkan ke arkib dan boleh dipulihkan.','success')}
-deleteAlumni=function(id){const a=getAlumni(id);if(a)archiveEntity('Alumni',id,a.fullName,'alumni')};
-deleteLeadership=function(id){const x=data.leadership.find(v=>v.id===id);if(x)archiveEntity('Kepimpinan',id,x.name,'leadership')};
-deleteRep=function(id){const x=data.reps.find(v=>v.id===id);if(x)archiveEntity('Wakil Batch',id,x.name,'reps')};
-deleteRecord=function(id){const x=data.records.find(v=>v.id===id);if(x)archiveEntity('KARISMA',id,x.program,'records')};
-deleteUnit=function(id){const x=data.units.find(v=>v.id===id);if(x)archiveEntity('Unit',id,x.name,'units')};
-deleteActivity=function(id){const x=data.activities.find(v=>v.id===id);if(x)archiveEntity('Aktiviti',id,x.name||x.title,'activities')};
-deleteAchievement=function(id){const x=data.achievements.find(v=>v.id===id);if(x)archiveEntity('Pencapaian',id,x.title||x.name,'achievements')};
-deleteGallery=function(id){const x=data.gallery.find(v=>v.id===id);if(x)archiveEntity('Galeri',id,x.title||x.caption,'gallery')};
-function restoreArchived(archiveId){if(!isAdmin())return;const i=(data.archivedRecords||[]).findIndex(x=>x.archiveId===archiveId);if(i<0)return;const a=data.archivedRecords[i];data[a.collectionName]=data[a.collectionName]||[];if(data[a.collectionName].some(x=>x.id===a.originalId)){toast('ID asal sudah wujud. Pemulihan dibatalkan.','error');return}data[a.collectionName].push(a.item);data.archivedRecords.splice(i,1);audit('Memulihkan rekod arkib',a.entityType,a.originalId);save();render();toast('Rekod berjaya dipulihkan.','success')}
-function archivePanel(){if(!isAdmin())return '';const rows=(data.archivedRecords||[]);return `<div class="card v11-archive" style="margin-top:16px"><div class="card-head"><div><div class="card-title">Arkib Rekod & Recovery</div><div class="small muted">Rekod yang dipadam daripada paparan utama disimpan di sini untuk melindungi sejarah institusi.</div></div><span class="badge">${rows.length} rekod</span></div><div style="margin-top:10px">${rows.slice(0,100).map(x=>`<div class="archive-row"><div><b>${esc(x.label||x.entityType)}</b><div class="small muted">${esc(x.entityType)} · ${dateMY(x.archivedAt)} · ${esc(x.archivedByName||'')}</div></div><button class="btn btn-small" onclick="restoreArchived('${esc(x.archiveId)}')">Pulihkan</button></div>`).join('')||'<div class="small muted">Tiada rekod dalam arkib.</div>'}</div></div>`}
-
-// Keep audit identity visible on newly touched records.
-function backfillVisibleActors(){const actor=currentActor();['alumni','leadership','reps','records','activities','achievements','gallery'].forEach(k=>(data[k]||[]).forEach(x=>{if(x.updatedAt&&!x.updatedByName&&x.createdByName){x.updatedByName=x.createdByName;x.updatedByEmail=x.createdByEmail||''}}))}
-backfillVisibleActors();
-
-// Dedicated Recycle Bin / Tong Kitar Semula. This is additive: existing archive/recovery remains intact.
-function pageRecycleBin(){
-  if(!isAdmin()) return `<div class="card"><div class="empty">Akses Pentadbir diperlukan.</div></div>`;
-  ensureV11Data();
-  const rows=(data.archivedRecords||[]).slice().sort((a,b)=>String(b.archivedAt||'').localeCompare(String(a.archivedAt||'')));
-  const typeOptions=[...new Set(rows.map(x=>x.type).filter(Boolean))].sort();
-  return `<div class="page-head"><div><h1 class="page-title">Tong Kitar Semula</h1><div class="page-subtitle">Rekod yang dipadam tidak hilang terus. Pentadbir boleh mencari dan memulihkannya ke bahagian asal.</div></div><div class="page-actions"><span class="badge badge-gray">${rows.length} rekod</span></div></div>
-  <div class="card" style="margin-bottom:16px"><div class="grid-2"><div class="field"><label>Cari rekod dipadam</label><input id="recycleSearch" placeholder="Cari nama, program, kod atau jenis rekod…" oninput="filterRecycleBin()"></div><div class="field"><label>Jenis rekod</label><select id="recycleType" onchange="filterRecycleBin()"><option value="">Semua jenis</option>${typeOptions.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('')}</select></div></div><div class="small muted">Nota: fungsi ini menggunakan kaedah <em>soft delete</em>. Lampiran/gambar yang tersimpan bersama rekod akan kembali bersama rekod apabila dipulihkan.</div></div>
-  <div class="card"><div class="card-head"><div><div class="card-title">Rekod Dipadam</div><div class="small muted">Tekan <strong>Pulihkan</strong> untuk mengembalikan rekod ke modul asal.</div></div></div><div id="recycleRows">${renderRecycleRows(rows)}</div></div>`;
-}
-function renderRecycleRows(rows){
-  if(!rows.length) return `<div class="empty">Tong Kitar Semula kosong. Tiada rekod dipadam.</div>`;
-  return rows.map(a=>{const item=a.item||{};const label=a.label||item.fullName||item.name||item.program||item.title||item.caption||'Rekod';const actor=a.archivedByName||a.archivedBy||a.deletedByName||'Pentadbir';const email=a.archivedByEmail||a.deletedByEmail||'';return `<div class="archive-row recycle-item" data-search="${esc([a.type,label,item.alumniCode,item.requestCode,item.reportCode,item.meritCode,actor,email].filter(Boolean).join(' ').toLowerCase())}" data-type="${esc(a.type||'')}"><div><strong>${esc(label)}</strong><div class="small muted">${esc(a.type||'Rekod')} • Dipadam ${esc(formatDateTime(a.archivedAt)||a.archivedAt||'-')}</div><div class="small muted">Oleh: ${esc(actor)}${email?` • ${esc(email)}`:''}</div></div><div><button class="btn btn-primary" onclick="restoreArchived('${a.archiveId}')">Pulihkan</button></div></div>`}).join('');
-}
-function filterRecycleBin(){
-  const q=(document.getElementById('recycleSearch')?.value||'').trim().toLowerCase();
-  const t=document.getElementById('recycleType')?.value||'';
-  document.querySelectorAll('#recycleRows .recycle-item').forEach(el=>{const okQ=!q||(el.dataset.search||'').includes(q);const okT=!t||(el.dataset.type||'')===t;el.style.display=(okQ&&okT)?'grid':'none';});
-}
-
-// Post-render enhancement: Data page archive/recovery + production readiness warning.
-const __v11Render=render;render=function(){ensureInstitutionCodes();__v11Render();if(currentPage==='data'&&isAdmin()){const c=document.getElementById('content');if(c&&!c.querySelector('.v11-archive'))c.insertAdjacentHTML('beforeend',archivePanel())}if(currentPage==='users'&&isAdmin()){const c=document.getElementById('content');if(c&&!c.querySelector('.v11-security'))c.insertAdjacentHTML('beforeend',`<div class="card v11-security" style="margin-top:16px"><div class="card-title">Production Security Gate</div><p class="small muted">UI role, passcode dan localStorage sesuai untuk prototaip sahaja. Sebelum penggunaan rasmi multi-peranti, aktifkan Supabase Auth + Row Level Security (RLS) dan pindahkan CRUD/Storage ke cloud. Service-role key tidak boleh diletakkan dalam HTML.</p><span class="badge pending">Cloud migration required</span></div>`)} };
-
-/* =========================================================
-   ALUMNI SELF-REGISTRATION + SUPABASE AUTH (ADDITIVE PATCH)
-   UI/workflow first. Database persistence/RLS will be connected
-   in the next Supabase SQL step.
-========================================================= */
-
-function alumniSessionEmail(){
-  return (sessionStorage.getItem("laman_legasi_kajai_email")||"").trim().toLowerCase();
-}
-function alumniSessionName(){
-  return (sessionStorage.getItem("laman_legasi_kajai_name")||"").trim();
-}
-function currentAlumniRegistration(){
-  const email=alumniSessionEmail();
-  return (data.alumniRegistrations||[])
-    .filter(x=>(x.submittedByEmail||"").toLowerCase()===email)
-    .sort((a,b)=>String(b.updatedAt||b.submittedAt||"").localeCompare(String(a.updatedAt||a.submittedAt||"")))[0] || null;
-}
-function currentOfficialAlumni(){
-  const email=alumniSessionEmail();
-  return (data.alumni||[]).find(x=>(x.email||"").trim().toLowerCase()===email) || null;
-}
-function alumniRegistrationBadge(status){
-  const map={
-    "Menunggu Pengesahan":"badge-orange",
-    "Perlu Suntingan":"badge-blue",
-    "Diluluskan":"badge-green",
-    "Ditolak":"badge-red"
-  };
-  return `<span class="badge ${map[status]||"badge-gray"}">${esc(status||"Belum dihantar")}</span>`;
-}
-
-function registerAlumni(){
-  closeLogin();
-  openModal("Daftar sebagai Alumni KRK",`
-    <div class="card" style="margin-bottom:14px;background:#f8fafc">
-      <div class="card-title">Sertai Direktori Alumni Kajai</div>
-      <div class="small muted" style="margin-top:6px;line-height:1.6">Cipta akaun untuk menghantar maklumat alumni anda kepada HELAA bagi tujuan semakan dan pengesahan.</div>
-    </div>
-    <button type="button" class="btn" onclick="closeModal();signInWithGoogle('Alumni')" style="width:100%;justify-content:center;margin-bottom:14px"><strong style="font-size:16px">G</strong>&nbsp;&nbsp;Teruskan dengan Google</button>
-    <div style="display:flex;align-items:center;gap:10px;margin:4px 0 14px"><div style="height:1px;background:var(--line);flex:1"></div><span class="small muted">atau daftar dengan e-mel</span><div style="height:1px;background:var(--line);flex:1"></div></div>
-    <form id="alumniAccountRegisterForm" class="form-grid" onsubmit="submitAlumniAccountRegistration(event)">
-      ${inputField("Nama Penuh","registerName","","text",true)}
-      ${inputField("E-mel","registerEmail","","email",true)}
-      ${inputField("Kata Laluan","registerPassword","","password",true)}
-      ${inputField("Sahkan Kata Laluan","registerPassword2","","password",true)}
-      <div class="form-actions"><button class="btn" type="button" onclick="closeModal();openLogin()">Sudah Ada Akaun? Log Masuk</button><button class="btn btn-primary" type="submit">Daftar Akaun Alumni</button></div>
-    </form>`,'Pendaftaran Alumni');
-}
-
-async function submitAlumniAccountRegistration(e){
-  e.preventDefault();
-  const fd=new FormData(e.target);
-  const name=String(fd.get("name")||"").trim();
-  const email=String(fd.get("email")||"").trim().toLowerCase();
-  const password=String(fd.get("password")||"");
-  const confirmPassword=String(fd.get("confirmPassword")||"");
-  if(password!==confirmPassword){ toast("Pengesahan kata laluan tidak sepadan.","error"); return; }
-  if(password.length<8){ toast("Kata laluan mesti sekurang-kurangnya 8 aksara.","error"); return; }
-
-  const btn=e.target.querySelector('button[type="submit"]');
-  if(btn){btn.disabled=true;btn.textContent="Mendaftarkan...";}
-  try{
-    const {data:authData,error}=await supabaseClient.auth.signUp({
-      email,password,
-      options:{data:{full_name:name,requested_role:"Alumni"}}
-    });
-    if(error) throw error;
-    sessionStorage.setItem("laman_legasi_kajai_name",name);
-    closeModal();
-    if(authData?.session){
-      currentRole="Alumni";
-      sessionStorage.setItem(ROLE_KEY,"Alumni");
-      sessionStorage.setItem("laman_legasi_kajai_email",email);
-      sessionStorage.setItem("laman_legasi_kajai_authenticated","1");
-      renderNav(); render();
-      toast("Akaun Alumni berjaya diwujudkan. Sila lengkapkan Profil Saya.","success");
-      go("myAlumniProfile");
-    }else{
-      toast("Akaun berjaya didaftarkan. Semak e-mel pengesahan Supabase, kemudian log masuk sebagai Alumni.","success");
-      setTimeout(()=>openLogin(),500);
-    }
-  }catch(err){
-    console.error(err);
-    toast(err?.message||"Pendaftaran akaun Alumni gagal.","error");
-  }finally{
-    if(btn){btn.disabled=false;btn.textContent="Daftar Akaun Alumni";}
-  }
-}
-
-const __alumniUpdateLoginRequirements=updateLoginRequirements;
-updateLoginRequirements=function(){
-  __alumniUpdateLoginRequirements();
-  const role=document.getElementById("loginRole")?.value||"Pelawat";
-  const pass=document.getElementById("loginPassword");
-  const label=document.getElementById("loginPassLabel");
-  const help=document.getElementById("loginPassHelp");
-  if(role==="Alumni" && pass){
-    pass.required=true;
-    pass.type="password";
-    pass.removeAttribute("inputmode");
-    pass.removeAttribute("maxlength");
-    pass.placeholder="Kata laluan akaun Alumni";
-    if(label) label.textContent="Kata Laluan Alumni";
-    if(help) help.textContent="Gunakan kata laluan akaun Alumni yang didaftarkan melalui Supabase.";
-  }
+  return __pageDashboard()
+    + unitMeritBarChart()
+    + dangerUnitsDashboard()
+    + sdgDashboardStrip();
 };
 
-const __alumniHandleLogin=handleLogin;
-handleLogin=async function(e){
-  const role=document.getElementById("loginRole")?.value||"Pelawat";
-  if(role!=="Alumni") return __alumniHandleLogin(e);
-  e.preventDefault();
-  const email=(document.getElementById("loginEmail")?.value||"").trim().toLowerCase();
-  const password=document.getElementById("loginPassword")?.value||"";
-  const typedName=(document.getElementById("loginName")?.value||"").trim();
-  if(!email||!password){toast("Masukkan e-mel dan kata laluan Alumni.","error");return;}
-  try{
-    const {data:authData,error}=await supabaseClient.auth.signInWithPassword({email,password});
-    if(error) throw error;
-    const metaName=authData?.user?.user_metadata?.full_name||typedName||email.split("@")[0];
-    currentRole="Alumni";
-    sessionStorage.setItem(ROLE_KEY,"Alumni");
-    sessionStorage.setItem("laman_legasi_kajai_email",email);
-    sessionStorage.setItem("laman_legasi_kajai_name",metaName);
-    sessionStorage.setItem("laman_legasi_kajai_authenticated","1");
-    closeLogin(); renderNav(); render();
-    toast("Log masuk Alumni berjaya.","success");
-    go("myAlumniProfile");
-  }catch(err){
-    console.error(err);
-    toast(err?.message||"Log masuk Alumni gagal.","error");
-  }
-};
-
-async function signInWithGoogle(forcedRole=null){
-  const btn=document.getElementById("googleSignInButton");
-  try{
-    const selectedRole=forcedRole || document.getElementById("loginRole")?.value || "Pelawat";
-    if(btn){btn.disabled=true;btn.textContent="Membuka Google…";}
-    sessionStorage.setItem("laman_legasi_kajai_oauth_pending","1");
-    sessionStorage.setItem("laman_legasi_kajai_oauth_role",selectedRole);
-    const redirectTo=window.location.origin+window.location.pathname;
-    const {error}=await supabaseClient.auth.signInWithOAuth({provider:"google",options:{redirectTo}});
-    if(error) throw error;
-  }catch(err){
-    console.error(err);
-    sessionStorage.removeItem("laman_legasi_kajai_oauth_pending");
-    if(btn){btn.disabled=false;btn.innerHTML='<span style="font-weight:800;font-size:16px">G</span> Teruskan dengan Google';}
-    toast(err?.message||"Log masuk Google gagal dimulakan.","error");
-  }
-}
-
-function completeGoogleRoleAccess(role,user){
-  const email=(user?.email||"").trim().toLowerCase();
-  const meta=user?.user_metadata||{};
-  const name=meta.full_name||meta.name||email.split("@")[0]||"Pengguna";
-  currentRole=role;
-  sessionStorage.setItem(ROLE_KEY,role);
-  sessionStorage.setItem("laman_legasi_kajai_email",email);
-  sessionStorage.setItem("laman_legasi_kajai_name",name);
-  sessionStorage.setItem("laman_legasi_kajai_authenticated","1");
-  closeLogin(); renderNav(); render();
-  if(role==="Alumni") go("myAlumniProfile"); else go("dashboard");
-  toast(`Selamat datang, ${name}. Akses ${roleLabel(role)} aktif.`,"success");
-}
-
-function requestGoogleAccessCode(role,user){
-  const isPentadbir=role==="Pentadbir";
-  const expected=isPentadbir?"19711983":"011983";
-  const digits=isPentadbir?8:6;
-  openModal(`Pengesahan ${isPentadbir?"Pentadbir":"Admin"}`,`
-    <form onsubmit="event.preventDefault();verifyGoogleAccessCode('${role}',${isPentadbir?'true':'false'})" class="form-grid">
-      <div class="form-group full"><div class="revision-note">Identiti Google telah disahkan. Masukkan kod akses ${digits} digit untuk meneruskan sebagai <strong>${isPentadbir?"Pentadbir":"Admin / Pasukan HELAA"}</strong>.</div></div>
-      <div class="form-group full"><label>Kod Akses ${digits} Digit</label><input id="googleRoleAccessCode" type="password" inputmode="numeric" maxlength="${digits}" required autocomplete="one-time-code" placeholder="${'•'.repeat(digits)}"></div>
-      <div class="form-actions"><button class="btn" type="button" onclick="cancelGoogleRoleAccess()">Batal</button><button class="btn btn-primary" type="submit">Sahkan Akses</button></div>
-    </form>`,'Keselamatan tambahan');
-  window.__pendingGoogleRoleUser=user;
-  window.__pendingGoogleExpectedCode=expected;
-}
-function verifyGoogleAccessCode(role){
-  const code=(document.getElementById("googleRoleAccessCode")?.value||"").trim();
-  if(code!==window.__pendingGoogleExpectedCode){toast("Kod akses tidak tepat.","error");return;}
-  const user=window.__pendingGoogleRoleUser; closeModal();
-  window.__pendingGoogleRoleUser=null; window.__pendingGoogleExpectedCode=null;
-  completeGoogleRoleAccess(role,user);
-}
-async function cancelGoogleRoleAccess(){
-  closeModal();
-  try{await supabaseClient.auth.signOut();}catch(e){}
-  sessionStorage.removeItem("laman_legasi_kajai_authenticated");
-  currentRole="Pelawat"; renderNav(); render(); openLogin();
-}
-
-async function restoreGoogleOAuthSession(){
-  try{
-    const {data:{session},error}=await supabaseClient.auth.getSession();
-    if(error) throw error;
-    if(!session?.user) return;
-    const role=sessionStorage.getItem("laman_legasi_kajai_oauth_role") || sessionStorage.getItem(ROLE_KEY) || "Pelawat";
-    const wasPending=sessionStorage.getItem("laman_legasi_kajai_oauth_pending")==="1";
-    sessionStorage.removeItem("laman_legasi_kajai_oauth_pending");
-    sessionStorage.removeItem("laman_legasi_kajai_oauth_role");
-    if(!wasPending && sessionStorage.getItem("laman_legasi_kajai_authenticated")==="1") return;
-    if(role==="Pasukan" || role==="Pentadbir") requestGoogleAccessCode(role,session.user);
-    else completeGoogleRoleAccess(role,session.user);
-  }catch(err){console.error("OAuth session restore failed",err);}
-}
-
-supabaseClient.auth.onAuthStateChange((event,session)=>{
-  if((event==="SIGNED_IN" || event==="INITIAL_SESSION") && session?.user){
-    setTimeout(restoreGoogleOAuthSession,0);
-  }
-});
-
-const __alumniLogout=logout;
-logout=async function(){
-  try{ if(currentRole==="Alumni") await supabaseClient.auth.signOut(); }catch(e){ console.warn(e); }
-  return __alumniLogout();
-};
-
-function openAlumniSelfRegistration(){
-  if(!isAlumni()){toast("Sila log masuk menggunakan akaun Alumni.","error");return;}
-  const existing=currentAlumniRegistration();
-  const official=currentOfficialAlumni();
-  if(official){
-    toast("Profil anda telah disahkan dan berada dalam Direktori Alumni.","success");
-    viewAlumni(official.id);
-    return;
-  }
-  if(existing && !["Perlu Suntingan","Ditolak"].includes(existing.status)){
-    toast("Pendaftaran anda sedang/ telah diproses. Borang belum boleh dihantar semula.","error");
-    return;
-  }
-  const a=existing?.changes||{};
-  const email=alumniSessionEmail();
-  const name=a.fullName||alumniSessionName();
-  openModal(existing?"Kemas Kini Pendaftaran Alumni":"Daftar Diri sebagai Alumni KRK",`
-    <form id="alumniSelfForm" class="form-grid" onsubmit="submitAlumniSelfRegistration(event,'${esc(existing?.id||"")}')">
-      <div class="form-group full"><div class="revision-note">
-        Maklumat ini akan dihantar kepada HELAA/Pentadbir untuk semakan. Kod alumni <strong>KRK00001</strong> dan seterusnya hanya dijana selepas pendaftaran diluluskan.
-        ${existing?.adminNote?`<br><br><strong>Catatan semakan:</strong> ${esc(existing.adminNote)}`:""}
-      </div></div>
-      <div class="form-divider">Identiti Alumni</div>
-      ${inputField("Nama Penuh","fullName",name,"text",true)}
-      ${inputField("Nama Samaran","nickname",a.nickname||"")}
-      ${selectField("Jantina","gender",["L","P"],a.gender||"")}
-      ${selectField("Tahun / Batch","batch",yearList(),a.batch||"",true)}
-      ${inputField("Tahun Masuk","entryYear",a.entryYear||"","number")}
-      ${inputField("Tahun Tamat","gradYear",a.gradYear||"","number")}
-      <div class="form-divider">Akademik</div>
-      ${inputField("Fakulti","faculty",a.faculty||"")}
-      ${inputField("Program / Kursus","course",a.course||"")}
-      ${inputField("Sesi / Tahun Pengajian","studySession",a.studySession||"")}
-      <div class="form-divider">Hubungan & Privasi</div>
-      <div class="form-group"><label>E-mel Akaun</label><input name="email" type="email" value="${esc(email)}" readonly class="readonly-status"><small>E-mel ini diambil daripada akaun Alumni yang sedang log masuk.</small></div>
-      ${inputField("No. Telefon","phone",a.phone||"")}
-      ${selectField("Keterlihatan No. Telefon","phoneVisibility",["Dalaman Sahaja","Pasukan Sahaja","Boleh Dipaparkan"],a.phoneVisibility||data.config.privacyDefault)}
-      ${selectField("Keterlihatan E-mel","emailVisibility",["Dalaman Sahaja","Pasukan Sahaja","Boleh Dipaparkan"],a.emailVisibility||data.config.privacyDefault)}
-      ${selectField("Keizinan untuk Dihubungi","contactPermission",["Ya","Tidak","Belum ditentukan"],a.contactPermission||"Belum ditentukan")}
-      ${selectField("Keizinan Gambar Dipaparkan","photoPermission",["Ya","Tidak","Belum ditentukan"],a.photoPermission||"Belum ditentukan")}
-      <div class="form-divider">Kerjaya</div>
-      ${inputField("Jawatan Pekerjaan Terkini","jobTitle",a.jobTitle||"")}
-      ${inputField("Organisasi / Majikan","employer",a.employer||"")}
-      ${selectField("Bidang Pekerjaan","jobField",JOB_FIELDS,a.jobField||"")}
-      ${inputField("Lokasi Semasa (Negeri / Negara)","currentLocation",a.currentLocation||"")}
-      ${inputField("Negara","country",a.country||"")}
-      ${inputField("LinkedIn / Laman Profesional","linkedin",a.linkedin||"")}
-      <div class="form-divider">Legasi Kajai</div>
-      ${inputField("Jawatan di Kajai","kajaiRoles",a.kajaiRoles||"")}
-      ${textareaField("Penglibatan KRK / Aktiviti","activitiesSummary",a.activitiesSummary||"")}
-      ${textareaField("Anugerah / Pencapaian","achievementsSummary",a.achievementsSummary||"")}
-      ${textareaField("Moto Hidup","motto",a.motto||"")}
-      <div class="form-group full"><label>Gambar Alumni</label><input type="file" id="alumniSelfPhoto" accept="image/*"><small>Versi HTML semasa menyimpan gambar secara tempatan dahulu. Supabase Storage akan disambungkan selepas struktur database/RLS siap.</small>${a.photo?`<img src="${a.photo}" style="width:100px;height:100px;object-fit:cover;border-radius:12px;margin-top:8px">`:""}</div>
-      <div class="form-group full"><label>Catatan kepada HELAA/Pentadbir</label><textarea name="selfNote" placeholder="Maklumat tambahan untuk membantu proses pengesahan.">${esc(existing?.selfNote||"")}</textarea></div>
-      <div class="form-actions"><button type="button" class="btn" onclick="closeModal()">Batal</button><button type="submit" class="btn btn-primary">Hantar untuk Pengesahan</button></div>
-    </form>
-  `,"Pendaftaran sendiri Alumni • Menunggu pengesahan HELAA/Pentadbir",true);
-}
-
-async function submitAlumniSelfRegistration(e,id=""){
-  e.preventDefault();
-  if(!isAlumni()) return;
-  const fd=new FormData(e.target);
-  const obj=Object.fromEntries(fd.entries());
-  const file=document.getElementById("alumniSelfPhoto");
-  let photo="";
-  if(file?.files?.[0]) photo=await compressImage(file.files[0]);
-  const old=id?(data.alumniRegistrations||[]).find(x=>x.id===id):null;
-  const changes={
-    ...obj,
-    batch:Number(obj.batch),
-    entryYear:obj.entryYear?Number(obj.entryYear):"",
-    gradYear:obj.gradYear?Number(obj.gradYear):"",
-    email:alumniSessionEmail(),
-    verification:"Belum disahkan",
-    source:"Pendaftaran sendiri Alumni",
-    verifiedBy:"",
-    photo:photo||old?.changes?.photo||""
-  };
-  const actor=currentActor();
-  if(old){
-    old.changes=changes;
-    old.selfNote=obj.selfNote||"";
-    old.status="Menunggu Pengesahan";
-    old.adminNote="";
-    old.updatedAt=now();
-    old.resubmittedAt=now();
-  }else{
-    data.alumniRegistrations=data.alumniRegistrations||[];
-    data.alumniRegistrations.unshift({
-      id:uid("alreg"),
-      type:"alumni_self_registration",
-      status:"Menunggu Pengesahan",
-      changes,
-      selfNote:obj.selfNote||"",
-      submittedBy:actor.name,
-      submittedByEmail:actor.email,
-      submittedByRole:"Alumni",
-      submittedAt:now(),
-      updatedAt:now()
-    });
-  }
-  addNotification({recipientRole:"Pentadbir",title:"Pendaftaran Alumni baharu",message:`${changes.fullName} telah menghantar pendaftaran diri sebagai Alumni KRK.`});
-  audit("Menghantar pendaftaran diri Alumni","Pendaftaran Alumni",old?.id||"");
-  save(); closeModal(); render();
-  toast("Pendaftaran berjaya dihantar untuk pengesahan HELAA/Pentadbir.","success");
-}
-
-function pageMyAlumniProfile(){
-  if(!isAlumni()) return `<div class="card">${empty("♙","Akses Alumni diperlukan","Log masuk menggunakan akaun Alumni untuk mengurus profil sendiri.")}</div>`;
-  const official=currentOfficialAlumni();
-  const reg=currentAlumniRegistration();
-  if(official){
-    return `<div class="page-header"><div><h1 class="page-title">Profil Saya</h1><p class="page-subtitle">Profil Alumni KRK anda telah disahkan.</p></div></div>
-      <div class="card"><div class="card-head"><div><div class="card-title">${esc(official.fullName)}</div><div class="small muted">${esc(official.legacyId||"Kod alumni akan dijana")}</div></div>${alumniRegistrationBadge("Diluluskan")}</div>
-      <div class="detail-grid">${detail("Kod Alumni",official.legacyId||"-")}${detail("Batch",official.batch)}${detail("Program / Kursus",official.course)}${detail("E-mel",official.email)}</div>
-      <div class="form-actions"><button class="btn btn-primary" onclick="viewAlumni('${official.id}')">Lihat Profil Penuh</button><button class="btn" onclick="openAlumniForm('${official.id}')">Cadangkan Kemas Kini</button></div></div>`;
-  }
-  if(!reg){
-    return `<div class="page-header"><div><h1 class="page-title">Profil Saya</h1><p class="page-subtitle">Daftar diri sebagai Alumni Kolej Rahim Kajai.</p></div></div>
-      <div class="card">${empty("♙","Belum ada pendaftaran","Lengkapkan profil anda dan hantar kepada HELAA/Pentadbir untuk pengesahan.")}
-      <div class="form-actions"><button class="btn btn-primary" onclick="openAlumniSelfRegistration()">Daftar Diri sebagai Alumni KRK</button></div></div>`;
-  }
-  return `<div class="page-header"><div><h1 class="page-title">Profil Saya</h1><p class="page-subtitle">Status pendaftaran Alumni KRK anda.</p></div></div>
-    <div class="card"><div class="card-head"><div><div class="card-title">${esc(reg.changes?.fullName||alumniSessionName())}</div><div class="small muted">Dihantar ${dateMY(reg.submittedAt)}</div></div>${alumniRegistrationBadge(reg.status)}</div>
-    ${reg.adminNote?`<div class="revision-note"><strong>Catatan HELAA/Pentadbir:</strong><br>${esc(reg.adminNote)}</div>`:""}
-    <div class="detail-grid">${detail("Batch",reg.changes?.batch)}${detail("Program / Kursus",reg.changes?.course)}${detail("E-mel",reg.submittedByEmail)}</div>
-    ${["Perlu Suntingan","Ditolak"].includes(reg.status)?`<div class="form-actions"><button class="btn btn-primary" onclick="openAlumniSelfRegistration()">Sunting & Hantar Semula</button></div>`:""}
-    </div>`;
-}
-
-function pageAlumniRegistrationReview(){
-  if(!isAdmin()) return "";
-  const rows=(data.alumniRegistrations||[]).slice().sort((a,b)=>String(b.updatedAt||"").localeCompare(String(a.updatedAt||"")));
-  if(!rows.length) return "";
-  return `<div class="card" style="margin-bottom:16px"><div class="card-head"><div><div class="card-title">Pendaftaran Diri Alumni</div><div class="small muted">Semakan pendaftaran yang dihantar melalui akaun Alumni.</div></div><span class="badge badge-orange">${rows.filter(x=>x.status==="Menunggu Pengesahan").length} menunggu</span></div>
-    <div class="table-wrap"><table><thead><tr><th>Alumni</th><th>Batch</th><th>E-mel</th><th>Status</th><th>Tindakan</th></tr></thead><tbody>
-    ${rows.map(x=>`<tr><td><strong>${esc(x.changes?.fullName||"-")}</strong></td><td>${esc(x.changes?.batch||"-")}</td><td>${esc(x.submittedByEmail||"-")}</td><td>${alumniRegistrationBadge(x.status)}</td><td><button class="btn btn-small" onclick="reviewAlumniRegistration('${x.id}')">Semak</button></td></tr>`).join("")}
-    </tbody></table></div></div>`;
-}
-function reviewAlumniRegistration(id){
-  if(!isAdmin()) return;
-  const x=(data.alumniRegistrations||[]).find(v=>v.id===id); if(!x)return;
-  const c=x.changes||{};
-  openModal("Semakan Pendaftaran Alumni",`
-    <div class="card"><div class="detail-grid">${detail("Nama",esc(c.fullName))}${detail("Batch",c.batch)}${detail("E-mel",esc(x.submittedByEmail))}${detail("Kursus",esc(c.course))}${detail("Fakulti",esc(c.faculty))}${detail("Kerjaya",esc(c.jobTitle))}</div></div>
-    <div style="height:14px"></div>
-    <div class="card"><div class="card-title">Status</div><div style="margin-top:10px">${alumniRegistrationBadge(x.status)}</div>${x.selfNote?`<p class="small muted"><strong>Catatan Alumni:</strong> ${esc(x.selfNote)}</p>`:""}</div>
-    ${x.status==="Menunggu Pengesahan"?`<div class="form-actions"><button class="btn btn-danger" onclick="rejectAlumniRegistration('${x.id}')">Tolak</button><button class="btn" onclick="requestAlumniRegistrationRevision('${x.id}')">Minta Suntingan</button><button class="btn btn-primary" onclick="approveAlumniRegistration('${x.id}')">Lulus & Masukkan Direktori</button></div>`:""}
-  `,"HELAA/Pentadbir boleh menyemak sebelum rekod rasmi diwujudkan.",true);
-}
-
-async function loadAlumniRegistrationsFromSupabase(){
-  try{
-    const { data: rows, error } = await supabaseClient
-      .from("alumni_registrations")
-      .select("*")
-      .order("updated_at", { ascending: false });
-
-    if(error) throw error;
-
-    data.alumniRegistrations = (rows || []).map(row => ({
-      id: row.id,
-      userId: row.user_id,
-
-      status: row.status,
-
-      submittedBy: row.full_name || "",
-      submittedByEmail: row.email || "",
-      submittedByRole: "Alumni",
-
-      submittedAt: row.created_at || "",
-      updatedAt: row.updated_at || "",
-
-      selfNote: row.note || "",
-      adminNote: row.admin_note || "",
-
-      changes: {
-        fullName: row.full_name || "",
-        nickname: row.nickname || "",
-        gender: row.gender || "",
-
-        batch: row.batch || "",
-        entryYear: row.entry_year || "",
-        gradYear: row.grad_year || "",
-
-        faculty: row.faculty || "",
-        course: row.course || "",
-        studySession: row.study_session || "",
-
-        email: row.email || "",
-        phone: row.phone || "",
-
-        phoneVisibility: row.phone_visibility || "",
-        emailVisibility: row.email_visibility || "",
-        contactPermission: row.contact_permission || "",
-        photoPermission: row.photo_permission || "",
-
-        jobTitle: row.job_title || "",
-        employer: row.employer || "",
-        jobField: row.job_field || "",
-
-        currentLocation: row.current_location || "",
-        country: row.country || "",
-        linkedin: row.linkedin || "",
-
-        kajaiRoles: row.kajai_roles || "",
-        activitiesSummary: row.activities_summary || "",
-        achievementsSummary: row.achievements_summary || "",
-
-        motto: row.motto || "",
-
-        photo: row.photo_url || ""
-      }
-    }));
-
-    return data.alumniRegistrations;
-
-  }catch(err){
-    console.error(
-      "Failed to load alumni registrations from Supabase:",
-      err
-    );
-
-    throw err;
-  }
-}
-
-async function loadAlumniFromSupabase(){
-  try{
-    const { data: rows, error } = await supabaseClient
-      .from("alumni")
-      .select("*")
-      .order("legacy_id", { ascending: true });
-
-    if(error) throw error;
-
-    data.alumni = (rows || []).map(row => ({
-      id: row.id,
-      legacyId: row.legacy_id || "",
-
-      fullName: row.full_name || "",
-      nickname: row.nickname || "",
-      gender: row.gender || "",
-
-      batch: row.batch || "",
-      entryYear: row.entry_year || "",
-      gradYear: row.grad_year || "",
-
-      faculty: row.faculty || "",
-      course: row.course || "",
-      studySession: row.study_session || "",
-
-      email: row.email || "",
-      phone: row.phone || "",
-
-      phoneVisibility: row.phone_visibility || "",
-      emailVisibility: row.email_visibility || "",
-      contactPermission: row.contact_permission || "",
-      photoPermission: row.photo_permission || "",
-
-      jobTitle: row.job_title || "",
-      employer: row.employer || "",
-      jobField: row.job_field || "",
-
-      currentLocation: row.current_location || "",
-      country: row.country || "",
-      linkedin: row.linkedin || "",
-
-      kajaiRoles: row.kajai_roles || "",
-      activitiesSummary: row.activities_summary || "",
-      achievementsSummary: row.achievements_summary || "",
-
-      motto: row.motto || "",
-      photo: row.photo_url || ""
-    }));
-
-    return data.alumni;
-
-  }catch(err){
-    console.error(
-      "Failed to load Alumni Directory from Supabase:",
-      err
-    );
-
-    throw err;
-  }
-}
-
-async function requestAlumniRegistrationRevision(id){
-  if(!isAdmin()) return;
-
-  if(!confirm("Minta alumni membuat suntingan pada pendaftaran ini?")) return;
-
-  try{
-    const { error } = await supabaseClient.rpc(
-      "request_alumni_revision",
-      {
-        p_registration_id: id
-      }
-    );
-
-    if(error) throw error;
-
-    closeModal();
-
-    toast(
-      "Permohonan telah dikembalikan kepada alumni untuk suntingan.",
-      "success"
-    );
-
-    await loadAlumniRegistrationsFromSupabase();
-    render();
-
-  }catch(err){
-    console.error("Revision request error:", err);
-
-    toast(
-      err?.message || "Gagal meminta suntingan.",
-      "error"
-    );
-  }
-}
-
-
-async function rejectAlumniRegistration(id){
-  if(!isAdmin()) return;
-
-  if(!confirm("Tolak pendaftaran alumni ini?")) return;
-
-  try{
-    const { error } = await supabaseClient.rpc(
-      "reject_alumni_registration",
-      {
-        p_registration_id: id
-      }
-    );
-
-    if(error) throw error;
-
-    closeModal();
-
-    toast(
-      "Pendaftaran alumni telah ditolak.",
-      "success"
-    );
-
-    await loadAlumniRegistrationsFromSupabase();
-    render();
-
-  }catch(err){
-    console.error("Reject registration error:", err);
-
-    toast(
-      err?.message || "Gagal menolak pendaftaran alumni.",
-      "error"
-    );
-  }
-}
-
-
-async function approveAlumniRegistration(id){
-  if(!isAdmin()) return;
-
-  if(!confirm(
-    "Luluskan pendaftaran ini dan masukkan alumni ke Direktori Alumni?"
-  )) return;
-
-  try{
-    const { data: legacyId, error } = await supabaseClient.rpc(
-      "approve_alumni_registration",
-      {
-        p_registration_id: id
-      }
-    );
-
-    if(error) throw error;
-
-    closeModal();
-
-    toast(
-      legacyId
-        ? `Pendaftaran diluluskan. Kod Alumni: ${legacyId}`
-        : "Pendaftaran alumni berjaya diluluskan.",
-      "success"
-    );
-
-    await loadAlumniRegistrationsFromSupabase();
-
-    if(typeof loadAlumniFromSupabase === "function"){
-      await loadAlumniFromSupabase();
-    }
-
-    render();
-
-  }catch(err){
-    console.error("Approve registration error:", err);
-
-    toast(
-      err?.message || "Gagal meluluskan pendaftaran alumni.",
-      "error"
-    );
-  }
-}
-
-/* Show self-registration review inside existing Cadangan & Pengesahan page. */
-const __alumniPageSuggestions=pageSuggestions;
-pageSuggestions=function(){
-  const base=__alumniPageSuggestions();
-  return isAdmin()?pageAlumniRegistrationReview()+base:base;
-};
-
-/* Show/hide Alumni-only navigation while preserving every existing menu item. */
-const __alumniRenderNav=renderNav;
-renderNav=function(){
-  __alumniRenderNav();
-  document.querySelectorAll(".alumni-self-only").forEach(el=>el.classList.toggle("hidden",!isAlumni()));
-};
-
-/* Keep protected admin pages protected and add Alumni profile route. */
-const __alumniGo=go;
-go=function(page){
-  if(page==="myAlumniProfile"&&!isAlumni()){toast("Sila log masuk sebagai Alumni.","error");return;}
-  return __alumniGo(page);
-};
-
-/* Initialize the role-dependent UI after this additive patch loads. */
-updateLoginRequirements();
-renderNav();
-
-
-/* =========================================================
-   ALUMNI SELF-REGISTRATION UX V2
-   - Alumni can start registration directly from Direktori Alumni
-   - Admin/Pentadbir see pending registrations in Cadangan & Pengesahan
-   - Only approved registrations become official Direktori Alumni records
-   - Adds completeness, preview, duplicate warning and clearer status
-========================================================= */
-
-function alumniSelfCompleteness(c={}){
-  const fields=["fullName","batch","faculty","course","email","phone","jobTitle","employer","jobField","currentLocation"];
-  const filled=fields.filter(k=>String(c[k]??"").trim()!=="").length;
-  return Math.round((filled/fields.length)*100);
-}
-function possibleAlumniDuplicates(c={}){
-  const norm=s=>String(s||"").toLowerCase().replace(/[^a-z0-9]/g,"");
-  const n=norm(c.fullName), e=String(c.email||"").trim().toLowerCase();
-  return (data.alumni||[]).filter(a=>{
-    const an=norm(a.fullName), ae=String(a.email||"").trim().toLowerCase();
-    return (e && ae===e) || (n && an && (an===n || an.includes(n) || n.includes(an)));
-  });
-}
-function alumniSelfDirectoryCTA(){
-  if(!isAlumni()) return "";
-  const official=currentOfficialAlumni();
-  const reg=currentAlumniRegistration();
-  if(official){
-    return `<div class="card" style="margin-bottom:16px">
-      <div class="card-head"><div><div class="card-title">Profil Alumni Saya</div>
-      <div class="small muted">Profil anda telah disahkan dan berada dalam Direktori Alumni.</div></div>
-      <span class="badge badge-green">Disahkan</span></div>
-      <div class="form-actions">
-        <button class="btn btn-primary" onclick="viewAlumni('${official.id}')">Lihat Profil Saya</button>
-        <button class="btn" onclick="go('myAlumniProfile')">Urus Profil Saya</button>
-      </div>
-    </div>`;
-  }
-  if(!reg){
-    return `<div class="card" style="margin-bottom:16px">
-      <div class="card-head"><div><div class="card-title">Anda Alumni KRK?</div>
-      <div class="small muted">Daftarkan maklumat diri anda. Rekod hanya akan dipaparkan dalam Direktori selepas disahkan oleh HELAA/Pentadbir.</div></div>
-      <span class="badge badge-blue">Pendaftaran Kendiri</span></div>
-      <div class="form-actions"><button class="btn btn-primary" onclick="openAlumniSelfRegistration()">+ Daftar Maklumat Saya</button></div>
-    </div>`;
-  }
-  return `<div class="card" style="margin-bottom:16px">
-    <div class="card-head"><div><div class="card-title">Pendaftaran Alumni Saya</div>
-    <div class="small muted">Permohonan anda telah direkodkan. Anda boleh menyemak status melalui Profil Saya.</div></div>
-    ${alumniRegistrationBadge(reg.status)}</div>
-    <div class="form-actions"><button class="btn btn-primary" onclick="go('myAlumniProfile')">Semak Status</button>
-    ${["Perlu Suntingan","Ditolak"].includes(reg.status)?`<button class="btn" onclick="openAlumniSelfRegistration()">Sunting & Hantar Semula</button>`:""}</div>
-  </div>`;
-}
-
-/* Insert Alumni CTA at the top of the existing directory without replacing its content. */
-const __v2PageAlumni=pageAlumni;
-pageAlumni=function(){
-  return alumniSelfDirectoryCTA()+__v2PageAlumni();
-};
-
-/* Add a live completeness panel and preview before submitting. */
-const __v2OpenAlumniSelfRegistration=openAlumniSelfRegistration;
-openAlumniSelfRegistration=function(){
-  __v2OpenAlumniSelfRegistration();
-  const form=document.getElementById("alumniSelfForm");
-  if(!form) return;
-  const panel=document.createElement("div");
-  panel.id="alumniSelfCompletenessPanel";
-  panel.className="form-group full";
-  panel.innerHTML=`<div class="card" style="padding:14px">
-    <div style="display:flex;justify-content:space-between;gap:12px;align-items:center">
-      <div><strong>Kelengkapan Profil</strong><div class="small muted">Lengkapkan maklumat utama supaya HELAA lebih mudah membuat pengesahan.</div></div>
-      <strong id="alumniSelfCompletenessText">0%</strong>
-    </div>
-    <div style="height:8px;background:var(--line,#e5e7eb);border-radius:999px;margin-top:10px;overflow:hidden">
-      <div id="alumniSelfCompletenessBar" style="height:100%;width:0%;background:currentColor;border-radius:999px;transition:width .2s"></div>
-    </div>
-    <div id="alumniSelfDuplicateWarning" style="margin-top:10px"></div>
-  </div>`;
-  form.insertBefore(panel,form.firstChild.nextSibling);
-
-  const actions=form.querySelector(".form-actions");
-  if(actions){
-    const preview=document.createElement("button");
-    preview.type="button"; preview.className="btn"; preview.textContent="Pratonton";
-    preview.onclick=previewAlumniSelfRegistration;
-    actions.insertBefore(preview,actions.lastElementChild);
-  }
-  form.addEventListener("input",updateAlumniSelfCompleteness);
-  form.addEventListener("change",updateAlumniSelfCompleteness);
-  updateAlumniSelfCompleteness();
-};
-function currentAlumniSelfDraft(){
-  const form=document.getElementById("alumniSelfForm");
-  if(!form) return {};
-  const fd=new FormData(form);
-  return Object.fromEntries(fd.entries());
-}
-function updateAlumniSelfCompleteness(){
-  const c=currentAlumniSelfDraft();
-  const pct=alumniSelfCompleteness(c);
-  const t=document.getElementById("alumniSelfCompletenessText");
-  const b=document.getElementById("alumniSelfCompletenessBar");
-  if(t)t.textContent=pct+"%"; if(b)b.style.width=pct+"%";
-  const w=document.getElementById("alumniSelfDuplicateWarning");
-  if(w){
-    const d=possibleAlumniDuplicates(c);
-    w.innerHTML=d.length?`<div class="revision-note"><strong>Semakan duplikasi:</strong> ${d.length} rekod sedia ada berpotensi sepadan. HELAA/Pentadbir akan menyemak sebelum meluluskan.</div>`:"";
-  }
-}
-function previewAlumniSelfRegistration(){
-  const c=currentAlumniSelfDraft();
-  openModal("Pratonton Pendaftaran Alumni",`
-    <div class="card">
-      <div class="card-head"><div><div class="card-title">${esc(c.fullName||"Nama belum diisi")}</div>
-      <div class="small muted">Pratonton sebelum dihantar untuk pengesahan</div></div>
-      <span class="badge badge-blue">${alumniSelfCompleteness(c)}% lengkap</span></div>
-      <div class="detail-grid">
-        ${detail("Batch",c.batch||"-")}
-        ${detail("Fakulti",c.faculty||"-")}
-        ${detail("Program / Kursus",c.course||"-")}
-        ${detail("E-mel",c.email||alumniSessionEmail()||"-")}
-        ${detail("Jawatan",c.jobTitle||"-")}
-        ${detail("Organisasi",c.employer||"-")}
-        ${detail("Bidang",c.jobField||"-")}
-        ${detail("Lokasi",c.currentLocation||"-")}
-      </div>
-      <div class="revision-note" style="margin-top:12px">Pratonton ini belum menghantar data. Tutup pratonton untuk kembali ke borang.</div>
-    </div>
-  `,"Pendaftaran Kendiri Alumni",true);
-}
-
-/* Improve Admin/Pentadbir review card: explicitly distinguish pending submission from official directory. */
-const __v2ReviewAlumniRegistration=reviewAlumniRegistration;
-reviewAlumniRegistration=function(id){
-  __v2ReviewAlumniRegistration(id);
-  const body=document.querySelector("#modalBody");
-  if(!body) return;
-  const x=(data.alumniRegistrations||[]).find(v=>v.id===id);
-  if(!x) return;
-  const info=document.createElement("div");
-  info.className="revision-note";
-  info.style.marginBottom="14px";
-  info.innerHTML=x.status==="Diluluskan"
-    ? `<strong>Rekod rasmi:</strong> Pendaftaran ini telah diluluskan dan profil Alumni telah dimasukkan ke Direktori Alumni.`
-    : `<strong>Belum menjadi rekod rasmi.</strong> Admin/Pentadbir boleh melihat submission ini untuk semakan, tetapi ia belum dipaparkan sebagai profil rasmi dalam Direktori Alumni sehingga diluluskan.`;
-  body.insertBefore(info,body.firstChild);
-};
-
-/* Make pending self-registration visible in Admin/Pentadbir Alumni directory as a separate review queue,
-   without mixing it into official alumni records. */
-function adminPendingAlumniDirectoryQueue(){
-  if(!isAdmin()) return "";
-  const pending=(data.alumniRegistrations||[]).filter(x=>x.status!=="Diluluskan");
-  if(!pending.length) return "";
-  return `<div class="card" style="margin-bottom:16px">
-    <div class="card-head"><div><div class="card-title">Pendaftaran Alumni Menunggu Semakan</div>
-    <div class="small muted">Submission kendiri Alumni. Rekod ini belum menjadi sebahagian Direktori rasmi.</div></div>
-    <span class="badge badge-orange">${pending.length} rekod</span></div>
-    <div class="table-wrap"><table><thead><tr><th>Nama</th><th>Batch</th><th>E-mel</th><th>Kelengkapan</th><th>Status</th><th></th></tr></thead><tbody>
-    ${pending.slice(0,10).map(x=>`<tr>
-      <td><strong>${esc(x.changes?.fullName||"-")}</strong></td>
-      <td>${esc(x.changes?.batch||"-")}</td>
-      <td>${esc(x.submittedByEmail||"-")}</td>
-      <td>${alumniSelfCompleteness(x.changes||{})}%</td>
-      <td>${alumniRegistrationBadge(x.status)}</td>
-      <td><button class="btn btn-small" onclick="reviewAlumniRegistration('${x.id}')">Semak</button></td>
-    </tr>`).join("")}
-    </tbody></table></div>
-    ${pending.length>10?`<div class="small muted" style="margin-top:10px">Menunjukkan 10 rekod terbaharu. Lihat Cadangan & Pengesahan untuk senarai penuh.</div>`:""}
-  </div>`;
-}
-const __v2PageAlumniWithCTA=pageAlumni;
-pageAlumni=function(){
-  return adminPendingAlumniDirectoryQueue()+__v2PageAlumniWithCTA();
-};
-
-
-/* ===== HUBUNGI KAMI ===== */
-function contactSave(kind,payload){
-  const key="laman_legasi_kajai_contact_submissions";
-  const arr=JSON.parse(localStorage.getItem(key)||"[]");
-  arr.unshift({id:"HUB"+String(Date.now()).slice(-8),kind,status:"Baharu",createdAt:new Date().toISOString(),...payload});
-  localStorage.setItem(key,JSON.stringify(arr));
-  toast("Terima kasih! Maklumat anda telah berjaya dihantar kepada pentadbir Laman Legasi Kajai.","success");
-}
-function formObject(form){return Object.fromEntries(new FormData(form).entries());}
-function submitContactInfo(e,kind){e.preventDefault();contactSave(kind,formObject(e.target));e.target.reset();}
-function scrollToContactHelAA(){document.getElementById("helaaDirectory")?.scrollIntoView({behavior:"smooth",block:"start"});}
-function openCollaborationForm(){
- openModal("Cadangkan Kerjasama",`<form class="form-grid" onsubmit="submitContactInfo(event,'Kerjasama');closeModal()">
- ${inputField("Nama Individu / Wakil","nama","","text",true)}${inputField("Nama Organisasi / Institusi","organisasi","","text",true)}${inputField("Jawatan","jawatan","")}${inputField("E-mel","email","","email",true)}${inputField("No. Telefon","telefon","")}
- ${selectField("Jenis Kerjasama","jenis",["CSR","Akademik","Industri","Alumni","Penajaan","Antarabangsa","Program / Acara","Lain-lain"],"",true)}${inputField("Tajuk Cadangan","tajuk","","text",true)}
- <div class="form-group full"><label>Penerangan Cadangan Kerjasama</label><textarea name="penerangan" required></textarea></div><div class="form-actions"><button class="btn btn-primary">Hantar Cadangan</button></div></form>`,`Jaringan & Kerjasama`,true);
-}
-function pageContact(){return `
- <div class="page-header"><div><h1 class="page-title">Hubungi Kami</h1><p class="page-subtitle">Terdapat sebarang pertanyaan, maklumat berkaitan Laman Legasi Alumni, alumni dan legasi Kajai, atau ingin menjalinkan kerjasama bersama Kolej Rahim Kajai? Hubungi kami melalui saluran berikut.</p></div></div>
- <div class="grid grid-2">
-  <div class="card"><div class="card-title">Maklumat Rasmi Kolej</div><p><strong>Kolej Rahim Kajai, Universiti Kebangsaan Malaysia (KRK UKM)</strong></p><p class="small"><strong>Alamat</strong><br>Kolej Rahim Kajai<br>Universiti Kebangsaan Malaysia<br>43600 UKM Bangi<br>Selangor Darul Ehsan, Malaysia</p><p class="small"><strong>Telefon Pejabat</strong><br>03-8921 3103</p><p class="small"><strong>E-mel Rasmi</strong><br>pgtkrk@ukm.edu.my</p></div>
-  <div class="card"><div class="card-title">Waktu Operasi Pejabat</div><p class="small"><strong>Isnin – Khamis</strong><br>8.00 pagi – 1.00 petang<br>2.00 petang – 5.00 petang</p><p class="small"><strong>Jumaat</strong><br>8.00 pagi – 12.15 tengah hari<br>2.45 petang – 5.00 petang</p><p class="small"><strong>Sabtu, Ahad & Cuti Umum</strong><br>Tutup (tertakluk kepada pekeliling semasa)</p></div>
- </div>
- <div class="card" id="helaaDirectory" style="margin-top:16px"><div class="card-head"><div><div class="card-title">Direktori Hubungan HELAA</div><div class="small muted">Biro Hal Ehwal Luar, Alumni dan Antarabangsa</div></div></div><div class="grid grid-3">
-  <div class="detail-item"><div class="detail-label">Felo HELAA</div><div class="detail-value"><strong>Felo Yamin</strong><br>p159289@siswa.ukm.edu.my<br>+60 12-619 2513</div></div>
-  <div class="detail-item"><div class="detail-label">MEP HELAA</div><div class="detail-value"><strong>MEP Fatihah</strong><br>a219513@siswa.ukm.edu.my<br>+60 17-205 2884</div></div>
-  <div class="detail-item"><div class="detail-label">Timbalan Ketua Pengarah Eksekutif 1</div><div class="detail-value"><strong>Amirah</strong><br>Pembangunan & Legasi, Biro HELAA<br>a218720@siswa.ukm.edu.my</div></div>
- </div></div>
- <div class="card" style="margin-top:16px"><div class="card-title">Bantu Kami Melengkapkan Legasi Kajai</div><p class="small muted">Anda merupakan alumni KRK atau mempunyai maklumat mengenai mantan kepimpinan, alumni lain atau sejarah Kolej Rahim Kajai sejak 1983? Sumbangan anda amat dihargai untuk melengkapkan, mengesahkan dan memelihara rekod legasi Kajai.</p>
- <form class="form-grid" onsubmit="submitContactInfo(event,'Maklumat Legasi')"><div class="form-group"><label>Jenis Maklumat</label><select name="jenis" required><option>Memberi Maklumat Baharu</option><option>Melaporkan Kesilapan Maklumat</option></select></div>${inputField("Nama Pengirim","nama","","text",true)}${inputField("E-mel / No. Telefon","hubungan","","text",true)}<div class="form-group"><label>Kategori Maklumat</label><select name="kategori" required>${["Mantan Kepimpinan","Alumni","Sejarah Kolej","Program / Aktiviti","Gambar / Bahan Arkib","Lain-lain"].map(x=>`<option>${x}</option>`).join("")}</select></div>${inputField("Individu / Rekod Berkaitan","rekod","")}<div class="form-group full"><label>Maklumat / Pembetulan yang Ingin Dikemukakan</label><textarea name="maklumat" required></textarea></div>${inputField("Sumber / Rujukan Maklumat (jika ada)","sumber","")}<div class="form-group"><label>Muat Naik Bahan Sokongan (jika ada)</label><input type="file" name="bahan"></div><div class="form-actions"><button class="btn btn-primary">Hantar Maklumat</button></div></form></div>
- <div class="card" style="margin-top:16px"><div class="card-title">Alumni Kajai</div><p class="small muted">Teruskan hubungan anda bersama Kajai dan bantu kami membina rekod alumni yang lebih lengkap.</p><div class="quick-actions">
-  <button class="quick-action" onclick="go('myAlumniProfile')"><strong>Daftar / Kemas Kini Maklumat Alumni</strong><span>Profil, kerjaya dan maklumat terkini.</span></button><button class="quick-action" onclick="go('achievements')"><strong>Kongsi Pencapaian</strong><span>Akademik, kerjaya, profesional dan komuniti.</span></button><button class="quick-action" onclick="go('gallery')"><strong>Sumbang Bahan Legasi</strong><span>Gambar, penerbitan, memorabilia dan bahan sejarah.</span></button><button class="quick-action" onclick="scrollToContactHelAA()"><strong>Hubungi HELAA</strong><span>Kembali ke direktori hubungan HELAA.</span></button></div>
- <hr style="border:0;border-top:1px solid var(--line);margin:20px 0"><div class="card-title">Cadangkan Program Alumni</div><form class="form-grid" onsubmit="submitContactInfo(event,'Cadangan Program Alumni')">${inputField("Nama","nama","","text",true)}${inputField("Tahun / Generasi di Kajai (jika berkenaan)","generasi","")}${inputField("Nama Program yang Dicadangkan","program","","text",true)}${inputField("Kategori Program","kategori","")}<div class="form-group full"><label>Cadangan / Penerangan Ringkas</label><textarea name="cadangan" required></textarea></div><div class="form-actions"><button class="btn btn-primary">Hantar Cadangan</button></div></form></div>
- <div class="card" style="margin-top:16px"><div class="card-head"><div><div class="card-title">Jaringan & Kerjasama</div><div class="small muted">Jalin Kerjasama Bersama Kajai</div></div></div><p class="small">Kolej Rahim Kajai mengalu-alukan peluang jaringan dan kerjasama dalam CSR, kolaborasi universiti, syarikat dan industri, NGO dan komuniti, institusi pendidikan, jaringan alumni, penajaan dan program antarabangsa.</p><div class="action-row"><button class="btn" onclick="scrollToContactHelAA()">Hubungi HELAA</button><button class="btn btn-primary" onclick="openCollaborationForm()">Cadangkan Kerjasama</button></div></div>
- <div class="card" style="margin-top:16px"><div class="card-title">Borang Hubungi Kami</div><p class="small muted">Tidak menemui saluran yang sesuai di atas? Hantarkan pertanyaan anda melalui borang berikut.</p><form class="form-grid" onsubmit="submitContactInfo(event,'Pertanyaan Umum')">${inputField("Nama","nama","","text",true)}${inputField("E-mel","email","","email",true)}${inputField("No. Telefon (Pilihan)","telefon","")}<div class="form-group"><label>Kategori Pertanyaan</label><select name="kategori">${["Pertanyaan Umum","Alumni","Pembetulan Maklumat Legasi","Jaringan & Kerjasama","Media / Publisiti","Program","Lain-lain"].map(x=>`<option>${x}</option>`).join("")}</select></div>${inputField("Subjek","subjek","","text",true)}<div class="form-group full"><label>Mesej</label><textarea name="mesej" required></textarea></div><div class="form-actions"><button class="btn btn-primary">Hantar</button></div></form></div>
- <div class="card" style="margin-top:16px"><div class="card-title">Ikuti Media Sosial Kolej Rahim Kajai</div><div class="detail-grid" style="margin-top:14px"><div class="detail-item"><div class="detail-label">Instagram</div><div class="detail-value">Kolej Rahim Kajai — @kolejrahimkajai<br>HELAA KRK — @helaa_krk</div></div><div class="detail-item"><div class="detail-label">TikTok</div><div class="detail-value">Kolej Rahim Kajai — @kolejrahimkajai<br>HELAA KRK — @helaa_krk</div></div><div class="detail-item"><div class="detail-label">Facebook / YouTube</div><div class="detail-value">Kolej Rahim Kajai - UKM KRK<br>KajaiTV</div></div></div></div>
- <div class="hero" style="margin-top:16px"><h1>Laman Legasi Kajai</h1><p>Memelihara sejarah. Menghubungkan generasi. Meneruskan legasi.</p></div>`;}
-
-/* =========================================================
-   HARD AUTHENTICATION GATE — 2026-09-25
-   Website content remains hidden until this browser session has
-   completed the selected access flow. Supabase/RLS remains the
-   authority for protected cloud data.
-========================================================= */
-function hasLegasiAccess(){
-  return sessionStorage.getItem("laman_legasi_kajai_authenticated")==="1";
-}
-function lockLegasiApp(){
-  document.documentElement.classList.remove("auth-access-granted");
-  const modal=document.getElementById("authBackdrop");
-  if(modal) modal.classList.remove("hidden");
-}
-function unlockLegasiApp(){
-  document.documentElement.classList.add("auth-access-granted");
-  const modal=document.getElementById("authBackdrop");
-  if(modal) modal.classList.add("hidden");
-}
-
-// Login window cannot be dismissed while the visitor has no access.
-const __hardGateCloseLogin=closeLogin;
-closeLogin=function(){
-  if(!hasLegasiAccess()){
-    document.getElementById("authBackdrop")?.classList.remove("hidden");
-    return;
-  }
-  __hardGateCloseLogin();
-};
-authBackdropClose=function(e){
-  if(hasLegasiAccess() && e.target.id==="authBackdrop") closeLogin();
-};
-
-// Any successful legacy/Supabase login writes the access marker first;
-// these wrappers then reveal the application.
-const __hardGateRender=render;
-render=function(){
-  if(hasLegasiAccess()) unlockLegasiApp();
-  else lockLegasiApp();
-  return __hardGateRender();
-};
-
-// A completed Google role flow is also a successful access grant.
-const __hardGateCompleteGoogleRoleAccess=completeGoogleRoleAccess;
-completeGoogleRoleAccess=function(role,user){
-  const result=__hardGateCompleteGoogleRoleAccess(role,user);
-  unlockLegasiApp();
-  return result;
-};
-
-// Registration with an immediate Supabase session should reveal the app
-// through render(); registrations awaiting e-mail confirmation stay locked.
-
-// Sign out from Supabase for every role, clear local access, and lock first.
-const __hardGateLogout=logout;
-logout=async function(){
-  lockLegasiApp();
-  try{ await supabaseClient.auth.signOut(); }catch(e){ console.warn("Supabase sign-out:",e); }
-  const result=await __hardGateLogout();
-  lockLegasiApp();
-  return result;
-};
-
-// Replace the earlier startup behaviour with a strict gate after DOM exists.
-document.addEventListener("DOMContentLoaded",()=>{
-  if(hasLegasiAccess()) unlockLegasiApp();
-  else lockLegasiApp();
-});
-
-render();
-restoreGoogleOAuthSession();
 </script>
 
 </body>
