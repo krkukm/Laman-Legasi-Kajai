@@ -4035,7 +4035,7 @@ style="width:100px;height:100px;object-fit:cover;border-radius:12px">
              
 <div class="form-group full">
   <label>CV / Resume Alumni</label>
-  <input type="file" name="alumniCV" accept=".pdf,.doc,.docx">
+  <input id="suggestedAlumniCV" type="file" name="alumniCV" accept=".pdf,.doc,.docx">
   <div class="muted" style="margin-top:6px">Muat naik CV atau Resume alumni sebagai dokumen sokongan. Format: PDF, DOC atau DOCX.</div>
 </div>
 Pengesahan & Penafian Pengendalian Maklumat
@@ -10132,7 +10132,14 @@ function openAlumniSelfRegistration(){
       ${textareaField("Anugerah / Pencapaian","achievementsSummary",a.achievementsSummary||"")}
       ${textareaField("Moto Hidup","motto",a.motto||"")}
       <div class="form-group full"><label>Gambar Alumni</label><input type="file" id="alumniSelfPhoto" accept="image/*"><small>Versi HTML semasa menyimpan gambar secara tempatan dahulu. Supabase Storage akan disambungkan selepas struktur database/RLS siap.</small>${a.photo?`<img src="${a.photo}" style="width:100px;height:100px;object-fit:cover;border-radius:12px;margin-top:8px">`:""}</div>
-      <div class="form-group full"><label>Catatan kepada HELAA/Pentadbir</label><textarea name="selfNote" placeholder="Maklumat tambahan untuk membantu proses pengesahan.">${esc(existing?.selfNote||"")}</textarea></div>
+      
+<div class="form-group full alumni-cv-upload">
+  <label>CV / Resume Alumni</label>
+  <input type="file" id="selfAlumniCV" name="alumniCV" accept=".pdf,.doc,.docx">
+  <small>Muat naik CV atau Resume sebagai dokumen sokongan. Format: PDF, DOC atau DOCX.</small>
+</div>
+
+<div class="form-group full"><label>Catatan kepada HELAA/Pentadbir</label><textarea name="selfNote" placeholder="Maklumat tambahan untuk membantu proses pengesahan.">${esc(existing?.selfNote||"")}</textarea></div>
 
       <div class="form-divider">Persetujuan & Privasi</div>
       <div class="form-group full">
