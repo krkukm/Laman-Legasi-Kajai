@@ -1458,6 +1458,18 @@ input,select,textarea{accent-color:#7b1b3a}
 .brand-logo,.hero-identity img{object-fit:contain}
 
 </style>
+
+<style id="alumni-registration-mobile-fix">
+@media (max-width: 760px){
+  .education-row{grid-template-columns:1fr!important;}
+  .education-row .btn{width:100%;}
+  .modal,.auth-modal{width:calc(100vw - 24px)!important;max-width:calc(100vw - 24px)!important;max-height:calc(100dvh - 24px)!important;margin:12px!important;}
+  .modal-body,.auth-modal{overscroll-behavior:contain;}
+}
+@media (max-width: 420px){
+  .modal,.auth-modal{width:calc(100vw - 12px)!important;max-width:calc(100vw - 12px)!important;margin:6px!important;}
+}
+</style>
 </head>
 
 <script>
@@ -3510,6 +3522,7 @@ function openAlumniDetail(id){
   ${detail("LinkedIn / Profesional",a.linkedin)}
 
  </div>
+ ${Array.isArray(a.educationHistory)&&a.educationHistory.length?`<div style="margin-top:18px"><div style="font-weight:800;margin-bottom:10px">Sejarah Pendidikan</div><div class="table-wrap"><table><thead><tr><th>Tahap</th><th>Institusi</th><th>Bidang / Program</th><th>Tahun Tamat</th></tr></thead><tbody>${a.educationHistory.map(x=>`<tr><td>${esc(x.level||"-")}</td><td>${esc(x.institution||"-")}</td><td>${esc(x.field||"-")}</td><td>${esc(x.year||"-")}</td></tr>`).join("")}</tbody></table></div></div>`:""}
 
 </div>
 
@@ -3701,6 +3714,46 @@ function detail(label,value){
    ALUMNI FORM
 ========================================================= */
 
+function educationHistoryRows(history=[],prefix="alumniEdu"){
+  const rows=Array.isArray(history)&&history.length?history:[{level:"",institution:"",field:"",year:""}];
+  return rows.map((r,i)=>`<div class="education-row" style="display:grid;grid-template-columns:1fr 1.35fr 1.35fr .75fr auto;gap:10px;align-items:end;margin-bottom:10px">
+    <div class="form-group" style="margin:0"><label>Tahap</label><select class="edu-level"><option value="">-- Pilih --</option>${["SPM / Setaraf","STPM / Matrikulasi / Asasi / Diploma","Ijazah Sarjana Muda","Sarjana (Master)","PhD / Doktor Falsafah","Lain-lain"].map(x=>`<option value="${esc(x)}" ${r.level===x?"selected":""}>${esc(x)}</option>`).join("")}</select></div>
+    <div class="form-group" style="margin:0"><label>Institusi</label><input class="edu-institution" value="${esc(r.institution||"")}" placeholder="Nama sekolah / universiti"></div>
+    <div class="form-group" style="margin:0"><label>Bidang / Program</label><input class="edu-field" value="${esc(r.field||"")}" placeholder="Contoh: Sains Alam Sekitar"></div>
+    <div class="form-group" style="margin:0"><label>Tahun Tamat</label><input class="edu-year" type="number" min="1950" max="2100" value="${esc(r.year||"")}" placeholder="2026"></div>
+    <button type="button" class="btn btn-small" onclick="removeEducationRow(this)" aria-label="Buang rekod pendidikan">Buang</button>
+  </div>`).join("");
+}
+function addEducationRow(containerId){
+  const box=document.getElementById(containerId); if(!box) return;
+  const wrap=document.createElement("div");
+  wrap.innerHTML=educationHistoryRows([]);
+  box.appendChild(wrap.firstElementChild);
+}
+function removeEducationRow(btn){
+  const row=btn?.closest(".education-row");
+  const box=row?.parentElement;
+  if(!row||!box) return;
+  if(box.querySelectorAll(".education-row").length===1){
+    row.querySelectorAll("input").forEach(x=>x.value="");
+    row.querySelectorAll("select").forEach(x=>x.value="");
+    return;
+  }
+  row.remove();
+}
+function collectEducationHistory(containerId){
+  const box=document.getElementById(containerId); if(!box) return [];
+  return [...box.querySelectorAll(".education-row")].map(row=>({
+    level:row.querySelector(".edu-level")?.value||"",
+    institution:row.querySelector(".edu-institution")?.value.trim()||"",
+    field:row.querySelector(".edu-field")?.value.trim()||"",
+    year:row.querySelector(".edu-year")?.value||""
+  })).filter(x=>x.level||x.institution||x.field||x.year);
+}
+function educationHistoryBlock(history=[],containerId="alumniEducationRows"){
+  return `<div class="form-group full"><label>Maklumat Pendidikan</label><small style="display:block;margin-bottom:10px">Senaraikan sejarah pendidikan anda daripada SPM / setaraf hingga kelayakan tertinggi seperti Diploma, Ijazah, Sarjana atau PhD.</small><div id="${containerId}">${educationHistoryRows(history)}</div><button type="button" class="btn btn-small" onclick="addEducationRow('${containerId}')">+ Tambah Pendidikan</button></div>`;
+}
+
 function openAlumniForm(id=""){
 
     const existing=id ? getAlumni(id) : null;
@@ -3753,6 +3806,7 @@ ${inputField("Tahun Tamat","gradYear",a.gradYear,"number")}
 ${inputField("Fakulti","faculty",a.faculty)}
 ${inputField("Program / Kursus","course",a.course)}
 ${inputField("Sesi / Tahun Pengajian","studySession",a.studySession)}
+${educationHistoryBlock(a.educationHistory||[],"alumniEducationRows")}
 
 <div class="form-divider">
  Hubungan & Privasi
@@ -4025,6 +4079,7 @@ async function submitAlumniForm(e,id){
 
     const newObj={
       ...obj,
+      educationHistory:collectEducationHistory("alumniEducationRows"),
       batch:Number(obj.batch),
       entryYear:obj.entryYear ? Number(obj.entryYear):"",
       gradYear:obj.gradYear ? Number(obj.gradYear):"",
@@ -9699,7 +9754,10 @@ function alumniRegistrationBadge(status){
 }
 
 function registerAlumni(){
-  closeLogin();
+  // Pendaftaran mesti boleh dibuka walaupun hard authentication gate sedang aktif.
+  // Ini hanya menyembunyikan modal log masuk; ia TIDAK memberikan akses ke aplikasi.
+  const authGate=document.getElementById("authBackdrop");
+  if(authGate) authGate.classList.add("hidden");
   openModal("Daftar sebagai Alumni KRK",`
     <div class="card" style="margin-bottom:14px;background:#f8fafc">
       <div class="card-title">Sertai Direktori Alumni Kajai</div>
@@ -9920,6 +9978,7 @@ function openAlumniSelfRegistration(){
       ${inputField("Fakulti","faculty",a.faculty||"")}
       ${inputField("Program / Kursus","course",a.course||"")}
       ${inputField("Sesi / Tahun Pengajian","studySession",a.studySession||"")}
+      ${educationHistoryBlock(a.educationHistory||[],"alumniSelfEducationRows")}
       <div class="form-divider">Hubungan & Privasi</div>
       <div class="form-group"><label>E-mel Akaun</label><input name="email" type="email" value="${esc(email)}" readonly class="readonly-status"><small>E-mel ini diambil daripada akaun Alumni yang sedang log masuk.</small></div>
       ${inputField("No. Telefon","phone",a.phone||"")}
@@ -9985,6 +10044,7 @@ async function submitAlumniSelfRegistration(e,id=""){
   const old=id?(data.alumniRegistrations||[]).find(x=>x.id===id):null;
   const changes={
     ...obj,
+    educationHistory:collectEducationHistory("alumniSelfEducationRows"),
     batch:Number(obj.batch),
     entryYear:obj.entryYear?Number(obj.entryYear):"",
     gradYear:obj.gradYear?Number(obj.gradYear):"",
