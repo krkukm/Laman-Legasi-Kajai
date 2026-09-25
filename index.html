@@ -3879,30 +3879,38 @@ style="width:100px;height:100px;object-fit:cover;border-radius:12px">
 
 
        ${
-         isAdmin()
+         (currentRole==="Pasukan" || currentRole==="Pentadbir")
          ?
          `
            <div class="form-divider">
-             Pengesahan Pentadbir
+             Pengesahan & Penafian Pengendalian Maklumat
            </div>
 
            <div class="form-group full" style="padding:16px;border:1px solid var(--line);border-radius:14px;background:#fffaf7">
-             <div style="font-weight:800;margin-bottom:10px">Pengesahan Pengendalian Maklumat Alumni</div>
-             <div class="small muted" style="line-height:1.65;margin-bottom:12px">
-               Dengan mengemukakan rekod ini, saya mengesahkan bahawa:
-             </div>
-             <ul class="small muted" style="margin:0 0 14px 18px;padding:0;line-height:1.7">
-               <li>Maklumat yang dimasukkan adalah berdasarkan maklumat yang diberikan oleh alumni berkenaan, rekod rasmi/sedia ada, atau sumber yang munasabah untuk tujuan dokumentasi alumni.</li>
-               <li>Saya akan memastikan maklumat peribadi alumni digunakan hanya bagi tujuan pengurusan rekod, dokumentasi, pengesahan dan urusan rasmi berkaitan alumni Kolej Rahim Kajai.</li>
-               <li>Saya tidak akan menyalin, menyebarkan, berkongsi atau menggunakan nombor telefon, alamat e-mel atau maklumat terhad alumni bagi tujuan peribadi atau kepada pihak yang tidak diberi kuasa.</li>
-               <li>Alumni berkenaan telah dimaklumkan, atau kebenaran yang sewajarnya telah diperoleh, bagi maklumat yang akan dipaparkan kepada umum termasuk nama, tahun/batch di Kajai, kerjaya terkini dan maklumat profil yang berkaitan.</li>
-               <li>Saya akan menghormati sebarang permintaan alumni untuk mengemas kini, membetulkan atau mengehadkan paparan maklumat mereka, tertakluk kepada pengurusan rekod Laman Legasi Kajai.</li>
-             </ul>
+             <div style="font-weight:800;margin-bottom:10px">Dengan mengemukakan rekod ini, saya mengesahkan bahawa:</div>
 
-             <label style="display:flex;align-items:flex-start;gap:10px;font-weight:700;line-height:1.5;cursor:pointer">
-               <input type="checkbox" id="adminAlumniConfirmation" required style="width:auto;margin-top:3px;flex:0 0 auto">
-               <span>Saya telah membaca, memahami dan bersetuju dengan Pengesahan Pentadbir di atas serta bertanggungjawab terhadap pengendalian maklumat yang saya masukkan.</span>
-             </label>
+             ${[
+               "Maklumat yang dimasukkan adalah berdasarkan maklumat yang diberikan oleh alumni berkenaan, rekod rasmi/sedia ada, atau sumber yang munasabah untuk tujuan dokumentasi alumni.",
+               "Saya akan memastikan maklumat peribadi alumni digunakan hanya bagi tujuan pengurusan rekod, dokumentasi, pengesahan dan urusan rasmi berkaitan alumni Kolej Rahim Kajai.",
+               "Saya tidak akan menyalin, menyebarkan, berkongsi atau menggunakan nombor telefon, alamat e-mel atau maklumat terhad alumni bagi tujuan peribadi atau kepada pihak yang tidak diberi kuasa.",
+               "Alumni berkenaan telah dimaklumkan, atau kebenaran yang sewajarnya telah diperoleh, bagi maklumat yang akan dipaparkan kepada umum termasuk nama, tahun/batch di Kajai, kerjaya terkini dan maklumat profil yang berkaitan.",
+               "Saya akan menghormati sebarang permintaan alumni untuk mengemas kini, membetulkan atau mengehadkan paparan maklumat mereka, tertakluk kepada pengurusan rekod Laman Legasi Kajai."
+             ].map((text,i)=>`
+               <label style="display:flex;align-items:flex-start;gap:10px;font-weight:600;line-height:1.55;cursor:pointer;margin-bottom:11px">
+                 <input type="checkbox" id="alumniPrivacyConfirm${i+1}" required style="width:auto;margin-top:3px;flex:0 0 auto">
+                 <span>${text}</span>
+               </label>
+             `).join("")}
+
+             <div style="border-top:1px solid var(--line);margin:14px 0;padding-top:14px">
+               <label style="display:flex;align-items:flex-start;gap:10px;font-weight:800;line-height:1.55;cursor:pointer">
+                 <input type="checkbox" id="alumniRoleConfirmation" required style="width:auto;margin-top:3px;flex:0 0 auto">
+                 <span>${currentRole==="Pentadbir"
+                   ? "Saya telah membaca, memahami dan bersetuju dengan Pengesahan di atas serta bertanggungjawab terhadap pengendalian maklumat yang saya luluskan dan masukkan."
+                   : "Saya telah membaca, memahami dan bersetuju dengan Pengesahan Penafian di atas serta bertanggungjawab terhadap pengendalian maklumat yang saya masukkan."
+                 }</span>
+               </label>
+             </div>
            </div>
          `
          :
@@ -9389,6 +9397,33 @@ openRepForm=function(id=""){
       <div class="form-group full"><label>Gambar Wakil Batch</label><input type="file" id="repPhoto" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt" multiple>${r.photo?`<div style="margin-top:8px"><img src="${r.photo}" style="width:110px;height:110px;object-fit:cover;border-radius:12px"></div>`:""}</div>
       ${textareaField("Catatan","notes",r.notes)}
       ${!isAdmin()?`<div class="form-group full"><label>Nota Cadangan</label><textarea id="suggestionReason" required></textarea></div>`:""}
+      ${(currentRole==="Pasukan" || currentRole==="Pentadbir") ? `
+        <div class="form-divider">Pengesahan & Penafian Pengendalian Maklumat</div>
+        <div class="form-group full" style="padding:16px;border:1px solid var(--line);border-radius:14px;background:#fffaf7">
+          <div style="font-weight:800;margin-bottom:10px">Dengan mengemukakan rekod ini, saya mengesahkan bahawa:</div>
+          ${[
+            "Maklumat yang dimasukkan adalah berdasarkan maklumat yang diberikan oleh alumni berkenaan, rekod rasmi/sedia ada, atau sumber yang munasabah untuk tujuan dokumentasi alumni.",
+            "Saya akan memastikan maklumat peribadi alumni digunakan hanya bagi tujuan pengurusan rekod, dokumentasi, pengesahan dan urusan rasmi berkaitan alumni Kolej Rahim Kajai.",
+            "Saya tidak akan menyalin, menyebarkan, berkongsi atau menggunakan nombor telefon, alamat e-mel atau maklumat terhad alumni bagi tujuan peribadi atau kepada pihak yang tidak diberi kuasa.",
+            "Alumni berkenaan telah dimaklumkan, atau kebenaran yang sewajarnya telah diperoleh, bagi maklumat yang akan dipaparkan kepada umum termasuk nama, tahun/batch di Kajai, kerjaya terkini dan maklumat profil yang berkaitan.",
+            "Saya akan menghormati sebarang permintaan alumni untuk mengemas kini, membetulkan atau mengehadkan paparan maklumat mereka, tertakluk kepada pengurusan rekod Laman Legasi Kajai."
+          ].map((text,i)=>`
+            <label style="display:flex;align-items:flex-start;gap:10px;font-weight:600;line-height:1.55;cursor:pointer;margin-bottom:11px">
+              <input type="checkbox" id="repPrivacyConfirm${i+1}" required style="width:auto;margin-top:3px;flex:0 0 auto">
+              <span>${text}</span>
+            </label>
+          `).join("")}
+          <div style="border-top:1px solid var(--line);margin:14px 0 0;padding-top:14px">
+            <label style="display:flex;align-items:flex-start;gap:10px;font-weight:800;line-height:1.55;cursor:pointer">
+              <input type="checkbox" id="repRoleConfirmation" required style="width:auto;margin-top:3px;flex:0 0 auto">
+              <span>${currentRole==="Pentadbir"
+                ? "Saya telah membaca, memahami dan bersetuju dengan Pengesahan di atas serta bertanggungjawab terhadap pengendalian maklumat yang saya luluskan dan masukkan."
+                : "Saya telah membaca, memahami dan bersetuju dengan Pengesahan Penafian di atas serta bertanggungjawab terhadap pengendalian maklumat yang saya masukkan."
+              }</span>
+            </label>
+          </div>
+        </div>
+      `:""}
       <div class="form-actions"><button type="button" class="btn" onclick="closeModal()">Batal</button><button class="btn btn-primary">${isAdmin()?"Simpan":"Hantar Cadangan"}</button></div>
     </form>`,"Wakil batch",true
   );
