@@ -9859,35 +9859,258 @@ function reviewAlumniRegistration(id){
     ${x.status==="Menunggu Pengesahan"?`<div class="form-actions"><button class="btn btn-danger" onclick="rejectAlumniRegistration('${x.id}')">Tolak</button><button class="btn" onclick="requestAlumniRegistrationRevision('${x.id}')">Minta Suntingan</button><button class="btn btn-primary" onclick="approveAlumniRegistration('${x.id}')">Lulus & Masukkan Direktori</button></div>`:""}
   `,"HELAA/Pentadbir boleh menyemak sebelum rekod rasmi diwujudkan.",true);
 }
-function requestAlumniRegistrationRevision(id){
-  if(!isAdmin())return;
-  const x=data.alumniRegistrations.find(v=>v.id===id);if(!x)return;
-  const note=prompt("Nyatakan pembetulan yang diperlukan:","Sila lengkapkan / betulkan maklumat berikut:");
-  if(note===null)return;
-  x.status="Perlu Suntingan";x.adminNote=note||"Sila semak semula maklumat.";x.updatedAt=now();
-  addNotification({recipientEmail:x.submittedByEmail,recipientRole:"Alumni",title:"Pendaftaran Alumni perlu disunting",message:x.adminNote});
-  audit("Meminta suntingan pendaftaran Alumni","Pendaftaran Alumni",id);save();closeModal();render();toast("Permintaan suntingan dihantar.","success");
-}
-function rejectAlumniRegistration(id){
-  if(!isAdmin())return;
-  const x=data.alumniRegistrations.find(v=>v.id===id);if(!x)return;
-  const note=prompt("Catatan penolakan:","Maklumat belum dapat disahkan.");if(note===null)return;
-  x.status="Ditolak";x.adminNote=note||"Pendaftaran ditolak.";x.updatedAt=now();
-  addNotification({recipientEmail:x.submittedByEmail,recipientRole:"Alumni",title:"Pendaftaran Alumni ditolak",message:x.adminNote});
-  audit("Menolak pendaftaran Alumni","Pendaftaran Alumni",id);save();closeModal();render();toast("Pendaftaran ditolak.","success");
-}
-function approveAlumniRegistration(id){
-  if(!isAdmin())return;
-  const x=data.alumniRegistrations.find(v=>v.id===id);if(!x||x.status!=="Menunggu Pengesahan")return;
-  const c={...(x.changes||{})};
-  if((data.alumni||[]).some(a=>(a.email||"").toLowerCase()===(x.submittedByEmail||"").toLowerCase())){
-    toast("E-mel ini sudah mempunyai rekod Alumni rasmi.","error");return;
+
+async function loadAlumniRegistrationsFromSupabase(){
+  try{
+    const { data: rows, error } = await supabaseClient
+      .from("alumni_registrations")
+      .select("*")
+      .order("updated_at", { ascending: false });
+
+    if(error) throw error;
+
+    data.alumniRegistrations = (rows || []).map(row => ({
+      id: row.id,
+      userId: row.user_id,
+
+      status: row.status,
+
+      submittedBy: row.full_name || "",
+      submittedByEmail: row.email || "",
+      submittedByRole: "Alumni",
+
+      submittedAt: row.created_at || "",
+      updatedAt: row.updated_at || "",
+
+      selfNote: row.note || "",
+      adminNote: row.admin_note || "",
+
+      changes: {
+        fullName: row.full_name || "",
+        nickname: row.nickname || "",
+        gender: row.gender || "",
+
+        batch: row.batch || "",
+        entryYear: row.entry_year || "",
+        gradYear: row.grad_year || "",
+
+        faculty: row.faculty || "",
+        course: row.course || "",
+        studySession: row.study_session || "",
+
+        email: row.email || "",
+        phone: row.phone || "",
+
+        phoneVisibility: row.phone_visibility || "",
+        emailVisibility: row.email_visibility || "",
+        contactPermission: row.contact_permission || "",
+        photoPermission: row.photo_permission || "",
+
+        jobTitle: row.job_title || "",
+        employer: row.employer || "",
+        jobField: row.job_field || "",
+
+        currentLocation: row.current_location || "",
+        country: row.country || "",
+        linkedin: row.linkedin || "",
+
+        kajaiRoles: row.kajai_roles || "",
+        activitiesSummary: row.activities_summary || "",
+        achievementsSummary: row.achievements_summary || "",
+
+        motto: row.motto || "",
+
+        photo: row.photo_url || ""
+      }
+    }));
+
+    return data.alumniRegistrations;
+
+  }catch(err){
+    console.error(
+      "Failed to load alumni registrations from Supabase:",
+      err
+    );
+
+    throw err;
   }
-  const obj={...c,id:uid("alumni"),verification:"Disahkan",source:"Pendaftaran sendiri Alumni",verifiedBy:currentActor().name,createdAt:now(),updatedAt:now()};
-  data.alumni.push(obj);ensureBatch(Number(obj.batch));ensureInstitutionCodes();
-  x.status="Diluluskan";x.adminNote="Pendaftaran disahkan dan dimasukkan ke Direktori Alumni.";x.approvedAlumniId=obj.id;x.updatedAt=now();
-  addNotification({recipientEmail:x.submittedByEmail,recipientRole:"Alumni",title:"Pendaftaran Alumni diluluskan",message:`Profil anda telah disahkan dan dimasukkan ke Direktori Alumni. Kod: ${obj.legacyId||"akan dijana"}.`});
-  audit("Meluluskan pendaftaran diri Alumni","Alumni",obj.id);save();closeModal();render();toast("Alumni diluluskan dan dimasukkan ke Direktori.","success");
+}
+
+async function loadAlumniFromSupabase(){
+  try{
+    const { data: rows, error } = await supabaseClient
+      .from("alumni")
+      .select("*")
+      .order("legacy_id", { ascending: true });
+
+    if(error) throw error;
+
+    data.alumni = (rows || []).map(row => ({
+      id: row.id,
+      legacyId: row.legacy_id || "",
+
+      fullName: row.full_name || "",
+      nickname: row.nickname || "",
+      gender: row.gender || "",
+
+      batch: row.batch || "",
+      entryYear: row.entry_year || "",
+      gradYear: row.grad_year || "",
+
+      faculty: row.faculty || "",
+      course: row.course || "",
+      studySession: row.study_session || "",
+
+      email: row.email || "",
+      phone: row.phone || "",
+
+      phoneVisibility: row.phone_visibility || "",
+      emailVisibility: row.email_visibility || "",
+      contactPermission: row.contact_permission || "",
+      photoPermission: row.photo_permission || "",
+
+      jobTitle: row.job_title || "",
+      employer: row.employer || "",
+      jobField: row.job_field || "",
+
+      currentLocation: row.current_location || "",
+      country: row.country || "",
+      linkedin: row.linkedin || "",
+
+      kajaiRoles: row.kajai_roles || "",
+      activitiesSummary: row.activities_summary || "",
+      achievementsSummary: row.achievements_summary || "",
+
+      motto: row.motto || "",
+      photo: row.photo_url || ""
+    }));
+
+    return data.alumni;
+
+  }catch(err){
+    console.error(
+      "Failed to load Alumni Directory from Supabase:",
+      err
+    );
+
+    throw err;
+  }
+}
+
+async function requestAlumniRegistrationRevision(id){
+  if(!isAdmin()) return;
+
+  if(!confirm("Minta alumni membuat suntingan pada pendaftaran ini?")) return;
+
+  try{
+    const { error } = await supabaseClient.rpc(
+      "request_alumni_revision",
+      {
+        p_registration_id: id
+      }
+    );
+
+    if(error) throw error;
+
+    closeModal();
+
+    toast(
+      "Permohonan telah dikembalikan kepada alumni untuk suntingan.",
+      "success"
+    );
+
+    await loadAlumniRegistrationsFromSupabase();
+    render();
+
+  }catch(err){
+    console.error("Revision request error:", err);
+
+    toast(
+      err?.message || "Gagal meminta suntingan.",
+      "error"
+    );
+  }
+}
+
+
+async function rejectAlumniRegistration(id){
+  if(!isAdmin()) return;
+
+  if(!confirm("Tolak pendaftaran alumni ini?")) return;
+
+  try{
+    const { error } = await supabaseClient.rpc(
+      "reject_alumni_registration",
+      {
+        p_registration_id: id
+      }
+    );
+
+    if(error) throw error;
+
+    closeModal();
+
+    toast(
+      "Pendaftaran alumni telah ditolak.",
+      "success"
+    );
+
+    await loadAlumniRegistrationsFromSupabase();
+    render();
+
+  }catch(err){
+    console.error("Reject registration error:", err);
+
+    toast(
+      err?.message || "Gagal menolak pendaftaran alumni.",
+      "error"
+    );
+  }
+}
+
+
+async function approveAlumniRegistration(id){
+  if(!isAdmin()) return;
+
+  if(!confirm(
+    "Luluskan pendaftaran ini dan masukkan alumni ke Direktori Alumni?"
+  )) return;
+
+  try{
+    const { data: legacyId, error } = await supabaseClient.rpc(
+      "approve_alumni_registration",
+      {
+        p_registration_id: id
+      }
+    );
+
+    if(error) throw error;
+
+    closeModal();
+
+    toast(
+      legacyId
+        ? `Pendaftaran diluluskan. Kod Alumni: ${legacyId}`
+        : "Pendaftaran alumni berjaya diluluskan.",
+      "success"
+    );
+
+    await loadAlumniRegistrationsFromSupabase();
+
+    if(typeof loadAlumniFromSupabase === "function"){
+      await loadAlumniFromSupabase();
+    }
+
+    render();
+
+  }catch(err){
+    console.error("Approve registration error:", err);
+
+    toast(
+      err?.message || "Gagal meluluskan pendaftaran alumni.",
+      "error"
+    );
+  }
 }
 
 /* Show self-registration review inside existing Cadangan & Pengesahan page. */
