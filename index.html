@@ -3551,8 +3551,9 @@ function openAlumniDetail(id){
 
  <div class="detail-grid">
 
-  ${detail("Tahun Masuk",a.entryYear)}
-  ${detail("Tahun Tamat",a.gradYear)}
+  ${detail("Sesi / Batch Kemasukan",a.kajaiEntrySession||a.studySession||(a.entryYear?`${a.entryYear}/${Number(a.entryYear)+1}`:""))}
+  ${detail("Tahun Konvokesyen",a.convocationYear||a.gradYear)}
+  ${detail("Bilangan Semester Menginap di Kajai",a.kajaiSemesters?`${a.kajaiSemesters} semester`:"")}
   ${detail("Fakulti",a.faculty)}
   ${detail("Kursus",a.course)}
   ${detail("Jawatan Terkini",a.jobTitle)}
@@ -3764,7 +3765,7 @@ function educationHistoryRows(history=[],prefix="alumniEdu"){
     <div class="form-group" style="margin:0"><label>Tahap</label><select class="edu-level"><option value="">-- Pilih --</option>${["SPM / Setaraf","STPM / Matrikulasi / Asasi / Diploma","Ijazah Sarjana Muda","Sarjana (Master)","PhD / Doktor Falsafah","Lain-lain"].map(x=>`<option value="${esc(x)}" ${r.level===x?"selected":""}>${esc(x)}</option>`).join("")}</select></div>
     <div class="form-group" style="margin:0"><label>Institusi</label><input class="edu-institution" value="${esc(r.institution||"")}" placeholder="Nama sekolah / universiti"></div>
     <div class="form-group" style="margin:0"><label>Bidang / Program</label><input class="edu-field" value="${esc(r.field||"")}" placeholder="Contoh: Sains Alam Sekitar"></div>
-    <div class="form-group" style="margin:0"><label>Tahun Tamat</label><input class="edu-year" type="number" min="1950" max="2100" value="${esc(r.year||"")}" placeholder="2026"></div>
+    <div class="form-group" style="margin:0"><label>Tahun Tamat</label><select class="edu-year"><option value="">-- Pilih Tahun --</option>${fixedYearList().map(y=>`<option value="${y}" ${String(r.year||"")===String(y)?"selected":""}>${y}</option>`).join("")}</select></div>
     <button type="button" class="btn btn-small" onclick="removeEducationRow(this)" aria-label="Buang rekod pendidikan">Buang</button>
   </div>`).join("");
 }
@@ -3840,8 +3841,9 @@ ${selectField(
 
 ${inputField("ID Alumni / ID Legasi","legacyId",a.legacyId)}
 
-${inputField("Tahun Masuk","entryYear",a.entryYear,"number")}
-${inputField("Tahun Tamat","gradYear",a.gradYear,"number")}
+${sessionSelectField("Sesi / Batch Kemasukan","kajaiEntrySession",a.kajaiEntrySession||a.studySession||"",true)}
+${yearSelectField("Tahun Konvokesyen","convocationYear",a.convocationYear||a.gradYear||"",false)}
+${semesterSelectField("Bilangan Semester Menginap di Kajai","kajaiSemesters",a.kajaiSemesters||"",false)}
 
 <div class="form-divider">
  Akademik
@@ -3849,7 +3851,7 @@ ${inputField("Tahun Tamat","gradYear",a.gradYear,"number")}
 
 ${inputField("Fakulti","faculty",a.faculty)}
 ${inputField("Program / Kursus","course",a.course)}
-${inputField("Sesi / Tahun Pengajian","studySession",a.studySession)}
+${sessionSelectField("Sesi / Tahun Pengajian","studySession",a.studySession||a.kajaiEntrySession||"")}
 ${educationHistoryBlock(a.educationHistory||[],"alumniEducationRows")}
 
 <div class="form-divider">
@@ -3905,7 +3907,7 @@ ${selectField(
     ${inputField("Lokasi Semasa (Negeri / Negara)","currentLocation",a.currentLocation)}
     ${inputField("Negara","country",a.country)}
     ${inputField("LinkedIn / Laman Profesional","linkedin",a.linkedin)}
-    ${inputField("Tahun Mula Pekerjaan","careerStartYear",a.careerStartYear,"number")}
+    ${yearSelectField("Tahun Mula Pekerjaan","careerStartYear",a.careerStartYear)}
     ${inputField("Jumlah Pengalaman","experienceYears",a.experienceYears,"number")}
 
     <div class="form-divider">
@@ -4038,6 +4040,23 @@ style="width:100px;height:100px;object-fit:cover;border-radius:12px">
 
 }
 
+
+function fixedYearList(start=1983,end=2041){
+  const out=[]; for(let y=start;y<=end;y++) out.push(y); return out;
+}
+function fixedKajaiSessionList(){
+  const out=[]; for(let y=1983;y<=2040;y++) out.push(`${y}/${y+1}`); return out;
+}
+function yearSelectField(label,name,value="",required=false,start=1983,end=2041){
+  return selectField(label,name,fixedYearList(start,end),value,required);
+}
+function sessionSelectField(label,name,value="",required=false){
+  return selectField(label,name,fixedKajaiSessionList(),value,required);
+}
+function semesterSelectField(label,name,value="",required=false){
+  return selectField(label,name,Array.from({length:15},(_,i)=>({value:String(i+1),label:`${i+1} semester`})),String(value||""),required);
+}
+
 function inputField(label,name,value="",type="text",required=false){
 
     return `
@@ -4125,8 +4144,11 @@ async function submitAlumniForm(e,id){
       ...obj,
       educationHistory:collectEducationHistory("alumniEducationRows"),
       batch:Number(obj.batch),
-      entryYear:obj.entryYear ? Number(obj.entryYear):"",
-      gradYear:obj.gradYear ? Number(obj.gradYear):"",
+      kajaiEntrySession:obj.kajaiEntrySession||"",
+      convocationYear:obj.convocationYear ? Number(obj.convocationYear):"",
+      kajaiSemesters:obj.kajaiSemesters ? Number(obj.kajaiSemesters):"",
+      entryYear:obj.entryYear ? Number(obj.entryYear):(obj.kajaiEntrySession?Number(String(obj.kajaiEntrySession).split("/")[0]):existing?.entryYear||""),
+      gradYear:obj.gradYear ? Number(obj.gradYear):(obj.convocationYear?Number(obj.convocationYear):existing?.gradYear||""),
       careerStartYear:obj.careerStartYear ? Number(obj.careerStartYear):"",
       experienceYears:obj.experienceYears ? Number(obj.experienceYears):"",
       updatedAt:now(),
@@ -4477,10 +4499,10 @@ function leadershipPeriodFields(l={}){
  if(strictMonthMode || feloMode){
    const monthSelect=(label,name,val,required)=>`<div class="form-group"><label>${label}${required?" *":" (pilihan)"}</label><select name="${name}" ${required?"required":""}><option value="">-- Pilih bulan --</option>${MONTHS_MS.map((m,i)=>`<option value="${i+1}" ${String(val||"")===String(i+1)?"selected":""}>${m}</option>`).join("")}</select></div>`;
    const exactDates=c==="Ketua Pentadbiran / Pengurus" ? `<div class="form-group"><label>Tarikh Mula Tepat (pilihan)</label><input type="date" name="exactStartDate" value="${esc(l.exactStartDate||"")}"><small>Isi jika tarikh/hari sebenar diketahui.</small></div><div class="form-group"><label>Tarikh Akhir Tepat (pilihan)</label><input type="date" name="exactEndDate" value="${esc(l.exactEndDate||"")}"><small>Isi jika tarikh/hari sebenar diketahui.</small></div>` : "";
-   return `${monthSelect("Bulan Mula","startMonth",l.startMonth,strictMonthMode)}${inputField("Tahun Mula","yearFrom",l.yearFrom,"number",true)}${monthSelect("Bulan Akhir","endMonth",l.endMonth,strictMonthMode)}${inputField("Tahun Akhir","yearTo",l.yearTo,"number",true)}${exactDates}`;
+   return `${monthSelect("Bulan Mula","startMonth",l.startMonth,strictMonthMode)}${yearSelectField("Tahun Mula","yearFrom",l.yearFrom,true)}${monthSelect("Bulan Akhir","endMonth",l.endMonth,strictMonthMode)}${yearSelectField("Tahun Akhir","yearTo",l.yearTo,true)}${exactDates}`;
  }
 
- return `${inputField("Tahun Mula","yearFrom",l.yearFrom,"number",true)}${inputField("Tahun Tamat","yearTo",l.yearTo,"number")}`;
+ return `${yearSelectField("Tahun Mula","yearFrom",l.yearFrom,true)}${yearSelectField("Tahun Tamat","yearTo",l.yearTo)}`;
 }
 
 function refreshLeadershipPeriodFields(){
@@ -4568,7 +4590,7 @@ function openBatchForm(year=""){
       <form class="form-grid"
        onsubmit="submitBatchForm(event,'${esc(String(year))}')">
 
-        ${inputField("Tahun","year",b.year||"","number",true)}
+        ${yearSelectField("Tahun","year",b.year||"",true)}
 
         ${selectField(
          "Status",
@@ -4900,7 +4922,7 @@ function openRepForm(id=""){
          r.emailVisibility||data.config.privacyDefault
        )}
 
-       ${inputField("Tahun Dilantik","appointedYear",r.appointedYear,"number")}
+       ${yearSelectField("Tahun Dilantik","appointedYear",r.appointedYear)}
 
        <div class="form-group full">
         <label>Gambar Wakil Batch</label>
@@ -6238,7 +6260,7 @@ function openActivityForm(id=""){
   true
 )}
 
-${inputField("Tahun","year",x.year||data.config.currentYear,"number",true)}
+${yearSelectField("Tahun","year",x.year||data.config.currentYear,true)}
 
 ${inputField("Nama Aktiviti / Program","title",x.title,"text",true)}
 
@@ -6519,7 +6541,7 @@ function openAchievementForm(id=""){
        true
      )}
 
-     ${inputField("Tahun","year",x.year||data.config.currentYear,"number",true)}
+     ${yearSelectField("Tahun","year",x.year||data.config.currentYear,true)}
 
      ${inputField("Tajuk Pencapaian","title",x.title,"text",true)}
 
@@ -7327,7 +7349,7 @@ openModal(
 
     ${inputField("Kapsyen","caption",x.caption,"text",true)}
 
-    ${inputField("Tahun","year",x.year||data.config.currentYear,"number",true)}
+    ${yearSelectField("Tahun","year",x.year||data.config.currentYear,true)}
 
     ${selectField(
       "Batch",
@@ -8993,7 +9015,7 @@ function sdgDashboardStrip(){return `<div class="sdg-strip"><div class="sdg-card
 const __pageDashboard=pageDashboard;pageDashboard=function(){return __pageDashboard()+unitMeritBarChart()+sdgDashboardStrip()};
 
 // Human-readable suggestion review + 3 workflow sections.
-function humanLabel(k){ return ({fullName:"Nama Penuh",nickname:"Nama Samaran",batch:"Batch",entryYear:"Tahun Masuk",gradYear:"Tahun Tamat",faculty:"Fakulti",course:"Program / Kursus",phone:"No. Telefon",email:"E-mel",jobTitle:"Jawatan",employer:"Majikan",program:"Nama Program",date:"Tarikh",unitId:"Unit",alumniName:"Nama Alumni",role:"Peranan",roleEntries:"Peranan Dipilih",basePoints:"Mata Asas",bonusPoints:"Bonus",penaltyPoints:"Penalti",scale:"Skala",evidence:"Bukti / Pautan",notes:"Catatan",name:"Nama",position:"Jawatan",category:"Kategori",yearFrom:"Tahun Mula",yearTo:"Tahun Tamat",year:"Tahun",title:"Tajuk",description:"Penerangan",organisation:"Organisasi",evidenceUrl:"Pautan Bukti",caption:"Kapsyen",event:"Acara",source:"Sumber",verification:"Pengesahan",status:"Status",photo:"Gambar",image:"Gambar",images:"Gambar"})[k]||k.replace(/([A-Z])/g," $1").replace(/^./,c=>c.toUpperCase()); }
+function humanLabel(k){ return ({fullName:"Nama Penuh",nickname:"Nama Samaran",batch:"Batch",entryYear:"Tahun Masuk",gradYear:"Tahun Tamat",kajaiEntrySession:"Sesi / Batch Kemasukan",convocationYear:"Tahun Konvokesyen",kajaiSemesters:"Bilangan Semester Menginap di Kajai",faculty:"Fakulti",course:"Program / Kursus",phone:"No. Telefon",email:"E-mel",jobTitle:"Jawatan",employer:"Majikan",program:"Nama Program",date:"Tarikh",unitId:"Unit",alumniName:"Nama Alumni",role:"Peranan",roleEntries:"Peranan Dipilih",basePoints:"Mata Asas",bonusPoints:"Bonus",penaltyPoints:"Penalti",scale:"Skala",evidence:"Bukti / Pautan",notes:"Catatan",name:"Nama",position:"Jawatan",category:"Kategori",yearFrom:"Tahun Mula",yearTo:"Tahun Tamat",year:"Tahun",title:"Tajuk",description:"Penerangan",organisation:"Organisasi",evidenceUrl:"Pautan Bukti",caption:"Kapsyen",event:"Acara",source:"Sumber",verification:"Pengesahan",status:"Status",photo:"Gambar",image:"Gambar",images:"Gambar"})[k]||k.replace(/([A-Z])/g," $1").replace(/^./,c=>c.toUpperCase()); }
 function humanValue(k,v){
   if(k==="unitId") return esc(getUnit(v)?.name||v||"-");
   if(k==="alumniId") return esc(getAlumni(v)?.fullName||v||"-");
@@ -9492,7 +9514,7 @@ openRepForm=function(id=""){
       ${selectField("Keterlihatan Telefon","phoneVisibility",["Dalaman Sahaja","Pasukan Sahaja","Boleh Dipaparkan"],r.phoneVisibility||data.config.privacyDefault)}
       ${inputField("E-mel","email",r.email,"email")}
       ${selectField("Keterlihatan E-mel","emailVisibility",["Dalaman Sahaja","Pasukan Sahaja","Boleh Dipaparkan"],r.emailVisibility||data.config.privacyDefault)}
-      ${inputField("Tahun Dilantik","appointedYear",r.appointedYear,"number")}
+      ${yearSelectField("Tahun Dilantik","appointedYear",r.appointedYear)}
       <div class="form-group full"><label>Gambar Wakil Batch</label><input type="file" id="repPhoto" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt" multiple>${r.photo?`<div style="margin-top:8px"><img src="${r.photo}" style="width:110px;height:110px;object-fit:cover;border-radius:12px"></div>`:""}</div>
       ${textareaField("Catatan","notes",r.notes)}
       ${!isAdmin()?`<div class="form-group full"><label>Nota Cadangan</label><textarea id="suggestionReason" required></textarea></div>`:""}
@@ -10017,12 +10039,13 @@ function openAlumniSelfRegistration(){
       ${inputField("Nama Samaran","nickname",a.nickname||"")}
       ${selectField("Jantina","gender",["L","P"],a.gender||"")}
       ${selectField("Tahun / Batch","batch",yearList(),a.batch||"",true)}
-      ${inputField("Tahun Masuk","entryYear",a.entryYear||"","number")}
-      ${inputField("Tahun Tamat","gradYear",a.gradYear||"","number")}
+      ${sessionSelectField("Sesi / Batch Kemasukan","kajaiEntrySession",a.kajaiEntrySession||a.studySession||"",true)}
+      ${yearSelectField("Tahun Konvokesyen","convocationYear",a.convocationYear||a.gradYear||"",false)}
+      ${semesterSelectField("Bilangan Semester Menginap di Kajai","kajaiSemesters",a.kajaiSemesters||"",false)}
       <div class="form-divider">Akademik</div>
       ${inputField("Fakulti","faculty",a.faculty||"")}
       ${inputField("Program / Kursus","course",a.course||"")}
-      ${inputField("Sesi / Tahun Pengajian","studySession",a.studySession||"")}
+      ${sessionSelectField("Sesi / Tahun Pengajian","studySession",a.studySession||a.kajaiEntrySession||"")}
       ${educationHistoryBlock(a.educationHistory||[],"alumniSelfEducationRows")}
       <div class="form-divider">Hubungan & Privasi</div>
       <div class="form-group"><label>E-mel Akaun</label><input name="email" type="email" value="${esc(email)}" readonly class="readonly-status"><small>E-mel ini diambil daripada akaun Alumni yang sedang log masuk.</small></div>
@@ -10091,8 +10114,11 @@ async function submitAlumniSelfRegistration(e,id=""){
     ...obj,
     educationHistory:collectEducationHistory("alumniSelfEducationRows"),
     batch:Number(obj.batch),
-    entryYear:obj.entryYear?Number(obj.entryYear):"",
-    gradYear:obj.gradYear?Number(obj.gradYear):"",
+    kajaiEntrySession:obj.kajaiEntrySession||"",
+    convocationYear:obj.convocationYear?Number(obj.convocationYear):"",
+    kajaiSemesters:obj.kajaiSemesters?Number(obj.kajaiSemesters):"",
+    entryYear:obj.kajaiEntrySession?Number(String(obj.kajaiEntrySession).split("/")[0]):"",
+    gradYear:obj.convocationYear?Number(obj.convocationYear):"",
     email:alumniSessionEmail(),
     verification:"Belum disahkan",
     source:"Pendaftaran sendiri Alumni",
@@ -10773,7 +10799,7 @@ function diakaYearOptions(selected=''){
   return diakaBatches().map(y=>`<option value="${y}" ${String(selected)===String(y)?'selected':''}>${y}</option>`).join('');
 }
 function diakaStaySessionOptions(selected=''){
-  const arr=[]; for(let y=1983;y<=2026;y++) arr.push(`${y}/${y+1}`);
+  const arr=[]; for(let y=1983;y<=2040;y++) arr.push(`${y}/${y+1}`);
   return arr.map(s=>`<option value="${s}" ${String(selected)===s?'selected':''}>${s}</option>`).join('');
 }
 async function diakaReadImage(inputId){
@@ -10927,7 +10953,7 @@ function openDIAKATokohForm(id='',batch=''){
  <div class="form-grid">
  <div class="form-group full"><label>Pautkan dengan Direktori Alumni *</label><select id="diakaTokohAlumni" onchange="previewDIAKAAlumni(this.value)"><option value="">Pilih alumni...</option>${opts}</select></div>
  <div class="form-group"><label>Tahun DIAKA *</label><select id="diakaTokohBatch"><option value="">Pilih tahun...</option>${diakaYearOptions(x.batch||batch||'')}</select></div>
- <div class="form-group"><label>Sesi Pemilihan</label><input id="diakaTokohSession" value="${esc(x.session||diakaSession())}"></div>
+ <div class="form-group"><label>Sesi Pemilihan</label><select id="diakaTokohSession"><option value="">Pilih sesi...</option>${fixedKajaiSessionList().map(s=>`<option value="${s}" ${String(x.session||diakaSession())===s?"selected":""}>${s}</option>`).join("")}</select></div>
  <div class="form-group"><label>Sesi Menginap di Kajai</label><select id="diakaTokohStayIn"><option value="">Pilih sesi...</option>${diakaStaySessionOptions(x.stayIn||'')}</select></div>
  <div class="form-group"><label>Sesi Keluar dari Kajai</label><select id="diakaTokohStayOut"><option value="">Pilih sesi...</option>${diakaStaySessionOptions(x.stayOut||'')}</select></div>
  <div class="form-group"><label>No. Telefon</label><input id="diakaTokohPhone" type="tel" value="${esc(x.phone||'')}"></div>
