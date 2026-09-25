@@ -9875,6 +9875,34 @@ function openAlumniSelfRegistration(){
       ${textareaField("Moto Hidup","motto",a.motto||"")}
       <div class="form-group full"><label>Gambar Alumni</label><input type="file" id="alumniSelfPhoto" accept="image/*"><small>Versi HTML semasa menyimpan gambar secara tempatan dahulu. Supabase Storage akan disambungkan selepas struktur database/RLS siap.</small>${a.photo?`<img src="${a.photo}" style="width:100px;height:100px;object-fit:cover;border-radius:12px;margin-top:8px">`:""}</div>
       <div class="form-group full"><label>Catatan kepada HELAA/Pentadbir</label><textarea name="selfNote" placeholder="Maklumat tambahan untuk membantu proses pengesahan.">${esc(existing?.selfNote||"")}</textarea></div>
+
+      <div class="form-divider">Persetujuan & Privasi</div>
+      <div class="form-group full">
+        <div style="padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:#fcf7f8;display:grid;gap:12px">
+          <label style="display:flex;gap:10px;align-items:flex-start;font-weight:600;line-height:1.55">
+            <input type="checkbox" name="consentPublicDisplay" required style="width:auto;margin-top:4px">
+            <span>Saya bersetuju bahawa nama, tahun/batch penginapan di Kolej Rahim Kajai, program pengajian, kerjaya terkini serta maklumat legasi Kajai yang saya berikan boleh dipaparkan dalam Direktori Alumni dan bahagian berkaitan di Laman Legasi Kajai.</span>
+          </label>
+          <label style="display:flex;gap:10px;align-items:flex-start;font-weight:600;line-height:1.55">
+            <input type="checkbox" name="consentContactRecord" required style="width:auto;margin-top:4px">
+            <span>Saya bersetuju bahawa nombor telefon dan alamat e-mel yang saya berikan boleh disimpan dan diakses oleh pihak pentadbir yang diberi kuasa bagi tujuan rekod alumni, pengesahan maklumat dan urusan rasmi berkaitan alumni Kolej Rahim Kajai. Maklumat ini tidak dipaparkan kepada umum tanpa kebenaran saya.</span>
+          </label>
+          <label style="display:flex;gap:10px;align-items:flex-start;font-weight:600;line-height:1.55">
+            <input type="checkbox" name="consentAccuracy" required style="width:auto;margin-top:4px">
+            <span>Saya mengesahkan bahawa maklumat yang diberikan adalah benar dan tepat sepanjang pengetahuan saya serta memahami bahawa pihak pentadbir boleh membuat semakan atau meminta pengesahan lanjut sebelum maklumat diterbitkan.</span>
+          </label>
+          <label style="display:flex;gap:10px;align-items:flex-start;font-weight:600;line-height:1.55">
+            <input type="checkbox" name="consentPhoto" required style="width:auto;margin-top:4px">
+            <span>Sekiranya saya memuat naik gambar, saya memberi kebenaran kepada pihak pengurusan Laman Legasi Kajai untuk menggunakan gambar tersebut bagi tujuan profil alumni dan dokumentasi legasi, tertakluk kepada pilihan kebenaran paparan yang saya berikan.</span>
+          </label>
+          <label style="display:flex;gap:10px;align-items:flex-start;font-weight:600;line-height:1.55">
+            <input type="checkbox" name="consentDataPurpose" required style="width:auto;margin-top:4px">
+            <span>Saya memahami bahawa maklumat yang dikemukakan akan digunakan bagi tujuan dokumentasi, pemeliharaan rekod, jaringan dan pengurusan alumni serta pembangunan Laman Legasi Kajai.</span>
+          </label>
+          <div class="small muted" style="padding-top:4px;border-top:1px solid var(--line)">Dengan menghantar borang ini, anda mengakui bahawa maklumat yang ditetapkan sebagai terhad hanya digunakan untuk tujuan rekod dan urusan rasmi oleh pihak yang diberi kuasa.</div>
+        </div>
+      </div>
+
       <div class="form-actions"><button type="button" class="btn" onclick="closeModal()">Batal</button><button type="submit" class="btn btn-primary">Hantar untuk Pengesahan</button></div>
     </form>
   `,"Pendaftaran sendiri Alumni • Menunggu pengesahan HELAA/Pentadbir",true);
@@ -10540,6 +10568,74 @@ render();
 restoreGoogleOAuthSession();
 </script>
 
+
+<script>
+/* =========================================================
+   PRIVASI & PENAFIAN — 25 SEPTEMBER 2026
+   Tambahan sahaja: Dashboard, Direktori Alumni dan susunan SDG.
+========================================================= */
+(function(){
+  function privacyDashboardNotice(){
+    return `<div style="height:16px"></div>
+      <div class="card" style="border-left:4px solid #821d3d">
+        <div class="card-title">Notis Privasi & Penafian</div>
+        <div class="small muted" style="margin-top:9px;line-height:1.75">
+          Laman Legasi Kajai dibangunkan sebagai pangkalan data dokumentasi alumni, sejarah, kepimpinan dan legasi Kolej Rahim Kajai. Maklumat yang dipaparkan adalah berdasarkan rekod sedia ada serta maklumat yang dikemukakan oleh alumni dan pihak berkaitan. Pihak pengurusan berusaha memastikan ketepatan maklumat, namun tidak menjamin bahawa semua rekod adalah lengkap atau bebas daripada kesilapan.<br><br>
+          Maklumat hubungan dan data yang ditetapkan sebagai terhad adalah untuk tujuan rekod serta urusan rasmi dan hanya boleh diakses oleh pihak yang diberi kuasa. Sebarang penyalinan, penyebaran atau penggunaan maklumat terhad tanpa kebenaran adalah tidak dibenarkan. Sekiranya terdapat maklumat yang tidak tepat atau memerlukan pembetulan, sila hubungi pihak pengurusan Laman Legasi Kajai.
+        </div>
+      </div>`;
+  }
+
+  function alumniDirectoryNotice(){
+    return `<div class="card" style="margin-bottom:16px;border-left:4px solid #821d3d">
+      <div class="card-title">Notis Penggunaan Maklumat</div>
+      <div class="small muted" style="margin-top:7px;line-height:1.7">
+        Maklumat dalam Direktori Alumni disediakan bagi tujuan dokumentasi dan jaringan komuniti alumni Kolej Rahim Kajai. Sila gunakan maklumat yang dipaparkan secara bertanggungjawab. Maklumat hubungan peribadi yang ditetapkan sebagai terhad tidak dipaparkan kepada umum.
+      </div>
+    </div>`;
+  }
+
+  // Dashboard: kekalkan semua kandungan sedia ada. Hanya alihkan SDG ke bahagian
+  // paling bawah kandungan, kemudian letakkan Penafian sebagai elemen terakhir.
+  const originalDashboard = pageDashboard;
+  pageDashboard = function(){
+    let html = originalDashboard();
+    const marker = '<div class="sdg-strip">';
+    const start = html.indexOf(marker);
+    let sdg = '';
+    if(start >= 0){
+      let depth=0, end=-1;
+      for(let i=start;i<html.length;i++){
+        if(html.startsWith('<div',i)){ depth++; i+=3; }
+        else if(html.startsWith('</div>',i)){
+          depth--;
+          if(depth===0){ end=i+6; break; }
+          i+=5;
+        }
+      }
+      if(end>start){
+        sdg=html.slice(start,end);
+        html=html.slice(0,start)+html.slice(end);
+      }
+    }
+    if(!sdg && typeof sdgDashboardStrip==='function') sdg=sdgDashboardStrip();
+    return html + sdg + privacyDashboardNotice();
+  };
+
+  // Direktori Alumni: tambah notis selepas kepala halaman, tanpa mengubah jadual/filter/fungsi.
+  const originalAlumniPage = pageAlumni;
+  pageAlumni = function(){
+    let html=originalAlumniPage();
+    const headerEnd='</div>\n\n\n<div class="card">';
+    if(html.includes(headerEnd)){
+      return html.replace(headerEnd, `</div>\n\n${alumniDirectoryNotice()}\n<div class="card">`);
+    }
+    const firstCard=html.indexOf('<div class="card">');
+    if(firstCard>=0) return html.slice(0,firstCard)+alumniDirectoryNotice()+html.slice(firstCard);
+    return alumniDirectoryNotice()+html;
+  };
+})();
+</script>
 </body>
 </html>
 
