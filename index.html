@@ -1502,6 +1502,46 @@ input,select,textarea{accent-color:#7b1b3a}
 }
 </style>
 
+
+<style>
+/* Tempoh Menginap di Kajai — alumni form only */
+.kajai-stay-period{
+  margin-top:4px;
+  padding:18px 20px;
+  border:1px solid rgba(112,24,50,.18);
+  border-radius:16px;
+  background:linear-gradient(135deg,rgba(112,24,50,.045),rgba(255,255,255,.92));
+}
+.kajai-stay-title{
+  font-size:16px;
+  font-weight:800;
+  color:#701832;
+  margin-bottom:3px;
+}
+.kajai-stay-subtitle{
+  font-size:12px;
+  color:#76666b;
+  margin-bottom:14px;
+}
+.kajai-stay-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+.kajai-stay-grid label{
+  display:block;
+  font-weight:700;
+  margin-bottom:7px;
+}
+.kajai-stay-grid select{
+  width:100%;
+}
+@media(max-width:620px){
+  .kajai-stay-period{padding:15px}
+  .kajai-stay-grid{grid-template-columns:1fr;gap:12px}
+}
+</style>
+
 </head>
 
 <script>
@@ -3552,6 +3592,7 @@ function openAlumniDetail(id){
  <div class="detail-grid">
 
   ${detail("Sesi / Batch Kemasukan",a.kajaiEntrySession||a.studySession||(a.entryYear?`${a.entryYear}/${Number(a.entryYear)+1}`:""))}
+  ${detail("Tempoh Menginap di Kajai",(a.kajaiStayStart||a.entryYear||a.kajaiStayEnd||a.gradYear)?`${a.kajaiStayStart||a.entryYear||"—"} – ${a.kajaiStayEnd||a.gradYear||"—"}`:"")}
   ${detail("Tahun Konvokesyen",a.convocationYear||a.gradYear)}
   ${detail("Bilangan Semester Menginap di Kajai",a.kajaiSemesters?`${a.kajaiSemesters} semester`:"")}
   ${detail("Fakulti",a.faculty)}
@@ -3839,9 +3880,17 @@ ${selectField(
   true
 )}
 
-${inputField("ID Alumni / ID Legasi","legacyId",a.legacyId)}
+
 
 ${sessionSelectField("Sesi / Batch Kemasukan","kajaiEntrySession",a.kajaiEntrySession||a.studySession||"",true)}
+<div class="form-group full kajai-stay-period">
+  <div class="kajai-stay-title">Tempoh Menginap di Kajai</div>
+  <div class="kajai-stay-subtitle">Pilih tahun mula dan tahun akhir anda menginap di Kolej Rahim Kajai.</div>
+  <div class="kajai-stay-grid">
+    <div><label>Tahun Mula</label><select name="kajaiStayStart"><option value="">-- Pilih --</option>${fixedYearList().map(y=>`<option value="${y}" ${String(a.kajaiStayStart||a.entryYear||"")===String(y)?"selected":""}>${y}</option>`).join("")}</select></div>
+    <div><label>Tahun Akhir</label><select name="kajaiStayEnd"><option value="">-- Pilih --</option>${fixedYearList().map(y=>`<option value="${y}" ${String(a.kajaiStayEnd||a.gradYear||"")===String(y)?"selected":""}>${y}</option>`).join("")}</select></div>
+  </div>
+</div>
 ${yearSelectField("Tahun Konvokesyen","convocationYear",a.convocationYear||a.gradYear||"",false)}
 ${semesterSelectField("Bilangan Semester Menginap di Kajai","kajaiSemesters",a.kajaiSemesters||"",false)}
 
@@ -4145,6 +4194,8 @@ async function submitAlumniForm(e,id){
       educationHistory:collectEducationHistory("alumniEducationRows"),
       batch:Number(obj.batch),
       kajaiEntrySession:obj.kajaiEntrySession||"",
+      kajaiStayStart:obj.kajaiStayStart ? Number(obj.kajaiStayStart):"",
+      kajaiStayEnd:obj.kajaiStayEnd ? Number(obj.kajaiStayEnd):"",
       convocationYear:obj.convocationYear ? Number(obj.convocationYear):"",
       kajaiSemesters:obj.kajaiSemesters ? Number(obj.kajaiSemesters):"",
       entryYear:obj.entryYear ? Number(obj.entryYear):(obj.kajaiEntrySession?Number(String(obj.kajaiEntrySession).split("/")[0]):existing?.entryYear||""),
@@ -9015,7 +9066,7 @@ function sdgDashboardStrip(){return `<div class="sdg-strip"><div class="sdg-card
 const __pageDashboard=pageDashboard;pageDashboard=function(){return __pageDashboard()+unitMeritBarChart()+sdgDashboardStrip()};
 
 // Human-readable suggestion review + 3 workflow sections.
-function humanLabel(k){ return ({fullName:"Nama Penuh",nickname:"Nama Samaran",batch:"Batch",entryYear:"Tahun Masuk",gradYear:"Tahun Tamat",kajaiEntrySession:"Sesi / Batch Kemasukan",convocationYear:"Tahun Konvokesyen",kajaiSemesters:"Bilangan Semester Menginap di Kajai",faculty:"Fakulti",course:"Program / Kursus",phone:"No. Telefon",email:"E-mel",jobTitle:"Jawatan",employer:"Majikan",program:"Nama Program",date:"Tarikh",unitId:"Unit",alumniName:"Nama Alumni",role:"Peranan",roleEntries:"Peranan Dipilih",basePoints:"Mata Asas",bonusPoints:"Bonus",penaltyPoints:"Penalti",scale:"Skala",evidence:"Bukti / Pautan",notes:"Catatan",name:"Nama",position:"Jawatan",category:"Kategori",yearFrom:"Tahun Mula",yearTo:"Tahun Tamat",year:"Tahun",title:"Tajuk",description:"Penerangan",organisation:"Organisasi",evidenceUrl:"Pautan Bukti",caption:"Kapsyen",event:"Acara",source:"Sumber",verification:"Pengesahan",status:"Status",photo:"Gambar",image:"Gambar",images:"Gambar"})[k]||k.replace(/([A-Z])/g," $1").replace(/^./,c=>c.toUpperCase()); }
+function humanLabel(k){ return ({fullName:"Nama Penuh",nickname:"Nama Samaran",batch:"Batch",entryYear:"Tahun Masuk",gradYear:"Tahun Tamat",kajaiEntrySession:"Sesi / Batch Kemasukan",convocationYear:"Tahun Konvokesyen",kajaiSemesters:"Bilangan Semester Menginap di Kajai",kajaiStayStart:"Tahun Mula Menginap di Kajai",kajaiStayEnd:"Tahun Akhir Menginap di Kajai",faculty:"Fakulti",course:"Program / Kursus",phone:"No. Telefon",email:"E-mel",jobTitle:"Jawatan",employer:"Majikan",program:"Nama Program",date:"Tarikh",unitId:"Unit",alumniName:"Nama Alumni",role:"Peranan",roleEntries:"Peranan Dipilih",basePoints:"Mata Asas",bonusPoints:"Bonus",penaltyPoints:"Penalti",scale:"Skala",evidence:"Bukti / Pautan",notes:"Catatan",name:"Nama",position:"Jawatan",category:"Kategori",yearFrom:"Tahun Mula",yearTo:"Tahun Tamat",year:"Tahun",title:"Tajuk",description:"Penerangan",organisation:"Organisasi",evidenceUrl:"Pautan Bukti",caption:"Kapsyen",event:"Acara",source:"Sumber",verification:"Pengesahan",status:"Status",photo:"Gambar",image:"Gambar",images:"Gambar"})[k]||k.replace(/([A-Z])/g," $1").replace(/^./,c=>c.toUpperCase()); }
 function humanValue(k,v){
   if(k==="unitId") return esc(getUnit(v)?.name||v||"-");
   if(k==="alumniId") return esc(getAlumni(v)?.fullName||v||"-");
@@ -10040,6 +10091,14 @@ function openAlumniSelfRegistration(){
       ${selectField("Jantina","gender",["L","P"],a.gender||"")}
       ${selectField("Tahun / Batch","batch",yearList(),a.batch||"",true)}
       ${sessionSelectField("Sesi / Batch Kemasukan","kajaiEntrySession",a.kajaiEntrySession||a.studySession||"",true)}
+<div class="form-group full kajai-stay-period">
+  <div class="kajai-stay-title">Tempoh Menginap di Kajai</div>
+  <div class="kajai-stay-subtitle">Pilih tahun mula dan tahun akhir anda menginap di Kolej Rahim Kajai.</div>
+  <div class="kajai-stay-grid">
+    <div><label>Tahun Mula</label><select name="kajaiStayStart"><option value="">-- Pilih --</option>${fixedYearList().map(y=>`<option value="${y}" ${String(a.kajaiStayStart||a.entryYear||"")===String(y)?"selected":""}>${y}</option>`).join("")}</select></div>
+    <div><label>Tahun Akhir</label><select name="kajaiStayEnd"><option value="">-- Pilih --</option>${fixedYearList().map(y=>`<option value="${y}" ${String(a.kajaiStayEnd||a.gradYear||"")===String(y)?"selected":""}>${y}</option>`).join("")}</select></div>
+  </div>
+</div>
       ${yearSelectField("Tahun Konvokesyen","convocationYear",a.convocationYear||a.gradYear||"",false)}
       ${semesterSelectField("Bilangan Semester Menginap di Kajai","kajaiSemesters",a.kajaiSemesters||"",false)}
       <div class="form-divider">Akademik</div>
@@ -10115,6 +10174,8 @@ async function submitAlumniSelfRegistration(e,id=""){
     educationHistory:collectEducationHistory("alumniSelfEducationRows"),
     batch:Number(obj.batch),
     kajaiEntrySession:obj.kajaiEntrySession||"",
+    kajaiStayStart:obj.kajaiStayStart?Number(obj.kajaiStayStart):"",
+    kajaiStayEnd:obj.kajaiStayEnd?Number(obj.kajaiStayEnd):"",
     convocationYear:obj.convocationYear?Number(obj.convocationYear):"",
     kajaiSemesters:obj.kajaiSemesters?Number(obj.kajaiSemesters):"",
     entryYear:obj.kajaiEntrySession?Number(String(obj.kajaiEntrySession).split("/")[0]):"",
