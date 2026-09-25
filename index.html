@@ -1479,6 +1479,29 @@ input,select,textarea{accent-color:#7b1b3a}
   .modal,.auth-modal{width:calc(100vw - 12px)!important;max-width:calc(100vw - 12px)!important;margin:6px!important;}
 }
 </style>
+
+<style>
+/* DIAKA update only */
+.diaka-person-card{padding:12px 0;border-top:1px solid var(--line,#eadde1)}
+.diaka-person-card:first-of-type{border-top:0}
+.diaka-person-year{font-size:12px;font-weight:800;color:var(--burgundy,#701832);margin-bottom:8px}
+.diaka-person-body{display:grid;grid-template-columns:84px minmax(0,1fr) 84px;gap:12px;align-items:center}
+.diaka-person-photo{width:84px;height:84px;border-radius:14px;overflow:hidden;background:#f7eef1;display:flex;align-items:center;justify-content:center}
+.diaka-person-photo img{width:100%;height:100%;object-fit:cover}
+.diaka-photo-placeholder{font-size:28px;color:#7a1735}
+.diaka-person-info{min-width:0}
+.diaka-batch-qr{width:78px;height:78px;display:flex;align-items:center;justify-content:center}
+.diaka-batch-qr img,.diaka-batch-qr canvas{max-width:78px!important;max-height:78px!important}
+.diaka-add-second{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-top:10px;border-top:1px dashed #eadde1;margin-top:8px}
+.diaka-empty-primary{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 0}
+@media(max-width:620px){
+ .diaka-person-body{grid-template-columns:70px minmax(0,1fr) 66px;gap:9px}
+ .diaka-person-photo{width:70px;height:70px}
+ .diaka-batch-qr{width:62px;height:62px}
+ .diaka-batch-qr img,.diaka-batch-qr canvas{max-width:62px!important;max-height:62px!important}
+}
+</style>
+
 </head>
 
 <script>
@@ -10745,19 +10768,74 @@ function diakaAlumni(x){return data.alumni.find(v=>v.id===x.alumniId)||{};}
 function diakaName(x){return x.name||diakaAlumni(x).fullName||"Tokoh DIAKA";}
 function diakaCanNominate(){return data.config.diakaSessionOpen!==false && ["Alumni","Pasukan","Pentadbir"].includes(currentRole);}
 
+
+function diakaYearOptions(selected=''){
+  return diakaBatches().map(y=>`<option value="${y}" ${String(selected)===String(y)?'selected':''}>${y}</option>`).join('');
+}
+function diakaStaySessionOptions(selected=''){
+  const arr=[]; for(let y=1983;y<=2026;y++) arr.push(`${y}/${y+1}`);
+  return arr.map(s=>`<option value="${s}" ${String(selected)===s?'selected':''}>${s}</option>`).join('');
+}
+async function diakaReadImage(inputId){
+  const f=document.getElementById(inputId)?.files?.[0];
+  if(!f)return "";
+  try{return await compressImage(f,1000,.76)}catch(e){return await fileAsDataURL(f)}
+}
+async function diakaReadFile(inputId){
+  const f=document.getElementById(inputId)?.files?.[0];
+  if(!f)return null;
+  try{return {name:f.name,type:f.type||'',size:f.size||0,data:await fileAsDataURL(f)}}catch(e){return {name:f.name,type:f.type||'',size:f.size||0,data:''}}
+}
+function diakaQRText(x){
+  return `${location.origin}${location.pathname}#diaka-${encodeURIComponent(x.id)}`;
+}
+function renderDIAKABatchQRs(){
+  const makeAll=()=>data.diaka.tokoh.filter(x=>x.status!=="Dipadam").forEach(x=>{
+    const el=document.getElementById(`diakaBatchQR_${x.id}`);
+    if(!el||el.dataset.ready)return;
+    el.dataset.ready="1"; el.innerHTML="";
+    if(window.QRCode)new QRCode(el,{text:diakaQRText(x),width:78,height:78});
+  });
+  if(window.QRCode){makeAll();return}
+  const existing=document.querySelector('script[data-diaka-qr-lib]');
+  if(existing){existing.addEventListener('load',makeAll,{once:true});return}
+  const sc=document.createElement('script');sc.dataset.diakaQrLib='1';
+  sc.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+  sc.onload=makeAll;document.head.appendChild(sc);
+}
+
 function pageDIAKA(){
  ensureDIAKAData(); const active=diakaSession();
+ setTimeout(renderDIAKABatchQRs,0);
  return `<div class="page-header"><div><h1 class="page-title">DIAKA — Dinding Inspirasi Alumni Kajai</h1><p class="page-subtitle">Tokoh inspirasi alumni mengikut batch. Paparan merangkumi Batch 1983 hingga 2025.</p></div>${diakaCanNominate()?`<div class="header-actions"><button class="btn btn-primary" onclick="openDIAKANominationForm()">+ Pencalonan DIAKA</button></div>`:""}</div>
- <div class="notice" style="margin-bottom:16px"><b>Sesi semasa:</b> ${esc(active)} • ${data.config.diakaSessionOpen!==false?'<span class="badge badge-green">Pencalonan Dibuka</span>':'<span class="badge badge-gray">Pencalonan Ditutup</span>'}</div>
- <div class="card"><div class="card-head"><div><div class="card-title">Tokoh Inspirasi Mengikut Batch</div><div class="small muted">Setiap batch mempunyai ruang sehingga dua Tokoh DIAKA. Slot kosong dikekalkan sebagai rekod legasi.</div></div></div>
- <div class="diaka-batch-grid">${diakaBatches().map(y=>diakaBatchCard(y)).join('')}</div></div>`;
+ <div class="card"><div class="card-head"><div><div class="card-title">Tokoh Inspirasi Mengikut Batch</div><div class="small muted">Setiap batch memaparkan seorang Tokoh DIAKA secara lalai. Tokoh kedua hanya ditambah oleh Admin/Pentadbir bagi tahun yang mempunyai lebih daripada seorang tokoh.</div></div></div>
+ <div class="diaka-batch-grid">${diakaBatches().map(diakaBatchCard).join('')}</div></div>`;
 }
+
 function diakaBatchCard(batch){
- const people=data.diaka.tokoh.filter(x=>Number(x.batch)===batch && x.status!=="Dipadam").slice(0,2);
- const slots=[0,1].map(i=>{const x=people[i];if(!x)return `<div class="diaka-slot empty-slot"><div><b>Tokoh ${i+1}</b><div class="small muted">Belum ditetapkan</div></div>${canManageDIAKA()?`<button class="btn btn-small" onclick="openDIAKATokohForm('',${batch})">+ Tambah</button>`:""}</div>`;
- const photo=diakaPhoto(x); return `<div class="diaka-slot"><div class="diaka-mini-photo">${photo?`<img src="${esc(photo)}" alt="${esc(diakaName(x))}">`:'<span>✦</span>'}</div><div class="diaka-slot-main"><b>${esc(diakaName(x))}</b><div class="small muted">${esc(x.jobTitle||diakaAlumni(x).jobTitle||'')} ${x.employer||diakaAlumni(x).employer?`• ${esc(x.employer||diakaAlumni(x).employer)}`:''}</div><div class="action-row" style="margin-top:7px"><button class="btn btn-small" onclick="openDIAKAProfile('${x.id}')">Profil & QR</button>${canManageDIAKA()?`<button class="btn btn-small" onclick="openDIAKATokohForm('${x.id}',${batch})">Edit</button>`:""}</div></div></div>`}).join('');
- return `<div class="diaka-batch-card"><div class="diaka-batch-year">Batch ${batch}</div>${slots}</div>`;
+ const people=data.diaka.tokoh.filter(x=>Number(x.batch)===Number(batch)&&x.status!=="Dipadam").slice(0,2);
+ const renderPerson=(x,i)=>{
+   const photo=diakaPhoto(x),a=diakaAlumni(x),job=x.jobTitle||a.jobTitle||'Kerjaya belum direkodkan',employer=x.employer||a.employer||'';
+   return `<div class="diaka-person-card">
+     <div class="diaka-person-year">Tahun ${esc(batch)}${i===1?' • Tokoh 2':''}</div>
+     <div class="diaka-person-body">
+       <div class="diaka-person-photo">${photo?`<img src="${esc(photo)}" alt="${esc(diakaName(x))}">`:'<div class="diaka-photo-placeholder">✦</div>'}</div>
+       <div class="diaka-person-info"><b>${esc(diakaName(x))}</b><div class="small muted">${esc(job)}${employer?` • ${esc(employer)}`:''}</div>
+       <div class="action-row" style="margin-top:8px"><button class="btn btn-small" onclick="openDIAKAProfile('${x.id}')">Lihat Profil</button>${canManageDIAKA()?`<button class="btn btn-small" onclick="openDIAKATokohForm('${x.id}',${batch})">Edit</button>`:""}</div></div>
+       <div class="diaka-batch-qr" id="diakaBatchQR_${x.id}" aria-label="QR Tokoh DIAKA"></div>
+     </div>
+   </div>`;
+ };
+ let inner='';
+ if(!people.length){
+   inner=`<div class="diaka-empty-primary"><div><b>Tokoh DIAKA</b><div class="small muted">Belum ditetapkan</div></div>${canManageDIAKA()?`<button class="btn btn-small" onclick="openDIAKATokohForm('',${batch})">+ Tambah Tokoh</button>`:""}</div>`;
+ }else{
+   inner=people.map(renderPerson).join('');
+   if(canManageDIAKA()&&people.length<2)inner+=`<div class="diaka-add-second"><button class="btn btn-small" onclick="openDIAKATokohForm('',${batch})">+ Tambah Tokoh</button><span class="small muted">Tambah hanya jika batch ini mempunyai Tokoh DIAKA kedua.</span></div>`;
+ }
+ return `<div class="diaka-batch-card"><h3>Batch ${esc(batch)}</h3>${inner}</div>`;
 }
+
 
 function pageDIAKANominations(){
  ensureDIAKAData(); const list=[...data.diaka.nominations].sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
@@ -10768,18 +10846,122 @@ function pageDIAKANominations(){
 function openDIAKANominationForm(){
  ensureDIAKAData(); if(!diakaCanNominate())return toast('Pencalonan DIAKA sedang ditutup atau akses tidak dibenarkan.','error');
  const opts=data.alumni.slice().sort((a,b)=>String(a.fullName||'').localeCompare(String(b.fullName||''))).map(a=>`<option value="${a.id}">${esc(a.fullName||'Tanpa nama')} — Batch ${esc(a.batch||'—')}</option>`).join('');
- openModal('Pencalonan DIAKA',`<div class="notice">Pilih rekod daripada Direktori Alumni. Maklumat asas calon akan dipautkan secara automatik.</div><div class="form-grid" style="margin-top:14px"><div class="form-group full"><label>Calon Alumni *</label><select id="diakaNomAlumni" required onchange="previewDIAKAAlumni(this.value)"><option value="">Pilih alumni...</option>${opts}</select></div><div class="form-group"><label>Jenis Pencalonan</label><select id="diakaNomType"><option>Mencalonkan diri sendiri</option><option>Mencalonkan alumni lain</option></select></div><div class="form-group"><label>Sesi</label><input value="${esc(diakaSession())}" disabled></div><div class="form-group full"><div id="diakaAlumniPreview" class="notice">Pilih alumni untuk melihat ringkasan Direktori.</div></div><div class="form-group full"><label>Mengapakah calon ini sesuai menjadi Tokoh Inspirasi Alumni Kajai? *</label><textarea id="diakaWhy" maxlength="1500" required></textarea></div><div class="form-group full"><label>Apakah sumbangan calon terhadap warga / Kolej Rahim Kajai? *</label><textarea id="diakaContribution" required></textarea></div><div class="form-group full"><label>Pencapaian utama / penglibatan lain</label><textarea id="diakaAchievement"></textarea></div><div class="form-group full"><label>Pautan bukti / rujukan (jika ada)</label><input id="diakaEvidence" placeholder="https://..."></div></div><div class="modal-footer"><button class="btn" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="submitDIAKANomination()">Hantar Pencalonan</button></div>`,`${esc(diakaSession())}`,true);
+ openModal('Pencalonan DIAKA',`
+ <div class="form-grid">
+   <div class="form-group"><label>Jenis Pencalonan *</label><select id="diakaNomType" required><option>Mencalonkan diri sendiri</option><option>Mencalonkan alumni lain</option></select></div>
+   <div class="form-group"><label>Sesi DIAKA</label><input value="${esc(diakaSession())}" disabled></div>
+   <div class="form-group full"><div class="notice">Pilih rekod daripada Direktori Alumni. Maklumat asas calon akan dipautkan secara automatik.</div></div>
+   <div class="form-group full"><label>Calon Alumni *</label><select id="diakaNomAlumni" required onchange="previewDIAKAAlumni(this.value)"><option value="">Pilih alumni...</option>${opts}</select></div>
+   <div class="form-group"><label>Sesi Menginap di Kajai *</label><select id="diakaStayIn" required><option value="">Pilih sesi...</option>${diakaStaySessionOptions()}</select></div>
+   <div class="form-group"><label>Sesi Keluar dari Kajai *</label><select id="diakaStayOut" required><option value="">Pilih sesi...</option>${diakaStaySessionOptions()}</select></div>
+   <div class="form-group full"><label>Tahun yang dipilih untuk DIAKA *</label><select id="diakaSelectedYear" required><option value="">Pilih tahun...</option>${diakaYearOptions()}</select><small>Mestilah pilih tahun orientasi (kemasukan) atau pilih tahun yang berkhidmat sebagai pemimpin di Kajai.</small></div>
+   <div class="form-group"><label>No. Telefon *</label><input id="diakaPhone" type="tel" required></div>
+   <div class="form-group"><label>E-mel *</label><input id="diakaEmail" type="email" required></div>
+   <div class="form-group full"><div id="diakaAlumniPreview" class="notice">Pilih alumni untuk melihat ringkasan Direktori.</div></div>
+   <div class="form-group full"><label>Mengapakah calon ini sesuai menjadi Tokoh Inspirasi Alumni Kajai? *</label><textarea id="diakaWhy" maxlength="1500" required></textarea></div>
+   <div class="form-group full"><label>Apakah sumbangan calon terhadap warga / Kolej Rahim Kajai? *</label><textarea id="diakaContribution" required></textarea></div>
+   <div class="form-group full"><label>Pencapaian utama / penglibatan lain</label><textarea id="diakaAchievement"></textarea></div>
+   <div class="form-group"><label>Gambar Calon</label><input type="file" id="diakaNomImage" accept="image/*"><small>Muat naik satu gambar calon.</small></div>
+   <div class="form-group"><label>Fail Sokongan</label><input type="file" id="diakaNomFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv"><small>Muat naik satu dokumen/bukti sokongan.</small></div>
+   <div class="form-group full"><label>Pautan bukti / rujukan (jika ada)</label><input id="diakaEvidence" placeholder="https://..."></div>
+ </div>
+ <div class="modal-footer"><button class="btn" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="submitDIAKANomination()">Hantar Pencalonan</button></div>`,`${esc(diakaSession())}`,true);
 }
-function previewDIAKAAlumni(id){const a=data.alumni.find(x=>x.id===id),el=document.getElementById('diakaAlumniPreview');if(!el)return;el.innerHTML=a?`<b>${esc(a.fullName||'')}</b><br>Batch ${esc(a.batch||'—')} • ${esc(a.course||a.faculty||'Maklumat program tidak tersedia')}<br>${esc(a.jobTitle||'')} ${a.employer?`• ${esc(a.employer)}`:''}`:'Pilih alumni untuk melihat ringkasan Direktori.';}
-function submitDIAKANomination(){const alumniId=document.getElementById('diakaNomAlumni')?.value,why=document.getElementById('diakaWhy')?.value.trim(),con=document.getElementById('diakaContribution')?.value.trim();if(!alumniId||!why||!con)return toast('Lengkapkan calon, justifikasi dan sumbangan.','error');const a=data.alumni.find(x=>x.id===alumniId)||{},actor=currentActor();data.diaka.nominations.push({id:uid('diaka_nom'),alumniId,name:a.fullName||'',batch:a.batch||'',session:diakaSession(),nominationType:document.getElementById('diakaNomType')?.value||'',why,contribution:con,achievement:document.getElementById('diakaAchievement')?.value.trim()||'',evidence:document.getElementById('diakaEvidence')?.value.trim()||'',status:'Menunggu Semakan',createdAt:now(),submittedByName:actor.name,submittedByEmail:actor.email});audit('Menghantar pencalonan DIAKA','DIAKA');save();closeModal();render();toast('Pencalonan DIAKA berjaya dihantar.','success');}
-function openDIAKANominationView(id){const n=data.diaka.nominations.find(x=>x.id===id);if(!n)return;const a=data.alumni.find(x=>x.id===n.alumniId)||{};openModal('Butiran Pencalonan DIAKA',`<div class="detail-grid">${detail('Calon',a.fullName||n.name||'—')}${detail('Batch',a.batch||n.batch||'—')}${detail('Sesi',n.session||'—')}${detail('Status',n.status||'—')}</div><div class="card" style="margin-top:14px"><b>Justifikasi</b><p>${esc(n.why||'—')}</p><b>Sumbangan kepada KRK</b><p>${esc(n.contribution||'—')}</p><b>Pencapaian / Penglibatan</b><p>${esc(n.achievement||'—')}</p>${n.evidence?`<b>Rujukan</b><p>${esc(n.evidence)}</p>`:''}</div>`,'',true);}
-function approveDIAKANomination(id){if(!canManageDIAKA())return;const n=data.diaka.nominations.find(x=>x.id===id);if(!n)return;const same=data.diaka.tokoh.filter(x=>Number(x.batch)===Number(n.batch)&&x.status!=="Dipadam");if(same.length>=2)return toast('Batch ini sudah mempunyai dua Tokoh DIAKA.','error');n.status='Diluluskan';const a=data.alumni.find(x=>x.id===n.alumniId)||{};data.diaka.tokoh.push({id:uid('diaka'),alumniId:n.alumniId,name:a.fullName||n.name,batch:a.batch||n.batch,session:n.session,jobTitle:a.jobTitle||'',employer:a.employer||'',achievement:n.achievement||'',contribution:n.contribution||'',motto:a.motto||'',status:'Aktif',createdAt:now()});audit('Meluluskan pencalonan DIAKA','DIAKA');save();render();toast('Calon diluluskan sebagai Tokoh DIAKA.','success');}
+
+function previewDIAKAAlumni(id){
+ const a=data.alumni.find(x=>x.id===id),el=document.getElementById('diakaAlumniPreview');if(!el)return;
+ if(!a){el.innerHTML='Pilih alumni untuk melihat ringkasan Direktori.';return}
+ el.innerHTML=`<b>${esc(a.fullName||'')}</b><br>Batch ${esc(a.batch||'—')} • ${esc(a.course||a.faculty||'Maklumat program tidak tersedia')}<br>${esc(a.jobTitle||'')} ${a.employer?`• ${esc(a.employer)}`:''}`;
+ const phone=document.getElementById('diakaPhone'),email=document.getElementById('diakaEmail'),yr=document.getElementById('diakaSelectedYear');
+ if(phone&&!phone.value)phone.value=a.phone||'';
+ if(email&&!email.value)email.value=a.email||'';
+ if(yr&&!yr.value&&a.batch&&Number(a.batch)>=1983&&Number(a.batch)<=2025)yr.value=String(a.batch);
+}
+
+async function submitDIAKANomination(){
+ const alumniId=document.getElementById('diakaNomAlumni')?.value,
+ why=document.getElementById('diakaWhy')?.value.trim(),
+ con=document.getElementById('diakaContribution')?.value.trim(),
+ stayIn=document.getElementById('diakaStayIn')?.value,
+ stayOut=document.getElementById('diakaStayOut')?.value,
+ selectedYear=document.getElementById('diakaSelectedYear')?.value,
+ phone=document.getElementById('diakaPhone')?.value.trim(),
+ email=document.getElementById('diakaEmail')?.value.trim();
+ if(!alumniId||!why||!con||!stayIn||!stayOut||!selectedYear||!phone||!email)return toast('Lengkapkan semua maklumat wajib pencalonan DIAKA.','error');
+ const a=data.alumni.find(x=>x.id===alumniId)||{},actor=currentActor();
+ const image=await diakaReadImage('diakaNomImage'),supportFile=await diakaReadFile('diakaNomFile');
+ data.diaka.nominations.push({id:uid('diaka_nom'),alumniId,name:a.fullName||'',batch:a.batch||'',session:diakaSession(),
+ nominationType:document.getElementById('diakaNomType')?.value||'',stayIn,stayOut,selectedYear:Number(selectedYear),phone,email,
+ why,contribution:con,achievement:document.getElementById('diakaAchievement')?.value.trim()||'',
+ evidence:document.getElementById('diakaEvidence')?.value.trim()||'',image,supportFile,status:'Menunggu Semakan',createdAt:now(),
+ submittedByName:actor.name,submittedByEmail:actor.email});
+ audit('Menghantar pencalonan DIAKA','DIAKA');save();closeModal();render();toast('Pencalonan DIAKA berjaya dihantar.','success');
+}
+
+function openDIAKANominationView(id){
+ const n=data.diaka.nominations.find(x=>x.id===id);if(!n)return;const a=data.alumni.find(x=>x.id===n.alumniId)||{};
+ openModal('Butiran Pencalonan DIAKA',`
+ <div class="detail-grid">${detail('Calon',a.fullName||n.name||'—')}${detail('Batch Direktori',a.batch||n.batch||'—')}${detail('Sesi DIAKA',n.session||'—')}${detail('Status',n.status||'—')}${detail('Sesi Menginap',n.stayIn||'—')}${detail('Sesi Keluar',n.stayOut||'—')}${detail('Tahun DIAKA',n.selectedYear||'—')}${detail('No. Telefon',n.phone||'—')}${detail('E-mel',n.email||'—')}</div>
+ ${n.image?`<div style="margin-top:14px"><img src="${n.image}" style="width:130px;height:130px;object-fit:cover;border-radius:14px"></div>`:''}
+ <div class="card" style="margin-top:14px"><b>Justifikasi</b><p>${esc(n.why||'—')}</p><b>Sumbangan kepada KRK</b><p>${esc(n.contribution||'—')}</p><b>Pencapaian / Penglibatan</b><p>${esc(n.achievement||'—')}</p>${n.evidence?`<b>Rujukan</b><p>${esc(n.evidence)}</p>`:''}${n.supportFile?.name?`<b>Fail Sokongan</b><p>${esc(n.supportFile.name)}</p>`:''}</div>`,'',true);
+}
+
+function approveDIAKANomination(id){
+ if(!canManageDIAKA())return;const n=data.diaka.nominations.find(x=>x.id===id);if(!n)return;
+ const targetYear=Number(n.selectedYear||n.batch);
+ const same=data.diaka.tokoh.filter(x=>Number(x.batch)===targetYear&&x.status!=="Dipadam");
+ if(same.length>=2)return toast('Tahun ini sudah mempunyai dua Tokoh DIAKA.','error');
+ n.status='Diluluskan';const a=data.alumni.find(x=>x.id===n.alumniId)||{};
+ data.diaka.tokoh.push({id:uid('diaka'),alumniId:n.alumniId,name:a.fullName||n.name,batch:targetYear,session:n.session,
+ stayIn:n.stayIn||'',stayOut:n.stayOut||'',phone:n.phone||'',email:n.email||'',jobTitle:a.jobTitle||'',employer:a.employer||'',
+ achievement:n.achievement||'',contribution:n.contribution||'',motto:a.motto||'',photo:n.image||a.photo||a.photoUrl||a.photo_url||'',
+ supportFile:n.supportFile||null,status:'Aktif',createdAt:now()});
+ audit('Meluluskan pencalonan DIAKA','DIAKA');save();render();toast('Calon diluluskan sebagai Tokoh DIAKA.','success');
+}
+
 
 function openDIAKATokohForm(id='',batch=''){
- if(!canManageDIAKA())return;const x=data.diaka.tokoh.find(v=>v.id===id)||{};const opts=data.alumni.slice().sort((a,b)=>String(a.fullName||'').localeCompare(String(b.fullName||''))).map(a=>`<option value="${a.id}" ${a.id===x.alumniId?'selected':''}>${esc(a.fullName||'Tanpa nama')} — Batch ${esc(a.batch||'—')}</option>`).join('');
- openModal(id?'Edit Tokoh DIAKA':'Tambah Tokoh DIAKA',`<div class="form-grid"><div class="form-group full"><label>Pautkan dengan Direktori Alumni *</label><select id="diakaTokohAlumni" onchange="previewDIAKAAlumni(this.value)"><option value="">Pilih alumni...</option>${opts}</select></div><div class="form-group"><label>Batch *</label><input id="diakaTokohBatch" type="number" min="1983" max="2025" value="${esc(x.batch||batch||'')}"></div><div class="form-group"><label>Sesi Pemilihan</label><input id="diakaTokohSession" value="${esc(x.session||diakaSession())}"></div><div class="form-group"><label>Jawatan / Kerjaya</label><input id="diakaTokohJob" value="${esc(x.jobTitle||'')}"></div><div class="form-group"><label>Organisasi</label><input id="diakaTokohEmployer" value="${esc(x.employer||'')}"></div><div class="form-group full"><label>Pencapaian Utama</label><textarea id="diakaTokohAchievement">${esc(x.achievement||'')}</textarea></div><div class="form-group full"><label>Penglibatan & Sumbangan kepada KRK</label><textarea id="diakaTokohContribution">${esc(x.contribution||'')}</textarea></div><div class="form-group full"><label>Moto / Kata Inspirasi</label><textarea id="diakaTokohMotto">${esc(x.motto||'')}</textarea></div><div class="form-group full"><label>URL Gambar (pilihan — gambar Direktori digunakan jika tersedia)</label><input id="diakaTokohPhoto" value="${esc(x.photo||'')}"></div></div><div class="modal-footer"><button class="btn" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="saveDIAKATokoh('${id}')">Simpan</button></div>`,'',true);
+ if(!canManageDIAKA())return toast('Akses pengurusan DIAKA tidak dibenarkan.','error');
+ const x=id?data.diaka.tokoh.find(v=>v.id===id):{batch};const opts=data.alumni.slice().sort((a,b)=>String(a.fullName||'').localeCompare(String(b.fullName||''))).map(a=>`<option value="${a.id}" ${a.id===x.alumniId?'selected':''}>${esc(a.fullName||'Tanpa nama')} — Batch ${esc(a.batch||'—')}</option>`).join('');
+ openModal(id?'Edit Tokoh DIAKA':'Tambah Tokoh DIAKA',`
+ <div class="form-grid">
+ <div class="form-group full"><label>Pautkan dengan Direktori Alumni *</label><select id="diakaTokohAlumni" onchange="previewDIAKAAlumni(this.value)"><option value="">Pilih alumni...</option>${opts}</select></div>
+ <div class="form-group"><label>Tahun DIAKA *</label><select id="diakaTokohBatch"><option value="">Pilih tahun...</option>${diakaYearOptions(x.batch||batch||'')}</select></div>
+ <div class="form-group"><label>Sesi Pemilihan</label><input id="diakaTokohSession" value="${esc(x.session||diakaSession())}"></div>
+ <div class="form-group"><label>Sesi Menginap di Kajai</label><select id="diakaTokohStayIn"><option value="">Pilih sesi...</option>${diakaStaySessionOptions(x.stayIn||'')}</select></div>
+ <div class="form-group"><label>Sesi Keluar dari Kajai</label><select id="diakaTokohStayOut"><option value="">Pilih sesi...</option>${diakaStaySessionOptions(x.stayOut||'')}</select></div>
+ <div class="form-group"><label>No. Telefon</label><input id="diakaTokohPhone" type="tel" value="${esc(x.phone||'')}"></div>
+ <div class="form-group"><label>E-mel</label><input id="diakaTokohEmail" type="email" value="${esc(x.email||'')}"></div>
+ <div class="form-group"><label>Jawatan / Kerjaya</label><input id="diakaTokohJob" value="${esc(x.jobTitle||'')}"></div>
+ <div class="form-group"><label>Organisasi</label><input id="diakaTokohEmployer" value="${esc(x.employer||'')}"></div>
+ <div class="form-group full"><label>Pencapaian Utama</label><textarea id="diakaTokohAchievement">${esc(x.achievement||'')}</textarea></div>
+ <div class="form-group full"><label>Penglibatan & Sumbangan kepada KRK</label><textarea id="diakaTokohContribution">${esc(x.contribution||'')}</textarea></div>
+ <div class="form-group full"><label>Moto / Kata Inspirasi</label><textarea id="diakaTokohMotto">${esc(x.motto||'')}</textarea></div>
+ <div class="form-group"><label>Gambar Tokoh</label><input type="file" id="diakaTokohImage" accept="image/*">${x.photo?`<img src="${esc(x.photo)}" style="width:100px;height:100px;object-fit:cover;border-radius:12px;margin-top:8px">`:''}</div>
+ <div class="form-group"><label>Fail Sokongan</label><input type="file" id="diakaTokohFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv"><small>${x.supportFile?.name?`Fail semasa: ${esc(x.supportFile.name)}`:'Muat naik satu dokumen/bukti sokongan.'}</small></div>
+ </div>
+ <div class="modal-footer"><button class="btn" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="saveDIAKATokoh('${id}')">Simpan</button></div>`,'',true);
 }
-function saveDIAKATokoh(id){if(!canManageDIAKA())return;const alumniId=document.getElementById('diakaTokohAlumni')?.value,batch=Number(document.getElementById('diakaTokohBatch')?.value);if(!alumniId||batch<1983||batch>2025)return toast('Pilih alumni dan batch 1983–2025.','error');const others=data.diaka.tokoh.filter(x=>x.id!==id&&Number(x.batch)===batch&&x.status!=="Dipadam");if(others.length>=2)return toast('Batch ini sudah mempunyai dua Tokoh DIAKA.','error');const a=data.alumni.find(x=>x.id===alumniId)||{},obj={alumniId,name:a.fullName||'',batch,session:document.getElementById('diakaTokohSession')?.value.trim()||diakaSession(),jobTitle:document.getElementById('diakaTokohJob')?.value.trim()||a.jobTitle||'',employer:document.getElementById('diakaTokohEmployer')?.value.trim()||a.employer||'',achievement:document.getElementById('diakaTokohAchievement')?.value.trim()||'',contribution:document.getElementById('diakaTokohContribution')?.value.trim()||'',motto:document.getElementById('diakaTokohMotto')?.value.trim()||a.motto||'',photo:document.getElementById('diakaTokohPhoto')?.value.trim()||'',status:'Aktif',updatedAt:now()};if(id){Object.assign(data.diaka.tokoh.find(x=>x.id===id),obj)}else data.diaka.tokoh.push({id:uid('diaka'),createdAt:now(),...obj});audit(id?'Mengemas kini Tokoh DIAKA':'Menambah Tokoh DIAKA','DIAKA');save();closeModal();render();toast('Rekod Tokoh DIAKA disimpan.','success');}
+
+async function saveDIAKATokoh(id){
+ if(!canManageDIAKA())return;
+ const alumniId=document.getElementById('diakaTokohAlumni')?.value,batch=Number(document.getElementById('diakaTokohBatch')?.value);
+ if(!alumniId||batch<1983||batch>2025)return toast('Pilih alumni dan Tahun DIAKA 1983–2025.','error');
+ const others=data.diaka.tokoh.filter(x=>x.id!==id&&Number(x.batch)===batch&&x.status!=="Dipadam");
+ if(others.length>=2)return toast('Tahun ini sudah mempunyai dua Tokoh DIAKA.','error');
+ const old=id?data.diaka.tokoh.find(x=>x.id===id):null,a=data.alumni.find(x=>x.id===alumniId)||{};
+ const newPhoto=await diakaReadImage('diakaTokohImage'),newFile=await diakaReadFile('diakaTokohFile');
+ const obj={alumniId,name:a.fullName||'',batch,session:document.getElementById('diakaTokohSession')?.value.trim()||diakaSession(),
+ stayIn:document.getElementById('diakaTokohStayIn')?.value||'',stayOut:document.getElementById('diakaTokohStayOut')?.value||'',
+ phone:document.getElementById('diakaTokohPhone')?.value.trim()||a.phone||'',email:document.getElementById('diakaTokohEmail')?.value.trim()||a.email||'',
+ jobTitle:document.getElementById('diakaTokohJob')?.value.trim()||a.jobTitle||'',employer:document.getElementById('diakaTokohEmployer')?.value.trim()||a.employer||'',
+ achievement:document.getElementById('diakaTokohAchievement')?.value.trim()||'',contribution:document.getElementById('diakaTokohContribution')?.value.trim()||'',
+ motto:document.getElementById('diakaTokohMotto')?.value.trim()||a.motto||'',photo:newPhoto||(old?.photo)||a.photo||a.photoUrl||a.photo_url||'',
+ supportFile:newFile||(old?.supportFile)||null,status:'Aktif',updatedAt:now()};
+ if(id){Object.assign(old,obj)}else data.diaka.tokoh.push({id:uid('diaka'),createdAt:now(),...obj});
+ audit(id?'Mengemas kini Tokoh DIAKA':'Menambah Tokoh DIAKA','DIAKA');save();closeModal();render();toast('Rekod Tokoh DIAKA disimpan.','success');
+}
+
 function openDIAKAProfile(id){const x=data.diaka.tokoh.find(v=>v.id===id);if(!x)return;const a=diakaAlumni(x),photo=diakaPhoto(x);openModal('Profil Tokoh DIAKA',`<div class="diaka-profile"><div class="diaka-profile-photo">${photo?`<img src="${esc(photo)}" alt="${esc(diakaName(x))}">`:'<span>✦</span>'}</div><div><h2 style="margin:0 0 5px">${esc(diakaName(x))}</h2><div class="muted">Batch ${esc(x.batch||a.batch||'—')} • Tokoh DIAKA ${esc(x.session||'—')}</div><p><b>${esc(x.jobTitle||a.jobTitle||'')}</b>${x.employer||a.employer?` • ${esc(x.employer||a.employer)}`:''}</p></div><div id="diakaQR" class="diaka-qr"></div></div><div class="card" style="margin-top:16px"><b>Pencapaian Utama</b><p>${esc(x.achievement||'Belum direkodkan.')}</p><b>Penglibatan & Sumbangan kepada KRK</b><p>${esc(x.contribution||'Belum direkodkan.')}</p><b>Moto / Kata Inspirasi</b><p>${esc(x.motto||a.motto||'Belum direkodkan.')}</p></div>`,'',true);setTimeout(()=>makeDIAKAQR(x),50);}
 function makeDIAKAQR(x){const el=document.getElementById('diakaQR');if(!el)return;const text=`LAMAN LEGASI KAJAI | DIAKA | ${diakaName(x)} | Batch ${x.batch||'-'} | Sesi ${x.session||'-'} | ID ${x.id}`;const make=()=>{if(window.QRCode)new QRCode(el,{text,width:150,height:150});else el.innerHTML='<div class="small muted">QR memerlukan sambungan internet.</div>'};if(window.QRCode)return make();const sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';sc.onload=make;sc.onerror=make;document.head.appendChild(sc);}
 
