@@ -60,6 +60,12 @@ button{
   min-height:100vh;
 }
 
+/* HARD AUTH GATE: aplikasi tidak dipaparkan sehingga akses disahkan */
+html:not(.auth-access-granted) .app{display:none!important;}
+html:not(.auth-access-granted) body{background:var(--bg);}
+html:not(.auth-access-granted) .auth-backdrop{background:linear-gradient(135deg,#0d1b31,#13233f 55%,#243d68);}
+html:not(.auth-access-granted) #authBackdrop{display:flex!important;}
+
 /* =========================================================
    SIDEBAR
 ========================================================= */
@@ -10353,6 +10359,75 @@ function pageContact(){return `
  <div class="card" style="margin-top:16px"><div class="card-title">Borang Hubungi Kami</div><p class="small muted">Tidak menemui saluran yang sesuai di atas? Hantarkan pertanyaan anda melalui borang berikut.</p><form class="form-grid" onsubmit="submitContactInfo(event,'Pertanyaan Umum')">${inputField("Nama","nama","","text",true)}${inputField("E-mel","email","","email",true)}${inputField("No. Telefon (Pilihan)","telefon","")}<div class="form-group"><label>Kategori Pertanyaan</label><select name="kategori">${["Pertanyaan Umum","Alumni","Pembetulan Maklumat Legasi","Jaringan & Kerjasama","Media / Publisiti","Program","Lain-lain"].map(x=>`<option>${x}</option>`).join("")}</select></div>${inputField("Subjek","subjek","","text",true)}<div class="form-group full"><label>Mesej</label><textarea name="mesej" required></textarea></div><div class="form-actions"><button class="btn btn-primary">Hantar</button></div></form></div>
  <div class="card" style="margin-top:16px"><div class="card-title">Ikuti Media Sosial Kolej Rahim Kajai</div><div class="detail-grid" style="margin-top:14px"><div class="detail-item"><div class="detail-label">Instagram</div><div class="detail-value">Kolej Rahim Kajai — @kolejrahimkajai<br>HELAA KRK — @helaa_krk</div></div><div class="detail-item"><div class="detail-label">TikTok</div><div class="detail-value">Kolej Rahim Kajai — @kolejrahimkajai<br>HELAA KRK — @helaa_krk</div></div><div class="detail-item"><div class="detail-label">Facebook / YouTube</div><div class="detail-value">Kolej Rahim Kajai - UKM KRK<br>KajaiTV</div></div></div></div>
  <div class="hero" style="margin-top:16px"><h1>Laman Legasi Kajai</h1><p>Memelihara sejarah. Menghubungkan generasi. Meneruskan legasi.</p></div>`;}
+
+/* =========================================================
+   HARD AUTHENTICATION GATE — 2026-09-25
+   Website content remains hidden until this browser session has
+   completed the selected access flow. Supabase/RLS remains the
+   authority for protected cloud data.
+========================================================= */
+function hasLegasiAccess(){
+  return sessionStorage.getItem("laman_legasi_kajai_authenticated")==="1";
+}
+function lockLegasiApp(){
+  document.documentElement.classList.remove("auth-access-granted");
+  const modal=document.getElementById("authBackdrop");
+  if(modal) modal.classList.remove("hidden");
+}
+function unlockLegasiApp(){
+  document.documentElement.classList.add("auth-access-granted");
+  const modal=document.getElementById("authBackdrop");
+  if(modal) modal.classList.add("hidden");
+}
+
+// Login window cannot be dismissed while the visitor has no access.
+const __hardGateCloseLogin=closeLogin;
+closeLogin=function(){
+  if(!hasLegasiAccess()){
+    document.getElementById("authBackdrop")?.classList.remove("hidden");
+    return;
+  }
+  __hardGateCloseLogin();
+};
+authBackdropClose=function(e){
+  if(hasLegasiAccess() && e.target.id==="authBackdrop") closeLogin();
+};
+
+// Any successful legacy/Supabase login writes the access marker first;
+// these wrappers then reveal the application.
+const __hardGateRender=render;
+render=function(){
+  if(hasLegasiAccess()) unlockLegasiApp();
+  else lockLegasiApp();
+  return __hardGateRender();
+};
+
+// A completed Google role flow is also a successful access grant.
+const __hardGateCompleteGoogleRoleAccess=completeGoogleRoleAccess;
+completeGoogleRoleAccess=function(role,user){
+  const result=__hardGateCompleteGoogleRoleAccess(role,user);
+  unlockLegasiApp();
+  return result;
+};
+
+// Registration with an immediate Supabase session should reveal the app
+// through render(); registrations awaiting e-mail confirmation stay locked.
+
+// Sign out from Supabase for every role, clear local access, and lock first.
+const __hardGateLogout=logout;
+logout=async function(){
+  lockLegasiApp();
+  try{ await supabaseClient.auth.signOut(); }catch(e){ console.warn("Supabase sign-out:",e); }
+  const result=await __hardGateLogout();
+  lockLegasiApp();
+  return result;
+};
+
+// Replace the earlier startup behaviour with a strict gate after DOM exists.
+document.addEventListener("DOMContentLoaded",()=>{
+  if(hasLegasiAccess()) unlockLegasiApp();
+  else lockLegasiApp();
+});
 
 render();
 restoreGoogleOAuthSession();
