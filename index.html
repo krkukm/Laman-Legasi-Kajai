@@ -1729,7 +1729,7 @@ input,select,textarea{accent-color:#7b1b3a}
  class="hidden"
  accept=".json"
  onchange="importJSON(event)"
->
+><div class="muted" style="margin-top:6px">Contoh dokumen sokongan: CV / Resume atau dokumen berkaitan pencalonan.</div>
 
 <script>
 /* =========================================================
@@ -4032,7 +4032,13 @@ style="width:100px;height:100px;object-fit:cover;border-radius:12px">
          ?
          `
            <div class="form-divider">
-             Pengesahan & Penafian Pengendalian Maklumat
+             
+<div class="form-group full">
+  <label>CV / Resume Alumni</label>
+  <input type="file" name="alumniCV" accept=".pdf,.doc,.docx">
+  <div class="muted" style="margin-top:6px">Muat naik CV atau Resume alumni sebagai dokumen sokongan. Format: PDF, DOC atau DOCX.</div>
+</div>
+Pengesahan & Penafian Pengendalian Maklumat
            </div>
 
            <div class="form-group full" style="padding:16px;border:1px solid var(--line);border-radius:14px;background:#fffaf7">
@@ -10949,7 +10955,7 @@ function openDIAKANominationForm(){
    <div class="form-group full"><label>Apakah sumbangan calon terhadap warga / Kolej Rahim Kajai? *</label><textarea id="diakaContribution" required></textarea></div>
    <div class="form-group full"><label>Pencapaian utama / penglibatan lain</label><textarea id="diakaAchievement"></textarea></div>
    <div class="form-group"><label>Gambar Calon</label><input type="file" id="diakaNomImage" accept="image/*"><small>Muat naik satu gambar calon.</small></div>
-   <div class="form-group"><label>Fail Sokongan</label><input type="file" id="diakaNomFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv"><small>Muat naik satu dokumen/bukti sokongan.</small></div>
+   <div class="form-group"><label>Fail Sokongan / CV / Resume</label><input type="file" id="diakaNomFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv"><small>Muat naik satu dokumen/bukti sokongan.</small></div>
    <div class="form-group full"><label>Pautan bukti / rujukan (jika ada)</label><input id="diakaEvidence" placeholder="https://..."></div>
  </div>
  <div class="modal-footer"><button class="btn" onclick="closeModal()">Batal</button><button class="btn btn-primary" onclick="submitDIAKANomination()">Hantar Pencalonan</button></div>`,`${esc(diakaSession())}`,true);
