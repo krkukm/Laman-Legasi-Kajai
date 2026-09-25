@@ -4017,7 +4017,14 @@ style="width:100px;height:100px;object-fit:cover;border-radius:12px">
          !isAdmin()
          ?
          `
-           <div class="form-group full">
+           
+<div class="form-group full alumni-cv-upload">
+  <label for="suggestedAlumniCV">CV / Resume Alumni</label>
+  <input type="file" id="suggestedAlumniCV" name="alumniCV" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+  <small>Muat naik CV atau Resume alumni sebagai dokumen sokongan. Format: PDF, DOC atau DOCX.</small>
+</div>
+
+<div class="form-group full">
              <label>Sebab / Nota Cadangan</label>
              <textarea id="suggestionReason" required
               placeholder="Contoh: Maklumat diperoleh daripada alumni sendiri."></textarea>
