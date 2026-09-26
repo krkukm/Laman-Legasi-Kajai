@@ -1573,7 +1573,7 @@ input,select,textarea{accent-color:#7b1b3a}
 <div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">LEGASI</div><button class="nav-item" data-page="leadership" onclick="go('leadership')"><span class="nav-icon">♛</span><span>Kepimpinan Kajai</span></button><button class="nav-item" data-page="heritage" onclick="go('heritage')"><span class="nav-icon">⌁</span><span>Timeline Legasi</span></button><button class="nav-item" data-page="gallery" onclick="go('gallery')"><span class="nav-icon">▧</span><span>Galeri Legasi</span></button></div>
 <div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">DIAKA</div><button class="nav-item" data-page="diaka" onclick="go('diaka')"><span class="nav-icon">✦</span><span>Tokoh DIAKA</span></button><button class="nav-item" data-page="diakaNominations" onclick="go('diakaNominations')"><span class="nav-icon">▤</span><span>Pencalonan DIAKA</span></button><button class="nav-item" data-page="diakaSession" onclick="go('diakaSession')"><span class="nav-icon">◷</span><span>Sesi DIAKA</span></button><button class="nav-item" data-page="diakaArchive" onclick="go('diakaArchive')"><span class="nav-icon">⌂</span><span>Arkib DIAKA</span></button></div>
 <div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">KARISMA</div><button class="nav-item" data-page="records" onclick="go('records')"><span class="nav-icon">✓</span><span>Rekod Penglibatan</span></button><button class="nav-item" data-page="merit" onclick="go('merit')"><span class="nav-icon">★</span><span>Sistem Merit</span></button><button class="nav-item" data-page="units" onclick="go('units')"><span class="nav-icon">▦</span><span>Unit KARISMA</span></button><button class="nav-item" data-page="karismaAnalytics" onclick="go('karismaAnalytics')"><span class="nav-icon">▥</span><span>Analitik KARISMA</span></button><button class="nav-item" data-page="karismaArchive" onclick="go('karismaArchive')"><span class="nav-icon">⌂</span><span>Arkib KARISMA</span></button><button class="nav-item" data-page="alumniRequests" onclick="go('alumniRequests')"><span class="nav-icon">✉</span><span>Permohonan Alumni untuk Program</span></button></div>
-<div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">PENGURUSAN</div><button class="nav-item" data-page="suggestions" onclick="go('suggestions')"><span class="nav-icon">!</span><span>Cadangan & Pengesahan</span></button><button class="nav-item" data-page="reports" onclick="go('reports')"><span class="nav-icon">▤</span><span>Laporan & Analitik</span></button><button class="nav-item" data-page="actionCentre" onclick="go('actionCentre')"><span class="nav-icon">⚑</span><span>Action Centre</span></button><button class="nav-item" data-page="dataQuality" onclick="go('dataQuality')"><span class="nav-icon">✓</span><span>Data Quality Centre</span></button><button class="nav-item" data-page="timeCapsule" onclick="go('timeCapsule')"><span class="nav-icon">◷</span><span>Digital Time Capsule</span></button><button class="nav-item" data-page="insights" onclick="go('insights')"><span class="nav-icon">◆</span><span>Kajai Insights</span></button></div>
+<div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">PENGURUSAN</div><button class="nav-item" data-page="suggestions" onclick="go('suggestions')"><span class="nav-icon">!</span><span>Cadangan & Pengesahan</span></button><button class="nav-item" data-page="reports" onclick="go('reports')"><span class="nav-icon">▤</span><span>Laporan & Analitik</span></button><button class="nav-item" data-page="websiteAnalytics" onclick="go('websiteAnalytics')"><span class="nav-icon">▥</span><span>Trafik Laman</span></button><button class="nav-item" data-page="actionCentre" onclick="go('actionCentre')"><span class="nav-icon">⚑</span><span>Action Centre</span></button><button class="nav-item" data-page="dataQuality" onclick="go('dataQuality')"><span class="nav-icon">✓</span><span>Data Quality Centre</span></button><button class="nav-item" data-page="timeCapsule" onclick="go('timeCapsule')"><span class="nav-icon">◷</span><span>Digital Time Capsule</span></button><button class="nav-item" data-page="insights" onclick="go('insights')"><span class="nav-icon">◆</span><span>Kajai Insights</span></button></div>
 <div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">HUBUNGAN</div><button class="nav-item" data-page="contact" onclick="go('contact')"><span class="nav-icon">✉</span><span>Hubungi Kami</span></button></div>
 <div class="nav-section collapsible"><div class="nav-label" onclick="toggleNavSection(this)">SISTEM</div><button class="nav-item admin-only" data-page="users" onclick="go('users')"><span class="nav-icon">♟</span><span>Pengguna</span></button><button class="nav-item admin-only" data-page="auditPage" onclick="go('auditPage')"><span class="nav-icon">≡</span><span>Audit Log</span></button><button class="nav-item admin-only" data-page="settings" onclick="go('settings')"><span class="nav-icon">⚙</span><span>Tetapan Sistem</span></button><button class="nav-item admin-only" data-page="data" onclick="go('data')"><span class="nav-icon">⇅</span><span>Data & Sandaran</span></button><button class="nav-item admin-only" data-page="recycleBin" onclick="go('recycleBin')"><span class="nav-icon">♻</span><span>Tong Kitar Semula</span></button></div>
   <div class="sidebar-bottom">
@@ -1729,7 +1729,7 @@ input,select,textarea{accent-color:#7b1b3a}
  class="hidden"
  accept=".json"
  onchange="importJSON(event)"
-><div class="muted" style="margin-top:6px">Contoh dokumen sokongan: CV / Resume atau dokumen berkaitan pencalonan.</div>
+>
 
 <script>
 /* =========================================================
@@ -2590,6 +2590,7 @@ function render(){
       suggestions:pageSuggestions,
       gallery:pageGallery,
       reports:pageReports,
+      websiteAnalytics:pageWebsiteAnalytics,
       karismaAnalytics:pageKarismaAnalytics,
       karismaArchive:pageKarismaArchive,
       diaka:pageDIAKA,
@@ -7627,6 +7628,34 @@ function compressImage(file,maxWidth=1200,quality=.72){
    REPORTS
 ========================================================= */
 
+function pageWebsiteAnalytics(){
+    const a=(typeof analyticsStore==='function'?analyticsStore():{views:[]});
+    const views=Array.isArray(a.views)?a.views:[];
+    const nowMs=Date.now();
+    const within=n=>views.filter(v=>nowMs-new Date(v.at).getTime()<=n*864e5);
+    const today=views.filter(v=>new Date(v.at).toDateString()===new Date().toDateString());
+    const counts={};
+    views.forEach(v=>{const k=v.page||'dashboard';counts[k]=(counts[k]||0)+1});
+    const names={dashboard:'Utama',alumni:'Direktori Alumni',myAlumniProfile:'Profil Alumni',leadership:'Kepimpinan',diaka:'DIAKA',diakaNominations:'Pencalonan DIAKA',heritage:'Peta Legasi',records:'KARISMA',gallery:'Galeri Legasi',contact:'Hubungi Kami'};
+    const top=Object.entries(counts).sort((x,y)=>y[1]-x[1]);
+    const label=x=>names[x]||String(x||'').replace(/([A-Z])/g,' $1').replace(/^./,c=>c.toUpperCase());
+    const total=views.length;
+    const topMax=Math.max(1,...top.map(x=>x[1]));
+    return `<div class="page-header"><div><h1 class="page-title">Trafik Laman</h1><p class="page-subtitle">Analitik trafik dan engagement Laman Legasi Kajai sahaja.</p></div></div>
+    <div class="analytics-kpi">
+      <div class="card"><span class="small muted">Hari ini</span><br><strong>${today.length}</strong><br><span class="small muted">views direkodkan</span></div>
+      <div class="card"><span class="small muted">7 hari</span><br><strong>${within(7).length}</strong><br><span class="small muted">views direkodkan</span></div>
+      <div class="card"><span class="small muted">30 hari</span><br><strong>${within(30).length}</strong><br><span class="small muted">views direkodkan</span></div>
+      <div class="card"><span class="small muted">Jumlah views</span><br><strong>${total}</strong><br><span class="small muted">sejak rekod bermula</span></div>
+    </div>
+    <div class="grid grid-2" style="margin-top:16px">
+      <div class="card"><div class="card-title">Halaman paling banyak dikunjungi</div><div style="font-size:22px;font-weight:800;margin-top:12px">${top.length?esc(label(top[0][0])):'Belum ada data'}</div><div class="small muted" style="margin-top:6px">${top.length?top[0][1]+' views':'Trafik akan muncul selepas halaman digunakan.'}</div>${top.slice(1,4).length?`<div class="small muted" style="margin-top:10px">Seterusnya: ${top.slice(1,4).map(x=>esc(label(x[0]))).join(' → ')}</div>`:''}</div>
+      <div class="card"><div class="card-title">Pengguna baharu & kembali</div><div style="margin-top:12px"><strong style="font-size:20px">—</strong></div><div class="small muted" style="margin-top:8px">Akan dipaparkan daripada Google Analytics 4 selepas sambungan data sebenar diaktifkan.</div></div>
+    </div>
+    <div class="card" style="margin-top:16px"><div class="card-title">Engagement mengikut subpage</div><div class="small muted" style="margin:5px 0 14px">Bilangan pembukaan subpage yang direkodkan.</div>${top.length?top.slice(0,10).map(x=>`<div style="margin:12px 0"><div style="display:flex;justify-content:space-between;gap:12px"><b>${esc(label(x[0]))}</b><span>${x[1]} views</span></div><div class="progress" style="margin-top:6px"><span style="width:${(x[1]/topMax*100).toFixed(1)}%"></span></div></div>`).join(''):empty('▥','Belum ada trafik','Data subpage akan direkodkan apabila laman digunakan.')}</div>
+    <div class="card" style="margin-top:16px"><div class="card-title">Google Analytics 4</div><p class="small muted" style="margin:8px 0 0">Apabila GA4 disambungkan, halaman ini boleh digunakan untuk paparan pengguna sebenar merentas peranti, pengguna baharu vs kembali, purata masa engagement, sumber trafik, peranti dan lokasi umum. Angka tempatan di atas bukan statistik pengguna unik GA4.</p></div>`;
+}
+
 function pageReports(){
 
     const avg=data.alumni.length
@@ -10085,10 +10114,8 @@ function openAlumniSelfRegistration(){
     viewAlumni(official.id);
     return;
   }
-  if(existing && !["Perlu Suntingan","Ditolak"].includes(existing.status)){
-    toast("Pendaftaran anda sedang/ telah diproses. Borang belum boleh dihantar semula.","error");
-    return;
-  }
+  // Alumni boleh membuka semula draf/permohonan sendiri. Setiap penghantaran semula tetap melalui kelulusan.
+  // Rekod rasmi yang telah diluluskan menggunakan aliran Cadangkan Kemas Kini.
   const a=existing?.changes||{};
   const email=alumniSessionEmail();
   const name=a.fullName||alumniSessionName();
@@ -10097,6 +10124,10 @@ function openAlumniSelfRegistration(){
       <div class="form-group full"><div class="revision-note">
         Maklumat ini akan dihantar kepada HELAA/Pentadbir untuk semakan. Kod alumni <strong>KRK00001</strong> dan seterusnya hanya dijana selepas pendaftaran diluluskan.
         ${existing?.adminNote?`<br><br><strong>Catatan semakan:</strong> ${esc(existing.adminNote)}`:""}
+      </div></div>
+      <div class="form-group full"><div class="revision-note" style="background:#f7fafc">
+        <strong>Simpan & sambung semula</strong><br>
+        Borang ini disimpan secara automatik semasa anda mengisi. Anda juga boleh menekan <strong>Simpan Draf</strong> pada bila-bila masa. Draf dipautkan kepada e-mel akaun Alumni dan boleh dipulihkan apabila borang dibuka semula pada browser/peranti yang sama. Selepas penghantaran, sebarang suntingan perlu dihantar semula untuk pengesahan. Tarikh dan waktu penghantaran serta penghantaran semula direkodkan.
       </div></div>
       <div class="form-divider">Identiti Alumni</div>
       ${inputField("Nama Penuh","fullName",name,"text",true)}
@@ -10175,7 +10206,7 @@ function openAlumniSelfRegistration(){
         </div>
       </div>
 
-      <div class="form-actions"><button type="button" class="btn" onclick="closeModal()">Batal</button><button type="submit" class="btn btn-primary">Hantar untuk Pengesahan</button></div>
+      <div class="form-actions"><button type="button" class="btn" onclick="saveAlumniSelfDraft()">Simpan Draf</button><button type="button" class="btn" onclick="closeModal()">Tutup</button><button type="submit" class="btn btn-primary">Hantar untuk Pengesahan</button></div>
     </form>
   `,"Pendaftaran sendiri Alumni • Menunggu pengesahan HELAA/Pentadbir",true);
 }
@@ -10214,6 +10245,8 @@ async function submitAlumniSelfRegistration(e,id=""){
     old.adminNote="";
     old.updatedAt=now();
     old.resubmittedAt=now();
+    old.actionHistory=old.actionHistory||[];
+    old.actionHistory.push({action:"Dihantar semula untuk pengesahan",at:now(),byName:actor.name,byEmail:actor.email,byRole:"Alumni"});
   }else{
     data.alumniRegistrations=data.alumniRegistrations||[];
     data.alumniRegistrations.unshift({
@@ -10226,7 +10259,8 @@ async function submitAlumniSelfRegistration(e,id=""){
       submittedByEmail:actor.email,
       submittedByRole:"Alumni",
       submittedAt:now(),
-      updatedAt:now()
+      updatedAt:now(),
+      actionHistory:[{action:"Pendaftaran dihantar untuk pengesahan",at:now(),byName:actor.name,byEmail:actor.email,byRole:"Alumni"}]
     });
   }
   addNotification({recipientRole:"Pentadbir",title:"Pendaftaran Alumni baharu",message:`${changes.fullName} telah menghantar pendaftaran diri sebagai Alumni KRK.`});
@@ -10248,13 +10282,14 @@ function pageMyAlumniProfile(){
   if(!reg){
     return `<div class="page-header"><div><h1 class="page-title">Profil Saya</h1><p class="page-subtitle">Daftar diri sebagai Alumni Kolej Rahim Kajai.</p></div></div>
       <div class="card">${empty("♙","Belum ada pendaftaran","Lengkapkan profil anda dan hantar kepada HELAA/Pentadbir untuk pengesahan.")}
+      <div class="revision-note" style="margin-top:14px"><strong>Simpan & sambung semula</strong><br>Borang mempunyai Simpan Draf dan auto-save. Draf dipulihkan menggunakan akaun/e-mel Alumni pada browser/peranti yang sama. Profil rasmi yang telah diluluskan tidak ditindih secara terus; perubahan tetap melalui aliran cadangan dan kelulusan Pentadbir.</div>
       <div class="form-actions"><button class="btn btn-primary" onclick="openAlumniSelfRegistration()">Daftar Diri sebagai Alumni KRK</button></div></div>`;
   }
   return `<div class="page-header"><div><h1 class="page-title">Profil Saya</h1><p class="page-subtitle">Status pendaftaran Alumni KRK anda.</p></div></div>
     <div class="card"><div class="card-head"><div><div class="card-title">${esc(reg.changes?.fullName||alumniSessionName())}</div><div class="small muted">Dihantar ${dateMY(reg.submittedAt)}</div></div>${alumniRegistrationBadge(reg.status)}</div>
     ${reg.adminNote?`<div class="revision-note"><strong>Catatan HELAA/Pentadbir:</strong><br>${esc(reg.adminNote)}</div>`:""}
     <div class="detail-grid">${detail("Batch",reg.changes?.batch)}${detail("Program / Kursus",reg.changes?.course)}${detail("E-mel",reg.submittedByEmail)}</div>
-    ${["Perlu Suntingan","Ditolak"].includes(reg.status)?`<div class="form-actions"><button class="btn btn-primary" onclick="openAlumniSelfRegistration()">Sunting & Hantar Semula</button></div>`:""}
+    <div class="form-actions"><button class="btn btn-primary" onclick="openAlumniSelfRegistration()">Sunting Maklumat & Hantar Semula</button></div><div class="small muted" style="margin-top:10px">Kemas kini terakhir: ${dateMY(reg.updatedAt||reg.submittedAt)}. Setiap perubahan yang dihantar semula memerlukan pengesahan HELAA/Pentadbir.</div>
     </div>`;
 }
 
@@ -11151,6 +11186,120 @@ function openDIAKAArchiveSession(sess){const p=data.diaka.tokoh.filter(x=>x.sess
   };
 })();
 </script>
+
+<style>
+/* === Tambahan 26 Sep 2026: Gelaran, draf Alumni & Analitik === */
+.title-master{grid-column:1/-1;border:1px solid var(--line);border-radius:14px;padding:14px;background:#fcfafb}.title-master h4{margin:0 0 5px;color:var(--maroon,#7b1734)}.title-desc,.title-help{font-size:11px;color:var(--muted);line-height:1.45}.title-example{font-size:10px;background:#f7f7f7;border-left:3px solid var(--maroon,#7b1734);padding:8px 10px;margin:9px 0 12px;border-radius:6px}.title-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.title-tag{display:flex;gap:6px;align-items:center;background:var(--maroon,#7b1734);color:white;border-radius:999px;padding:6px 9px;font-size:11px}.title-tag button{border:0;background:transparent;color:white;cursor:pointer}.title-preview{margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:9px;background:white;font-weight:700}.title-missing{margin-top:9px;font-size:11px}.analytics-kpi{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.analytics-kpi .card strong{font-size:28px;color:var(--maroon,#7b1734)}@media(max-width:700px){.analytics-kpi{grid-template-columns:1fr 1fr}}
+</style>
+<script>
+(function(){
+const TITLE_OPTIONS=["Cik","Encik","Puan","Tuan","Sdr.","Sdri.","Hj.","Hjh.","Dr.","Prof. Madya","Prof.","Prof. Emeritus","Prof. Ulung","Prof. Diraja","Ir.","Ts.","Tc.","Gs.","Ar.","Sr.","ChM.","Tun","Toh Puan","Tan Sri","Puan Sri","Datuk","Dato'","Dato' Sri","Dato' Seri","Datuk Sri","Datuk Seri","Dato' Seri Utama","Datuk Seri Utama","Dato' Paduka","Datin Paduka","Dato' Setia","Dato' Wira","Datuk Wira","Dato' Indera","Datin","Datin Sri","Datin Seri","Datuk Seri Panglima","Datin Seri Panglima","Pehin Sri","Datuk Patinggi","Datin Patinggi","Datuk Amar","Datin Amar","Dato Sri","Tunku","Tengku","Raja","Engku","Ungku","Dato' Klana Petra","Dato' Sedia Raja","Dato' Johan Pahlawan Lela Perkasa Sitiawan","Dato' Mendika Menteri Akhirulzaman"];
+function parseTitles(v){try{return Array.isArray(v)?v:JSON.parse(v||'[]')}catch(e){return String(v||'').split('|').filter(Boolean)}}
+function findLinkedAlumni(form){const sels=[...form.querySelectorAll('select')];for(const sel of sels){if(/alumni/i.test(sel.name||sel.id||'')&&sel.value){const a=(window.data?.alumni||[]).find(x=>String(x.id)===String(sel.value));if(a)return a}}return null}
+function titleWidget(form){
+ // Gelaran/Pangkat HANYA untuk modul yang benar-benar berkaitan identiti alumni:
+ // Kepimpinan, Direktori/rekod Alumni, Profil Alumni, Cadangkan Alumni dan Pencalonan DIAKA.
+ const submitCode=(form.getAttribute('onsubmit')||'');
+ const allowedTitleForm =
+   form.id==='alumniForm' ||
+   form.id==='alumniSelfForm' ||
+   /submitLeadershipForm/i.test(submitCode) ||
+   /DIAKA/i.test(form.id||'') || /DIAKA/i.test(submitCode);
+ if(!allowedTitleForm){
+   form.querySelectorAll(':scope > .title-master').forEach(x=>x.remove());
+   delete form.dataset.titleReady;
+   return;
+ }
+ if(form.dataset.titleReady==='1')return;
+ const nameInput=[...form.querySelectorAll('input')].find(x=>/fullName|name|nama/i.test(x.name||x.id||'')&&!/email|program|organis|username/i.test(x.name||x.id||''));
+ const linked=findLinkedAlumni(form); if(!nameInput&&!linked)return;
+ form.dataset.titleReady='1'; const initial=parseTitles(linked?.titles||linked?.gelaran||'');
+ const box=document.createElement('div');box.className='title-master';box.innerHTML=`<h4>Gelaran / Pangkat</h4><div class="title-desc">Sila pilih gelaran, sapaan atau gelaran profesional yang digunakan bersama nama rasmi. Boleh pilih lebih daripada satu dan susun mengikut turutan.</div><div class="title-example"><b>Contoh:</b> Encik Ahmad bin Ali · Dr. Ahmad bin Ali · Prof. Dato' Gs. Ts. Dr. Hj. Ahmad bin Ali<br>Tidak mempunyai gelaran khas? <b>Sila pilih sapaan asas seperti Encik, Puan atau Cik.</b></div><label>Gelaran / Pangkat</label><select class="title-picker"><option value="">-- Pilih / Cari Gelaran --</option>${TITLE_OPTIONS.map(x=>`<option value="${x.replace(/"/g,'&quot;')}">${x}</option>`).join('')}</select><input type="hidden" name="titles"><div class="title-tags"></div><div class="title-help">Pilih satu atau lebih. Gelaran yang dipautkan kepada rekod Alumni akan digunakan semula pada borang berkaitan.</div><div class="title-preview"></div><div class="title-missing"><button type="button" class="btn btn-small title-propose">+ Gelaran/Pangkat saya tiada dalam senarai</button><div class="title-proposal" style="display:none;margin-top:8px"><input placeholder="Cadangkan Gelaran/Pangkat"><small>Cadangan akan direkodkan untuk semakan Pentadbir sebelum digunakan sebagai gelaran rasmi.</small></div></div>`;
+ const firstDivider=form.querySelector('.form-divider'); if(firstDivider) firstDivider.after(box); else form.prepend(box);
+ let selected=[...initial]; const hidden=box.querySelector('input[type=hidden]'),tags=box.querySelector('.title-tags'),preview=box.querySelector('.title-preview'),picker=box.querySelector('.title-picker');
+ function draw(){hidden.value=JSON.stringify(selected);tags.innerHTML=selected.map((t,i)=>`<span class="title-tag"><button type="button" data-m="-1" data-i="${i}">◀</button>${t}<button type="button" data-m="1" data-i="${i}">▶</button><button type="button" data-x="${i}">×</button></span>`).join('');const nm=(nameInput?.value||linked?.fullName||'Nama Alumni').trim();preview.textContent='Pratonton: '+[...selected,nm].join(' ').trim()}
+ picker.onchange=()=>{if(picker.value&&!selected.includes(picker.value))selected.push(picker.value);picker.value='';draw()};tags.onclick=e=>{const i=Number(e.target.dataset.i??e.target.dataset.x);if(e.target.dataset.x!==undefined)selected.splice(i,1);else if(e.target.dataset.m){const j=i+Number(e.target.dataset.m);if(j>=0&&j<selected.length)[selected[i],selected[j]]=[selected[j],selected[i]]}draw()};nameInput?.addEventListener('input',draw);box.querySelector('.title-propose').onclick=()=>{const q=box.querySelector('.title-proposal');q.style.display=q.style.display==='none'?'block':'none'};draw();
+ // Jika pautan alumni berubah, gunakan gelaran master alumni tersebut.
+ form.querySelectorAll('select').forEach(sel=>{if(/alumni/i.test(sel.name||sel.id||''))sel.addEventListener('change',()=>{const a=(window.data?.alumni||[]).find(x=>String(x.id)===String(sel.value));if(a){selected=parseTitles(a.titles||a.gelaran||'');draw()}})});
+}
+const obs=new MutationObserver(()=>document.querySelectorAll('form').forEach(titleWidget));obs.observe(document.body,{childList:true,subtree:true});document.querySelectorAll('form').forEach(titleWidget);
+
+// ---------- Draf Alumni: kekal selepas tab/browser ditutup (localStorage, ikut e-mel akaun) ----------
+window.alumniDraftKey=()=>`krk_alumni_draft_${(typeof alumniSessionEmail==='function'?alumniSessionEmail():'anonymous').toLowerCase()}`;
+window.saveAlumniSelfDraft=function(silent=false){const f=document.getElementById('alumniSelfForm');if(!f)return;const fd=new FormData(f),o={};for(const [k,v] of fd.entries())if(!(v instanceof File))o[k]=v;o.educationHistory=typeof collectEducationHistory==='function'?collectEducationHistory('alumniSelfEducationRows'):[];o.savedAt=new Date().toISOString();localStorage.setItem(alumniDraftKey(),JSON.stringify(o));if(!silent&&typeof toast==='function')toast('Draf profil disimpan. Anda boleh sambung semula walaupun tab ditutup.','success')};
+function restoreDraft(){const f=document.getElementById('alumniSelfForm');if(!f||f.dataset.draftRestored)return;f.dataset.draftRestored='1';let d;try{d=JSON.parse(localStorage.getItem(alumniDraftKey())||'null')}catch(e){}if(!d)return;Object.entries(d).forEach(([k,v])=>{if(k==='educationHistory'||k==='savedAt')return;const el=f.elements[k];if(el&&el.type!=='file'&&el.type!=='checkbox'&&!el.value)el.value=v});const note=document.createElement('div');note.className='form-group full revision-note';note.innerHTML=`Draf automatik dipulihkan. Simpanan terakhir: <b>${new Date(d.savedAt).toLocaleString('ms-MY')}</b>`;f.prepend(note)}
+setInterval(()=>{restoreDraft();if(document.getElementById('alumniSelfForm'))saveAlumniSelfDraft(true)},5000);
+document.addEventListener('input',e=>{if(e.target.closest?.('#alumniSelfForm')){clearTimeout(window.__draftTimer);window.__draftTimer=setTimeout(()=>saveAlumniSelfDraft(true),800)}});
+// selepas submit, simpan snapshot tindakan; draf hanya dibersihkan apabila penghantaran berjaya dipanggil.
+const _submitSelf=window.submitAlumniSelfRegistration; if(typeof _submitSelf==='function')window.submitAlumniSelfRegistration=async function(e,id=''){await _submitSelf(e,id);localStorage.removeItem(alumniDraftKey())};
+
+// ---------- Analitik dalaman + GA4-ready ----------
+function analyticsStore(){let a;try{a=JSON.parse(localStorage.getItem('krk_site_analytics')||'{}')}catch(e){a={}};a.views=a.views||[];return a}
+function trackLocalPage(){const a=analyticsStore();a.views.push({at:new Date().toISOString(),page:window.currentPage||'dashboard'});if(a.views.length>10000)a.views=a.views.slice(-10000);localStorage.setItem('krk_site_analytics',JSON.stringify(a))}
+const _go=window.go;if(typeof _go==='function')window.go=function(p){trackLocalPage();return _go(p)};trackLocalPage();
+window.pageWebsiteAnalytics=function(){
+ const a=analyticsStore(),nowMs=Date.now();
+ const inDays=n=>a.views.filter(v=>nowMs-new Date(v.at).getTime()<=n*864e5);
+ const today=a.views.filter(v=>new Date(v.at).toDateString()===new Date().toDateString());
+ const counts={};a.views.forEach(v=>counts[v.page]=(counts[v.page]||0)+1);
+ const top=Object.entries(counts).sort((x,y)=>y[1]-x[1]);
+ const ga=window.data?.config?.gaMeasurementId||'';
+ const visitorKey='krk_analytics_first_visit';
+ const first=localStorage.getItem(visitorKey); if(!first)localStorage.setItem(visitorKey,new Date().toISOString());
+ return `<div class="page-header"><div><h1 class="page-title">Laman Legasi Kajai — Analitik</h1><p class="page-subtitle">Trafik dan penggunaan Laman Legasi Kajai sahaja.</p></div></div>
+ <div class="analytics-kpi">
+  <div class="card"><span class="small muted">Hari ini</span><br><strong>${today.length}</strong><br><span class="small muted">paparan direkod pada browser ini</span></div>
+  <div class="card"><span class="small muted">7 hari</span><br><strong>${inDays(7).length}</strong><br><span class="small muted">paparan</span></div>
+  <div class="card"><span class="small muted">30 hari</span><br><strong>${inDays(30).length}</strong><br><span class="small muted">paparan</span></div>
+  <div class="card"><span class="small muted">Jumlah views</span><br><strong>${a.views.length}</strong><br><span class="small muted">sejak rekod tempatan bermula</span></div>
+ </div>
+ <div class="grid grid-2" style="margin-top:16px">
+  <div class="card"><div class="card-title">Halaman paling banyak dikunjungi</div><div style="margin-top:12px;font-size:22px;font-weight:800">${esc(top[0]?.[0]||'Belum ada data')}</div>${top.slice(1,4).length?`<div class="small muted" style="margin-top:8px">Seterusnya: ${top.slice(1,4).map(x=>esc(x[0])).join(' → ')}</div>`:''}</div>
+  <div class="card"><div class="card-title">Google Analytics 4</div><div class="small muted" style="margin-top:10px">${ga?`Measurement ID: <strong>${esc(ga)}</strong><br>Google tag telah disediakan untuk menghantar trafik ke GA4.`:`Belum disambungkan. Masukkan Measurement ID GA4 di Tetapan Sistem untuk mula mengumpul trafik sebenar merentas pengguna dan peranti.`}</div></div>
+ </div>
+ <div class="card" style="margin-top:16px"><div class="card-title">Data trafik sebenar</div><p class="small muted" style="margin:8px 0 0">Angka pengguna unik, pengguna baharu vs kembali, negara/bandar, peranti, sumber trafik, engagement dan trafik merentas semua peranti datang daripada Google Analytics 4. Statistik tempatan di atas hanya membantu semakan prototaip dan tidak dianggap sebagai angka rasmi GA4.</p></div>`;
+};
+const _render=window.render;if(typeof _render==='function')window.render=function(){if(window.currentPage==='websiteAnalytics'){document.getElementById('content').innerHTML=pageWebsiteAnalytics();return}_render()};
+const nav=document.querySelector('.nav-section .nav-item[data-page="reports"]')?.parentElement;if(nav&&!document.querySelector('[data-page="websiteAnalytics"]')){const b=document.createElement('button');b.className='nav-item';b.dataset.page='websiteAnalytics';b.onclick=()=>go('websiteAnalytics');b.innerHTML='<span class="nav-icon">▥</span><span>Analitik Laman Web</span>';nav.appendChild(b)}
+// GA dynamic loader: activates only when a real Measurement ID exists.
+function loadGA(){const id=window.data?.config?.gaMeasurementId;if(!/^G-[A-Z0-9]+$/i.test(id||''))return;const sc=document.createElement('script');sc.async=true;sc.src='https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(id);document.head.appendChild(sc);window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config',id)}loadGA();
+})();
+</script>
+
+
+<style>
+/* === Gelaran/Pangkat v2 — compact, ikut dummy asal === */
+.title-master{padding:12px!important;border-radius:10px!important;background:#fff!important;font-size:11px!important}
+.title-master h4{font-size:14px!important;margin:0 0 4px!important}.title-desc{font-size:10.5px!important;line-height:1.45!important;margin:0 0 8px}.title-example{font-size:9.5px!important;line-height:1.5!important;padding:8px 9px!important;margin:7px 0 10px!important}.title-master label{font-size:11px!important;margin-bottom:5px!important}.title-search-wrap{position:relative}.title-search{font-size:11px!important;padding:9px 10px!important;min-height:36px!important}.title-dropdown{display:none;position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:9999;max-height:280px;overflow:auto;background:#fff;border:1px solid #ddd;border-radius:9px;box-shadow:0 10px 25px rgba(0,0,0,.12)}.title-dropdown.show{display:block}.title-cat{padding:7px 10px 4px;background:#fafafa;color:#888;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}.title-opt{padding:7px 10px;border-bottom:1px solid #f2f2f2;cursor:pointer}.title-opt:hover{background:#f7f7f7}.title-opt-top{display:flex;justify-content:space-between;gap:8px}.title-opt-name{font-size:10.5px;font-weight:700}.title-badge{font-size:7px;background:#eee;color:#666;padding:2px 5px;border-radius:10px}.title-opt-desc{font-size:8.5px;color:#888;margin-top:2px}.title-tags{gap:5px!important;margin-top:7px!important}.title-tag{font-size:9.5px!important;padding:5px 7px!important;background:#222!important}.title-tag button{font-size:9px!important}.title-help{font-size:8.8px!important;line-height:1.4!important;margin-top:5px}.title-actions{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:4px}.title-reset{border:0;background:none;text-decoration:underline;color:#666;font-size:8.8px;cursor:pointer}.title-review{display:none;margin-top:9px;padding:9px;border:1px solid #ead69a;border-radius:8px;background:#fffaf0}.title-review.show{display:block}.title-review-head{font-size:10px;font-weight:800;margin-bottom:5px}.title-warning{background:#fff;border-radius:6px;padding:6px 7px;margin-top:4px;font-size:8.8px;line-height:1.4}.title-level{display:inline-block;font-size:7px;font-weight:800;background:#eee;border-radius:10px;padding:2px 5px;margin-right:4px}.title-preview{font-size:9px!important;font-weight:400!important;padding:10px!important;margin-top:10px!important;background:#f8f8f8!important}.title-preview:before{content:'PRATONTON NAMA';display:block;font-size:7.5px;font-weight:800;color:#777;letter-spacing:.5px;margin-bottom:4px}.title-preview strong{display:block;font-size:13px;color:#222;line-height:1.35}.title-guide{margin-top:10px;border:1px solid #e2e2e2;border-radius:8px;overflow:hidden}.title-guide summary{padding:8px 10px;background:#fafafa;font-size:9.5px;font-weight:700;cursor:pointer}.title-guide-body{padding:7px 10px 9px;font-size:8.5px;line-height:1.45;color:#555}.title-guide-body p{margin:6px 0}.title-missing{border-top:1px solid #eee;padding-top:10px;margin-top:10px!important;font-size:9.5px!important}.title-propose{font-size:9.5px!important;padding:0!important;border:0!important;background:none!important;color:#333!important;text-decoration:underline!important}.title-proposal{padding:10px!important;border:1px solid #ddd;border-radius:8px;background:#fafafa}.title-proposal h5{font-size:11px;margin:0 0 3px}.title-proposal p{font-size:8.5px;color:#777;line-height:1.4;margin:0 0 8px}.title-proposal input,.title-proposal select,.title-proposal textarea{font-size:9.5px!important;padding:8px!important;min-height:34px!important;margin-bottom:7px}.title-proposal textarea{min-height:54px!important}.title-proposal .btn{font-size:9px!important;padding:7px 9px!important}.title-picker{display:none!important}
+@media(max-width:600px){.title-master{padding:10px!important}.title-example{font-size:9px!important}.title-preview strong{font-size:12px}}
+</style>
+<script>
+(function(){
+const META={
+'Cik':['Sapaan Asas','Sapaan umum.',['cik','miss']],'Encik':['Sapaan Asas','Sapaan umum.',['encik','en','mr']],'Puan':['Sapaan Asas','Sapaan umum.',['puan','pn','mrs','madam']],'Tuan':['Sapaan Asas','Sapaan hormat umum.',['tuan','tn']],'Sdr.':['Sapaan Asas','Singkatan Saudara.',['saudara','sdr']],'Sdri.':['Sapaan Asas','Singkatan Saudari.',['saudari','sdri']],
+'Hj.':['Haji / Hajah','Singkatan Haji.',['haji','hj']],'Hjh.':['Haji / Hajah','Singkatan Hajah.',['hajah','hajjah','hjh']],
+'Dr.':['Akademik','Gelaran doktoral/perubatan yang digunakan secara rasmi.',['doctor','doktor','dr']],'Prof. Madya':['Akademik','Profesor Madya.',['associate professor','prof madya']],'Prof.':['Akademik','Profesor.',['professor','prof']],'Prof. Emeritus':['Akademik','Profesor Emeritus.',['emeritus']],'Prof. Ulung':['Akademik','Profesor Ulung.',['profesor ulung']],'Prof. Diraja':['Akademik','Profesor Diraja.',['royal professor']],
+'Ir.':['Profesional','Gelaran profesional kejuruteraan.',['engineer','jurutera','ir']],'Ts.':['Profesional','Professional Technologist.',['technologist','teknologis','ts']],'Tc.':['Profesional','Gelaran profesional teknikal.',['technician','juruteknik','tc']],'Gs.':['Profesional','Gelaran profesional geospatial.',['geospatial','gs']],'Ar.':['Profesional','Gelaran profesional arkitek.',['architect','arkitek']],'Sr.':['Profesional','Gelaran profesional bidang ukur.',['surveyor','juruukur']],'ChM.':['Profesional','Chartered Chemist.',['chemist','chartered chemist','kimia','chm']]};
+const cat=t=>META[t]?.[0]||( /^(Tun|Toh Puan|Tan Sri|Puan Sri|Dat|Datin|Pehin)/.test(t)?'Kebesaran / Kehormat':/^(Tunku|Tengku|Raja|Engku|Ungku)/.test(t)?'Kerabat':'Adat');
+const desc=t=>META[t]?.[1]||'Gelaran rasmi. Sila pilih hanya jika berkaitan.';
+const aliases=t=>META[t]?.[2]||[];
+const norm=x=>String(x||'').toLowerCase().replace(/[’']/g,'').replace(/\\./g,'').replace(/\\s+/g,' ').trim();
+function enhance(box){if(box.dataset.titleV2==='1')return;box.dataset.titleV2='1';const picker=box.querySelector('.title-picker');if(!picker)return;const hidden=box.querySelector('input[type=hidden][name="titles"]');const tags=box.querySelector('.title-tags');const preview=box.querySelector('.title-preview');const help=box.querySelector('.title-help');let selected=[];try{selected=JSON.parse(hidden.value||'[]')}catch(e){}
+const wrap=document.createElement('div');wrap.className='title-search-wrap';wrap.innerHTML='<input class="title-search" type="text" placeholder="Cari gelaran atau pangkat..." autocomplete="off"><div class="title-dropdown"></div>';picker.before(wrap);
+help.innerHTML='Pilih satu atau lebih. Gunakan ◀ dan ▶ untuk menyusun gelaran.<div class="title-actions"><span>Ejaan gelaran diseragamkan oleh sistem.</span><button type="button" class="title-reset">Kosongkan Gelaran</button></div>';
+const review=document.createElement('div');review.className='title-review';review.innerHTML='<div class="title-review-head">Semakan Gelaran</div><div class="title-warnings"></div><div class="title-help">Anda masih boleh meneruskan penghantaran. Pentadbir akan membuat semakan akhir.</div>';help.after(review);
+const guide=document.createElement('details');guide.className='title-guide';guide.innerHTML='<summary>Panduan memilih gelaran</summary><div class="title-guide-body"><p><b>Sapaan Asas</b><br>Untuk sapaan umum seperti Cik, Encik, Puan, Tuan, Sdr. atau Sdri.</p><p><b>Haji / Hajah</b><br>Pilih Hj. atau Hjh. sekiranya digunakan bersama nama rasmi anda.</p><p><b>Akademik</b><br>Contohnya Dr., Prof. Madya, Prof., Prof. Emeritus, Prof. Ulung atau Prof. Diraja.</p><p><b>Profesional</b><br>Contohnya Ir., Ts., Tc., Gs., Ar., Sr. atau ChM.</p><p><b>Kebesaran / Kehormat</b><br>Pilih hanya gelaran yang sah dan berkaitan dengan anda.</p></div>';preview.after(guide);
+const prop=box.querySelector('.title-proposal');if(prop)prop.innerHTML='<h5>Cadangkan Gelaran/Pangkat</h5><p>Sila gunakan ruangan ini sekiranya gelaran rasmi anda tidak terdapat dalam senarai. Cadangan akan disemak oleh pentadbir terlebih dahulu sebelum boleh digunakan.</p><input class="proposal-title" placeholder="Contoh: Dato&amp;apos; Lela Maharaja"><select class="proposal-cat"><option value="">Sila pilih kategori</option><option>Sapaan Asas</option><option>Haji / Hajah</option><option>Akademik</option><option>Profesional</option><option>Kebesaran / Kehormat</option><option>Kerabat</option><option>Adat</option><option>Tentera / Polis</option><option>Lain-lain</option></select><textarea placeholder="Maklumat sokongan (pilihan)..."></textarea><button type="button" class="btn">Hantar untuk Semakan</button>';
+const search=wrap.querySelector('.title-search'),dd=wrap.querySelector('.title-dropdown');
+function sync(){try{selected=JSON.parse(hidden.value||'[]')}catch(e){selected=[]}}
+function warnings(){sync();const w=[];const basics=['Cik','Encik','Puan','Tuan','Sdr.','Sdri.'].filter(x=>selected.includes(x));const spec=['Dr.','Prof.','Prof. Madya','Prof. Emeritus','Prof. Ulung','Prof. Diraja','Ir.','Ts.','Tc.','Gs.','Ar.','Sr.','ChM.'];const prof=['Prof.','Prof. Madya','Prof. Emeritus','Prof. Ulung','Prof. Diraja'].filter(x=>selected.includes(x));if(basics.length>1)w.push(['PERHATIAN','Lebih daripada satu sapaan asas telah dipilih. Kebiasaannya hanya satu sapaan asas digunakan.']);if(basics.length&&selected.some(x=>spec.includes(x)))w.push(['SEMAK','Sapaan asas seperti Encik, Puan, Cik atau Tuan kebiasaannya tidak diperlukan apabila gelaran khusus seperti Dr., Prof. atau gelaran profesional digunakan. Sila semak Pratonton Nama.']);if(selected.includes('Hj.')&&selected.includes('Hjh.'))w.push(['PERHATIAN','Hj. dan Hjh. telah dipilih serentak. Sila semak pilihan anda.']);if(prof.length>1)w.push(['SEMAK','Lebih daripada satu pangkat profesor telah dipilih. Sila pastikan kombinasi tersebut merupakan gelaran rasmi anda.']);const honours=["Dato'",'Datuk',"Dato' Sri","Dato' Seri",'Datuk Sri','Datuk Seri',"Dato' Seri Utama",'Datuk Seri Utama'].filter(x=>selected.includes(x));if(honours.length>1)w.push(['INFO','Beberapa gelaran kebesaran telah dipilih. Jika semuanya sebahagian daripada nama rasmi anda, anda boleh meneruskannya.']);if(selected.length>6)w.push(['INFO','Nama anda mempunyai beberapa komponen gelaran. Sila semak susunannya dengan teliti sebelum dihantar.']);const area=review.querySelector('.title-warnings');area.innerHTML=w.map(x=>`<div class="title-warning"><span class="title-level">${x[0]}</span>${x[1]}</div>`).join('');review.classList.toggle('show',!!w.length)}
+function render(q=''){sync();const options=[...picker.options].map(o=>o.value).filter(Boolean);const nq=norm(q);const filtered=options.filter(t=>!nq||[t,...aliases(t)].some(v=>norm(v).includes(nq)));const groups={};filtered.forEach(t=>(groups[cat(t)]??=[]).push(t));dd.innerHTML=Object.entries(groups).map(([c,arr])=>`<div class="title-cat">${c}</div>`+arr.map(t=>`<div class="title-opt" data-title="${t.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"><div class="title-opt-top"><span class="title-opt-name">${t}</span><span class="title-badge">${c}</span></div><div class="title-opt-desc">${desc(t)}</div></div>`).join('')).join('')||'<div class="title-opt-desc" style="padding:10px">Tiada gelaran ditemui. Gunakan fungsi cadangan gelaran di bawah.</div>';dd.classList.add('show')}
+function refresh(){warnings();sync();const nm=preview.textContent.replace(/^Pratonton:\\s*/,'').replace(/^.*?\\s(?=[A-Z])/,'');const nameInput=box.closest('form')?.querySelector('input[name*="name" i],input[id*="name" i],input[name*="nama" i],input[id*="nama" i]');const name=(nameInput?.value||'Nama Alumni').trim();preview.innerHTML='<strong>'+[...selected,name].join(' ').trim()+'</strong><span>Sila pastikan nama di atas sama seperti bentuk nama rasmi yang ingin dipaparkan dalam Direktori Alumni.</span>'}
+search.addEventListener('focus',()=>render(search.value));search.addEventListener('input',()=>render(search.value));dd.addEventListener('click',e=>{const o=e.target.closest('.title-opt[data-title]');if(!o)return;picker.value=o.dataset.title;picker.dispatchEvent(new Event('change'));search.value='';dd.classList.remove('show');setTimeout(refresh,0)});tags.addEventListener('click',()=>setTimeout(refresh,0));box.querySelector('.title-reset').onclick=()=>{sync();if(!selected.length)return;if(confirm('Adakah anda pasti mahu mengosongkan semua gelaran yang telah dipilih?')){hidden.value='[]';tags.innerHTML='';preview.innerHTML='';refresh()}};document.addEventListener('click',e=>{if(!wrap.contains(e.target))dd.classList.remove('show')});setTimeout(refresh,0)}
+const run=()=>document.querySelectorAll('.title-master').forEach(enhance);run();new MutationObserver(run).observe(document.body,{childList:true,subtree:true});
+})();
+</script>
+
 </body>
 </html>
 
