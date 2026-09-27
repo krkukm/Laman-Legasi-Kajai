@@ -2673,6 +2673,7 @@ function pageDashboard(){
   <button class="btn" onclick="openAlumniForm()">+ Tambah Alumni</button>
   <button class="btn" onclick="go('leadership')">Lihat Kepimpinan</button>
   <button class="btn" onclick="exploreLegacyMap()">Teroka Peta Legasi</button>
+  <button type="button" class="btn" id="welcomeVoice" onclick="ucapSelamatDatang(false)">🔊 Dengar Ucapan</button>
  </div>
 
  <div class="era-line"></div>
@@ -11299,7 +11300,829 @@ search.addEventListener('focus',()=>render(search.value));search.addEventListene
 const run=()=>document.querySelectorAll('.title-master').forEach(enhance);run();new MutationObserver(run).observe(document.body,{childList:true,subtree:true});
 })();
 </script>
-\n<script>\n/* ======================================================\n   SUPABASE CLOUD PATCH — Alumni draft / photo / CV / titles\n   Additive only: does not alter unrelated modules.\n====================================================== */\n(function(){\n  let currentRegistrationId = null;\n  let cloudDraftLoading = false;\n\n  function sb(){ return window.supabaseClient || (typeof supabaseClient!=="undefined" ? supabaseClient : null); }\n  function iso(){ return new Date().toISOString(); }\n  function numOrNull(v){ return v!==undefined && v!==null && String(v).trim()!=="" ? Number(v) : null; }\n  function parseTitlesValue(v){ try{return Array.isArray(v)?v:JSON.parse(v||"[]")}catch(e){return []} }\n\n  async function getUser(){\n    const client=sb(); if(!client) throw new Error("Sambungan Supabase tidak tersedia.");\n    const {data,error}=await client.auth.getUser();\n    if(error) throw error;\n    if(!data?.user) throw new Error("Sila log masuk menggunakan akaun Alumni.");\n    return data.user;\n  }\n\n  async function uploadPublicPhoto(file,user){\n    if(!file) return null;\n    const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'');\n    const path=`${user.id}/profile/profile-${Date.now()}.${ext}`;\n    const {error}=await sb().storage.from('alumni-photos').upload(path,file,{upsert:true,contentType:file.type||undefined});\n    if(error) throw error;\n    const {data}=sb().storage.from('alumni-photos').getPublicUrl(path);\n    return data?.publicUrl||null;\n  }\n\n  window.uploadAlumniCV=async function(file){\n    if(!file) return null;\n    const user=await getUser();\n    const ext=(file.name.split('.').pop()||'pdf').toLowerCase().replace(/[^a-z0-9]/g,'');\n    if(!['pdf','doc','docx'].includes(ext)) throw new Error('CV mestilah PDF, DOC atau DOCX.');\n    const path=`${user.id}/cv/cv-${Date.now()}.${ext}`;\n    const {error}=await sb().storage.from('alumni-documents').upload(path,file,{upsert:true,contentType:file.type||undefined});\n    if(error) throw error;\n    return path; // PRIVATE: simpan path sahaja, jangan getPublicUrl()\n  };\n\n  function formPayload(form,user,status,existing={}){\n    const fd=new FormData(form);\n    const g=n=>String(fd.get(n)||'').trim();\n    const titles=parseTitlesValue(fd.get('titles'));\n    return {\n      user_id:user.id, submitted_by:user.id, status,\n      full_name:g('fullName'), nickname:g('nickname')||null, gender:g('gender')||null,\n      batch:numOrNull(g('batch')), entry_year:numOrNull((g('kajaiEntrySession')||'').split('/')[0]),\n      grad_year:numOrNull(g('convocationYear')), faculty:g('faculty')||null, course:g('course')||null,\n      study_session:g('studySession')||null, email:user.email||g('email')||null, phone:g('phone')||null,\n      phone_visibility:g('phoneVisibility')||null, email_visibility:g('emailVisibility')||null,\n      contact_permission:g('contactPermission')||null, photo_permission:g('photoPermission')||null,\n      job_title:g('jobTitle')||null, employer:g('employer')||null, job_field:g('jobField')||null,\n      current_location:g('currentLocation')||null, country:g('country')||null, linkedin:g('linkedin')||null,\n      kajai_roles:g('kajaiRoles')||null, activities_summary:g('activitiesSummary')||null,\n      achievements_summary:g('achievementsSummary')||null, motto:g('motto')||null, note:g('selfNote')||null,\n      titles, stay_start_year:numOrNull(g('kajaiStayStart')), stay_end_year:numOrNull(g('kajaiStayEnd')),\n      photo_url:existing.photo_url||null, cv_url:existing.cv_url||null,\n      last_action_at:iso(), updated_at:iso()\n    };\n  }\n\n  async function latestOwnRegistration(user){\n    const {data,error}=await sb().from('alumni_registrations').select('*').eq('user_id',user.id)\n      .in('status',['Draf','Menunggu Pengesahan','Perlu Suntingan']).order('last_action_at',{ascending:false}).limit(1).maybeSingle();\n    if(error) throw error; return data||null;\n  }\n\n  window.saveAlumniSelfDraft=async function(silent=false){\n    const form=document.getElementById('alumniSelfForm'); if(!form||cloudDraftLoading) return;\n    try{\n      const user=await getUser();\n      let existing=currentRegistrationId?{id:currentRegistrationId}:await latestOwnRegistration(user);\n      if(existing?.id) currentRegistrationId=existing.id;\n      const payload=formPayload(form,user,'Draf',existing||{});\n      payload.draft_saved_at=iso();\n      // preserve already uploaded files; draft save itself does not repeatedly upload files\n      if(existing?.photo_url) payload.photo_url=existing.photo_url;\n      if(existing?.cv_url) payload.cv_url=existing.cv_url;\n      let result;\n      if(currentRegistrationId){\n        result=await sb().from('alumni_registrations').update(payload).eq('id',currentRegistrationId).eq('user_id',user.id).select().single();\n      }else{\n        result=await sb().from('alumni_registrations').insert(payload).select().single();\n      }\n      if(result.error) throw result.error;\n      currentRegistrationId=result.data.id;\n      if(!silent && typeof toast==='function') toast('Draf disimpan ke Supabase. Anda boleh sambung semula selepas log masuk.','success');\n    }catch(err){\n      console.error('Cloud draft save failed:',err);\n      if(!silent && typeof toast==='function') toast('Draf tidak dapat disimpan: '+(err.message||err),'error');\n    }\n  };\n\n  function setField(form,name,value){\n    const el=form.elements[name]; if(!el||value===null||value===undefined) return;\n    if(el.type==='checkbox') el.checked=!!value; else el.value=value;\n  }\n\n  window.loadMyAlumniDraft=async function(){\n    const form=document.getElementById('alumniSelfForm'); if(!form||form.dataset.cloudRestored==='1') return;\n    cloudDraftLoading=true;\n    try{\n      const user=await getUser(); const row=await latestOwnRegistration(user);\n      form.dataset.cloudRestored='1'; if(!row) return; currentRegistrationId=row.id;\n      const map={fullName:'full_name',nickname:'nickname',gender:'gender',batch:'batch',kajaiStayStart:'stay_start_year',kajaiStayEnd:'stay_end_year',convocationYear:'grad_year',faculty:'faculty',course:'course',studySession:'study_session',phone:'phone',phoneVisibility:'phone_visibility',emailVisibility:'email_visibility',contactPermission:'contact_permission',photoPermission:'photo_permission',jobTitle:'job_title',employer:'employer',jobField:'job_field',currentLocation:'current_location',country:'country',linkedin:'linkedin',kajaiRoles:'kajai_roles',activitiesSummary:'activities_summary',achievementsSummary:'achievements_summary',motto:'motto',selfNote:'note'};\n      Object.entries(map).forEach(([f,c])=>setField(form,f,row[c]));\n      setField(form,'email',row.email||user.email||'');\n      // title widget may be injected just after the form; wait briefly then sync hidden field\n      setTimeout(()=>{const h=form.querySelector('input[name="titles"]');if(h){h.value=JSON.stringify(row.titles||[]);h.dispatchEvent(new Event('change',{bubbles:true}));}},150);\n      const note=document.createElement('div'); note.className='form-group full revision-note';\n      note.innerHTML=`Draf/rekod terakhir dipulihkan daripada Supabase. Kemas kini terakhir: <b>${new Date(row.last_action_at||row.updated_at||row.created_at).toLocaleString('ms-MY')}</b>`;\n      form.prepend(note);\n    }catch(err){ console.error('Cloud draft load failed:',err); }\n    finally{ cloudDraftLoading=false; }\n  };\n\n  // Replace old local-only submit with Supabase submission. Official alumni table is NOT overwritten here.\n  window.submitAlumniSelfRegistration=async function(e){\n    e.preventDefault(); const form=e.target;\n    try{\n      const user=await getUser();\n      let existing=currentRegistrationId?await latestOwnRegistration(user):await latestOwnRegistration(user);\n      if(existing?.id) currentRegistrationId=existing.id;\n      const payload=formPayload(form,user,'Menunggu Pengesahan',existing||{});\n      const photoFile=document.getElementById('alumniSelfPhoto')?.files?.[0];\n      const cvFile=document.getElementById('selfAlumniCV')?.files?.[0];\n      if(photoFile) payload.photo_url=await uploadPublicPhoto(photoFile,user);\n      if(cvFile) payload.cv_url=await window.uploadAlumniCV(cvFile);\n      payload.draft_saved_at=existing?.draft_saved_at||null;\n      payload.last_action_at=iso();\n      let result;\n      if(currentRegistrationId) result=await sb().from('alumni_registrations').update(payload).eq('id',currentRegistrationId).eq('user_id',user.id).select().single();\n      else result=await sb().from('alumni_registrations').insert(payload).select().single();\n      if(result.error) throw result.error; currentRegistrationId=result.data.id;\n      try{ localStorage.removeItem(typeof alumniDraftKey==='function'?alumniDraftKey():''); }catch(_){}\n      if(typeof loadAlumniRegistrationsFromSupabase==='function') await loadAlumniRegistrationsFromSupabase();\n      if(typeof addNotification==='function') addNotification({recipientRole:'Pentadbir',title:'Pendaftaran Alumni untuk semakan',message:`${payload.full_name||'Seorang alumni'} telah menghantar maklumat untuk pengesahan.`});\n      if(typeof audit==='function') audit('Menghantar pendaftaran/kemas kini Alumni','Pendaftaran Alumni',currentRegistrationId);\n      if(typeof save==='function') save(); if(typeof closeModal==='function') closeModal(); if(typeof render==='function') render();\n      if(typeof toast==='function') toast('Maklumat berjaya dihantar untuk pengesahan HELAA/Pentadbir.','success');\n    }catch(err){ console.error('Alumni submission failed:',err); if(typeof toast==='function') toast('Penghantaran gagal: '+(err.message||err),'error'); }\n  };\n\n  // Cloud restore + cloud autosave when alumni form exists.\n  let timer=null;\n  document.addEventListener('input',e=>{if(e.target.closest?.('#alumniSelfForm')){clearTimeout(timer);timer=setTimeout(()=>window.saveAlumniSelfDraft(true),1200)}});\n  document.addEventListener('change',e=>{if(e.target.closest?.('#alumniSelfForm') && e.target.type!=='file'){clearTimeout(timer);timer=setTimeout(()=>window.saveAlumniSelfDraft(true),500)}});\n  setInterval(()=>{if(document.getElementById('alumniSelfForm')) window.loadMyAlumniDraft();},700);\n})();\n</script>\n
+
+<script>
+/* ======================================================
+   SUPABASE CLOUD PATCH — Alumni draft / photo / CV / titles
+   Additive only: does not alter unrelated modules.
+====================================================== */
+(function(){
+  let currentRegistrationId = null;
+  let cloudDraftLoading = false;
+
+  function sb(){ return window.supabaseClient || (typeof supabaseClient!=="undefined" ? supabaseClient : null); }
+  function iso(){ return new Date().toISOString(); }
+  function numOrNull(v){ return v!==undefined && v!==null && String(v).trim()!=="" ? Number(v) : null; }
+  function parseTitlesValue(v){ try{return Array.isArray(v)?v:JSON.parse(v||"[]")}catch(e){return []} }
+
+  async function getUser(){
+    const client=sb(); if(!client) throw new Error("Sambungan Supabase tidak tersedia.");
+    const {data,error}=await client.auth.getUser();
+    if(error) throw error;
+    if(!data?.user) throw new Error("Sila log masuk menggunakan akaun Alumni.");
+    return data.user;
+  }
+
+  async function uploadPublicPhoto(file,user){
+    if(!file) return null;
+    const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'');
+    const path=`${user.id}/profile/profile-${Date.now()}.${ext}`;
+    const {error}=await sb().storage.from('alumni-photos').upload(path,file,{upsert:true,contentType:file.type||undefined});
+    if(error) throw error;
+    const {data}=sb().storage.from('alumni-photos').getPublicUrl(path);
+    return data?.publicUrl||null;
+  }
+
+  window.uploadAlumniCV=async function(file){
+    if(!file) return null;
+    const user=await getUser();
+    const ext=(file.name.split('.').pop()||'pdf').toLowerCase().replace(/[^a-z0-9]/g,'');
+    if(!['pdf','doc','docx'].includes(ext)) throw new Error('CV mestilah PDF, DOC atau DOCX.');
+    const path=`${user.id}/cv/cv-${Date.now()}.${ext}`;
+    const {error}=await sb().storage.from('alumni-documents').upload(path,file,{upsert:true,contentType:file.type||undefined});
+    if(error) throw error;
+    return path; // PRIVATE: simpan path sahaja, jangan getPublicUrl()
+  };
+
+  function formPayload(form,user,status,existing={}){
+    const fd=new FormData(form);
+    const g=n=>String(fd.get(n)||'').trim();
+    const titles=parseTitlesValue(fd.get('titles'));
+    return {
+      user_id:user.id, submitted_by:user.id, status,
+      full_name:g('fullName'), nickname:g('nickname')||null, gender:g('gender')||null,
+      batch:numOrNull(g('batch')), entry_year:numOrNull((g('kajaiEntrySession')||'').split('/')[0]),
+      grad_year:numOrNull(g('convocationYear')), faculty:g('faculty')||null, course:g('course')||null,
+      study_session:g('studySession')||null, email:user.email||g('email')||null, phone:g('phone')||null,
+      phone_visibility:g('phoneVisibility')||null, email_visibility:g('emailVisibility')||null,
+      contact_permission:g('contactPermission')||null, photo_permission:g('photoPermission')||null,
+      job_title:g('jobTitle')||null, employer:g('employer')||null, job_field:g('jobField')||null,
+      current_location:g('currentLocation')||null, country:g('country')||null, linkedin:g('linkedin')||null,
+      kajai_roles:g('kajaiRoles')||null, activities_summary:g('activitiesSummary')||null,
+      achievements_summary:g('achievementsSummary')||null, motto:g('motto')||null, note:g('selfNote')||null,
+      titles, stay_start_year:numOrNull(g('kajaiStayStart')), stay_end_year:numOrNull(g('kajaiStayEnd')),
+      photo_url:existing.photo_url||null, cv_url:existing.cv_url||null,
+      last_action_at:iso(), updated_at:iso()
+    };
+  }
+
+  async function latestOwnRegistration(user){
+    const {data,error}=await sb().from('alumni_registrations').select('*').eq('user_id',user.id)
+      .in('status',['Draf','Menunggu Pengesahan','Perlu Suntingan']).order('last_action_at',{ascending:false}).limit(1).maybeSingle();
+    if(error) throw error; return data||null;
+  }
+
+  window.saveAlumniSelfDraft=async function(silent=false){
+    const form=document.getElementById('alumniSelfForm'); if(!form||cloudDraftLoading) return;
+    try{
+      const user=await getUser();
+      let existing=currentRegistrationId?{id:currentRegistrationId}:await latestOwnRegistration(user);
+      if(existing?.id) currentRegistrationId=existing.id;
+      const payload=formPayload(form,user,'Draf',existing||{});
+      payload.draft_saved_at=iso();
+      // preserve already uploaded files; draft save itself does not repeatedly upload files
+      if(existing?.photo_url) payload.photo_url=existing.photo_url;
+      if(existing?.cv_url) payload.cv_url=existing.cv_url;
+      let result;
+      if(currentRegistrationId){
+        result=await sb().from('alumni_registrations').update(payload).eq('id',currentRegistrationId).eq('user_id',user.id).select().single();
+      }else{
+        result=await sb().from('alumni_registrations').insert(payload).select().single();
+      }
+      if(result.error) throw result.error;
+      currentRegistrationId=result.data.id;
+      if(!silent && typeof toast==='function') toast('Draf disimpan ke Supabase. Anda boleh sambung semula selepas log masuk.','success');
+    }catch(err){
+      console.error('Cloud draft save failed:',err);
+      if(!silent && typeof toast==='function') toast('Draf tidak dapat disimpan: '+(err.message||err),'error');
+    }
+  };
+
+  function setField(form,name,value){
+    const el=form.elements[name]; if(!el||value===null||value===undefined) return;
+    if(el.type==='checkbox') el.checked=!!value; else el.value=value;
+  }
+
+  window.loadMyAlumniDraft=async function(){
+    const form=document.getElementById('alumniSelfForm'); if(!form||form.dataset.cloudRestored==='1') return;
+    cloudDraftLoading=true;
+    try{
+      const user=await getUser(); const row=await latestOwnRegistration(user);
+      form.dataset.cloudRestored='1'; if(!row) return; currentRegistrationId=row.id;
+      const map={fullName:'full_name',nickname:'nickname',gender:'gender',batch:'batch',kajaiStayStart:'stay_start_year',kajaiStayEnd:'stay_end_year',convocationYear:'grad_year',faculty:'faculty',course:'course',studySession:'study_session',phone:'phone',phoneVisibility:'phone_visibility',emailVisibility:'email_visibility',contactPermission:'contact_permission',photoPermission:'photo_permission',jobTitle:'job_title',employer:'employer',jobField:'job_field',currentLocation:'current_location',country:'country',linkedin:'linkedin',kajaiRoles:'kajai_roles',activitiesSummary:'activities_summary',achievementsSummary:'achievements_summary',motto:'motto',selfNote:'note'};
+      Object.entries(map).forEach(([f,c])=>setField(form,f,row[c]));
+      setField(form,'email',row.email||user.email||'');
+      // title widget may be injected just after the form; wait briefly then sync hidden field
+      setTimeout(()=>{const h=form.querySelector('input[name="titles"]');if(h){h.value=JSON.stringify(row.titles||[]);h.dispatchEvent(new Event('change',{bubbles:true}));}},150);
+      const note=document.createElement('div'); note.className='form-group full revision-note';
+      note.innerHTML=`Draf/rekod terakhir dipulihkan daripada Supabase. Kemas kini terakhir: <b>${new Date(row.last_action_at||row.updated_at||row.created_at).toLocaleString('ms-MY')}</b>`;
+      form.prepend(note);
+    }catch(err){ console.error('Cloud draft load failed:',err); }
+    finally{ cloudDraftLoading=false; }
+  };
+
+  // Replace old local-only submit with Supabase submission. Official alumni table is NOT overwritten here.
+  window.submitAlumniSelfRegistration=async function(e){
+    e.preventDefault(); const form=e.target;
+    try{
+      const user=await getUser();
+      let existing=currentRegistrationId?await latestOwnRegistration(user):await latestOwnRegistration(user);
+      if(existing?.id) currentRegistrationId=existing.id;
+      const payload=formPayload(form,user,'Menunggu Pengesahan',existing||{});
+      const photoFile=document.getElementById('alumniSelfPhoto')?.files?.[0];
+      const cvFile=document.getElementById('selfAlumniCV')?.files?.[0];
+      if(photoFile) payload.photo_url=await uploadPublicPhoto(photoFile,user);
+      if(cvFile) payload.cv_url=await window.uploadAlumniCV(cvFile);
+      payload.draft_saved_at=existing?.draft_saved_at||null;
+      payload.last_action_at=iso();
+      let result;
+      if(currentRegistrationId) result=await sb().from('alumni_registrations').update(payload).eq('id',currentRegistrationId).eq('user_id',user.id).select().single();
+      else result=await sb().from('alumni_registrations').insert(payload).select().single();
+      if(result.error) throw result.error; currentRegistrationId=result.data.id;
+      try{ localStorage.removeItem(typeof alumniDraftKey==='function'?alumniDraftKey():''); }catch(_){}
+      if(typeof loadAlumniRegistrationsFromSupabase==='function') await loadAlumniRegistrationsFromSupabase();
+      if(typeof addNotification==='function') addNotification({recipientRole:'Pentadbir',title:'Pendaftaran Alumni untuk semakan',message:`${payload.full_name||'Seorang alumni'} telah menghantar maklumat untuk pengesahan.`});
+      if(typeof audit==='function') audit('Menghantar pendaftaran/kemas kini Alumni','Pendaftaran Alumni',currentRegistrationId);
+      if(typeof save==='function') save(); if(typeof closeModal==='function') closeModal(); if(typeof render==='function') render();
+      if(typeof toast==='function') toast('Maklumat berjaya dihantar untuk pengesahan HELAA/Pentadbir.','success');
+    }catch(err){ console.error('Alumni submission failed:',err); if(typeof toast==='function') toast('Penghantaran gagal: '+(err.message||err),'error'); }
+  };
+
+  // Cloud restore + cloud autosave when alumni form exists.
+  let timer=null;
+  document.addEventListener('input',e=>{if(e.target.closest?.('#alumniSelfForm')){clearTimeout(timer);timer=setTimeout(()=>window.saveAlumniSelfDraft(true),1200)}});
+  document.addEventListener('change',e=>{if(e.target.closest?.('#alumniSelfForm') && e.target.type!=='file'){clearTimeout(timer);timer=setTimeout(()=>window.saveAlumniSelfDraft(true),500)}});
+  setInterval(()=>{if(document.getElementById('alumniSelfForm')) window.loadMyAlumniDraft();},700);
+})();
+</script>
+
+
+<script id="krk-welcome-voice-patch">
+/* =========================================================
+   WELCOME VOICE — LAMAN LEGASI KAJAI
+   - Dashboard dibuka selepas login berjaya
+   - Ucapan cuba dimainkan sekali bagi setiap sesi login
+   - Butang "Dengar Ucapan" kekal sebagai fallback/manual replay
+========================================================= */
+(function(){
+  const VOICE_SESSION_KEY = "krk_welcome_voice_played";
+  const WELCOME_TEXT = "Selamat datang ke Laman Legasi Kajai. Sekiranya terdapat sebarang masalah, sila ke halaman Hubungi kami untuk memaklumkan perkara tersebut. Terima kasih. Sayang semua";
+
+  window.ucapSelamatDatang = function(autoPlay=false){
+    if (!("speechSynthesis" in window)) {
+      if (!autoPlay) alert("Browser ini tidak menyokong fungsi suara.");
+      return false;
+    }
+
+    try{
+      window.speechSynthesis.cancel();
+
+      const ucapan = new SpeechSynthesisUtterance(WELCOME_TEXT);
+      ucapan.lang = "ms-MY";
+      ucapan.rate = 0.9;
+      ucapan.pitch = 1;
+      ucapan.volume = 1;
+
+      // Utamakan suara Bahasa Melayu jika browser/peranti menyediakannya.
+      const voices = window.speechSynthesis.getVoices?.() || [];
+      const malayVoice = voices.find(v => /^ms[-_]/i.test(v.lang || ""))
+                      || voices.find(v => /^ms$/i.test(v.lang || ""));
+      if (malayVoice) ucapan.voice = malayVoice;
+
+      ucapan.onstart = function(){
+        sessionStorage.setItem(VOICE_SESSION_KEY, "1");
+        try{ window.duckCalmMusic?.(true); }catch(_){ }
+      };
+
+      ucapan.onend = function(){
+        try{ window.duckCalmMusic?.(false); }catch(_){ }
+      };
+
+      ucapan.onerror = function(){
+        try{ window.duckCalmMusic?.(false); }catch(_){ }
+        // Sesetengah browser mudah alih menyekat audio automatik tanpa interaksi pengguna.
+        // Butang manual pada Dashboard kekal tersedia sebagai fallback.
+        if (autoPlay && typeof toast === "function") {
+          toast("Jika ucapan tidak kedengaran, tekan ‘🔊 Dengar Ucapan’ pada Dashboard.", "");
+        }
+      };
+
+      window.speechSynthesis.speak(ucapan);
+      return true;
+    }catch(err){
+      console.warn("Welcome voice:", err);
+      if (!autoPlay) alert("Ucapan suara tidak dapat dimainkan pada browser ini.");
+      return false;
+    }
+  };
+
+  function bukaDashboardDanUcap(){
+    // Buka Dashboard dahulu supaya ucapan berkait dengan paparan selamat datang.
+    try{
+      if (typeof go === "function") go("dashboard");
+      else {
+        if (typeof currentPage !== "undefined") currentPage = "dashboard";
+        if (typeof renderNav === "function") renderNav();
+        if (typeof render === "function") render();
+      }
+    }catch(err){ console.warn("Welcome dashboard:", err); }
+
+    // Hanya sekali bagi satu sesi login. Butang manual boleh digunakan bila-bila masa.
+    if (sessionStorage.getItem(VOICE_SESSION_KEY) !== "1") {
+      setTimeout(function(){ window.ucapSelamatDatang(true); }, 650);
+    }
+  }
+
+  // Login e-mel/passcode, termasuk login Alumni melalui Supabase.
+  if (typeof handleLogin === "function") {
+    const __welcomeHandleLogin = handleLogin;
+    window.handleLogin = async function(e){
+      const before = sessionStorage.getItem("laman_legasi_kajai_authenticated");
+      const result = await __welcomeHandleLogin(e);
+      const after = sessionStorage.getItem("laman_legasi_kajai_authenticated");
+      if (after === "1" && (before !== "1" || document.getElementById("authBackdrop")?.classList.contains("hidden"))) {
+        setTimeout(bukaDashboardDanUcap, 80);
+      }
+      return result;
+    };
+  }
+
+  // Login Google/OAuth untuk semua role.
+  if (typeof completeGoogleRoleAccess === "function") {
+    const __welcomeGoogleAccess = completeGoogleRoleAccess;
+    window.completeGoogleRoleAccess = function(role,user){
+      const result = __welcomeGoogleAccess(role,user);
+      setTimeout(bukaDashboardDanUcap, 100);
+      return result;
+    };
+  }
+
+  // Reset flag apabila pengguna log keluar supaya ucapan dimainkan semula pada login seterusnya.
+  if (typeof logout === "function") {
+    const __welcomeLogout = logout;
+    window.logout = async function(){
+      sessionStorage.removeItem(VOICE_SESSION_KEY);
+      try{ window.speechSynthesis?.cancel?.(); }catch(_){ }
+      return await __welcomeLogout();
+    };
+  }
+})();
+</script>
+
+
+
+<script id="krk-all-form-voice-patch">
+/* =========================================================
+   ALL FORM VOICE + CLEAN UI — LAMAN LEGASI KAJAI
+   - Voice plays for EVERY real form submission (no toast dependency)
+   - Manual Simpan Draf also speaks
+   - If user edits a form then closes/cancels it, it speaks
+   - Auto-save while typing stays SILENT to avoid repeated speech
+   - Calm music feature removed completely (no silent fake playback)
+   - Removes literal \\n / \\n\\n artifacts from visible UI text
+========================================================= */
+(function(){
+  const THANK_YOU_TEXT = "Terima kasih kerana mengisi maklumat di Laman Legasi Kajai ini. Semoga urusan harian anda dipermudahkan.";
+  let lastVoiceAt = 0;
+  let speakingTimer = null;
+
+  /* ---------- Visible literal \\n cleaner ---------- */
+  function cleanVisibleSlashN(root=document.body){
+    if(!root) return;
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    const nodes=[];
+    while(walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node=>{
+      const p=node.parentElement;
+      if(!p || /^(SCRIPT|STYLE|TEXTAREA|PRE|CODE)$/i.test(p.tagName)) return;
+      if(node.nodeValue && /\\n/.test(node.nodeValue)){
+        node.nodeValue=node.nodeValue.replace(/(?:\\n\s*)+/g," ");
+      }
+    });
+  }
+  window.cleanLegasiVisibleText=cleanVisibleSlashN;
+  cleanVisibleSlashN();
+
+  const cleanObserver=new MutationObserver(muts=>{
+    for(const m of muts){
+      m.addedNodes?.forEach(n=>{
+        if(n.nodeType===Node.TEXT_NODE){
+          const p=n.parentElement;
+          if(p && !/^(SCRIPT|STYLE|TEXTAREA|PRE|CODE)$/i.test(p.tagName) && /\\n/.test(n.nodeValue||"")){
+            n.nodeValue=n.nodeValue.replace(/(?:\\n\s*)+/g," ");
+          }
+        }else if(n.nodeType===Node.ELEMENT_NODE){
+          cleanVisibleSlashN(n);
+        }
+      });
+    }
+  });
+  cleanObserver.observe(document.documentElement,{childList:true,subtree:true});
+
+  if(typeof window.render==="function"){
+    const __voiceCleanRender=window.render;
+    window.render=function(){
+      const r=__voiceCleanRender.apply(this,arguments);
+      setTimeout(()=>cleanVisibleSlashN(document.getElementById("content")||document.body),0);
+      return r;
+    };
+  }
+
+  /* ---------- Speech ---------- */
+  function chooseMalayVoice(){
+    const voices=window.speechSynthesis?.getVoices?.()||[];
+    return voices.find(v=>/^ms[-_]/i.test(v.lang||""))
+        || voices.find(v=>/^ms$/i.test(v.lang||""))
+        || voices.find(v=>/malay|melayu/i.test((v.name||"")+" "+(v.lang||"")))
+        || null;
+  }
+
+  window.ucapTerimaKasihPengisian=function(force=false){
+    if(!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) return false;
+
+    const now=Date.now();
+    // Prevent double speech when a submit immediately closes the modal.
+    if(!force && now-lastVoiceAt<1400) return true;
+    lastVoiceAt=now;
+
+    try{
+      clearTimeout(speakingTimer);
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.resume?.();
+
+      const speakNow=()=>{
+        try{
+          const u=new SpeechSynthesisUtterance(THANK_YOU_TEXT);
+          u.lang="ms-MY";
+          u.rate=0.9;
+          u.pitch=1;
+          u.volume=1;
+          const v=chooseMalayVoice();
+          if(v) u.voice=v;
+          window.speechSynthesis.resume?.();
+          window.speechSynthesis.speak(u);
+        }catch(err){ console.warn("Form voice speak:",err); }
+      };
+
+      // A tiny delay avoids cancel()->speak race conditions on Chrome/Android.
+      speakingTimer=setTimeout(speakNow,70);
+      return true;
+    }catch(err){
+      console.warn("Form thank-you voice:",err);
+      return false;
+    }
+  };
+  // Backward-compatible name if any older handler still calls it.
+  window.ucapTerimaKasihSubmission=window.ucapTerimaKasihPengisian;
+
+  function isAuthOnlyForm(form){
+    if(!form) return false;
+    if(form.id==="loginForm") return true;
+    // Extra access-code/login forms inside the hard authentication backdrop are not data-entry forms.
+    return !!form.closest?.("#authBackdrop");
+  }
+
+  function formOrModalFrom(el){
+    return el?.closest?.("form") || el?.closest?.("#modalBackdrop") || null;
+  }
+
+  function markDirty(el){
+    const form=el?.closest?.("form");
+    if(form && !isAuthOnlyForm(form)) form.dataset.krkFormDirty="1";
+    const modal=el?.closest?.("#modalBackdrop");
+    if(modal && (!form || !isAuthOnlyForm(form))) modal.dataset.krkFormDirty="1";
+  }
+
+  function clearDirty(root){
+    try{
+      if(root?.dataset) delete root.dataset.krkFormDirty;
+      root?.querySelectorAll?.('[data-krk-form-dirty="1"]').forEach(x=>delete x.dataset.krkFormDirty);
+    }catch(_){ }
+  }
+
+  function hasDirtyVisibleForm(){
+    const dirtyForms=[...document.querySelectorAll('form[data-krk-form-dirty="1"]')]
+      .filter(f=>!isAuthOnlyForm(f));
+    if(dirtyForms.length) return true;
+    return document.getElementById("modalBackdrop")?.dataset?.krkFormDirty==="1";
+  }
+
+  // Any actual data entry marks that form/modal as touched.
+  document.addEventListener("input",e=>{
+    if(e.target?.matches?.("input,textarea,select")) markDirty(e.target);
+  },true);
+  document.addEventListener("change",e=>{
+    if(e.target?.matches?.("input,textarea,select")) markDirty(e.target);
+  },true);
+
+  /* ---------- EVERY form submit ----------
+     Capture phase means this runs even when individual submit functions later
+     close/re-render the modal/page. No success-toast wording is required. */
+  document.addEventListener("submit",e=>{
+    const form=e.target;
+    if(!(form instanceof HTMLFormElement) || isAuthOnlyForm(form)) return;
+    window.ucapTerimaKasihPengisian();
+    clearDirty(form);
+    const modal=form.closest?.("#modalBackdrop");
+    if(modal) clearDirty(modal);
+  },true);
+
+  /* ---------- Manual Simpan Draf ---------- */
+  document.addEventListener("click",e=>{
+    const btn=e.target?.closest?.("button,[role='button']");
+    if(!btn) return;
+    const text=(btn.textContent||"").replace(/\s+/g," ").trim().toLowerCase();
+    const onclick=String(btn.getAttribute?.("onclick")||"").toLowerCase();
+    const isDraft=/simpan\s+draf|save\s+draft/.test(text) || /save.*draft|simpan.*draf/.test(onclick);
+    if(isDraft){
+      window.ucapTerimaKasihPengisian();
+      const context=formOrModalFrom(btn); if(context) clearDirty(context);
+      return;
+    }
+
+    // Some Laman Legasi modules (notably DIAKA) use DIV-based form layouts
+    // with onclick handlers instead of a native <form onsubmit>. Catch their
+    // final action buttons too, but only after the user has actually edited data.
+    const modalDirty=document.getElementById("modalBackdrop")?.dataset?.krkFormDirty==="1";
+    const form=btn.closest?.("form");
+    const formDirty=form?.dataset?.krkFormDirty==="1";
+    const isFinalAction=/^(hantar|simpan|daftar|cadangkan|mohon|kemas kini|lulus|sahkan|submit)\b/i.test(text)
+      || /submit[A-Z_a-z0-9]*\s*\(|save[A-Z_a-z0-9]*\s*\(/.test(String(btn.getAttribute?.("onclick")||""));
+    const nativeSubmit=(btn.type||"").toLowerCase()==="submit";
+    if((modalDirty||formDirty) && isFinalAction && !nativeSubmit){
+      window.ucapTerimaKasihPengisian();
+    }
+  },true);
+
+  // Explicitly wrap the Alumni cloud draft function. silent=true is auto-save and stays silent.
+  if(typeof window.saveAlumniSelfDraft==="function"){
+    const __allFormDraft=window.saveAlumniSelfDraft;
+    window.saveAlumniSelfDraft=async function(silent=false){
+      const r=await __allFormDraft.apply(this,arguments);
+      if(silent!==true) window.ucapTerimaKasihPengisian();
+      return r;
+    };
+  }
+
+  /* ---------- User typed something then closes/cancels ---------- */
+  if(typeof window.closeModal==="function"){
+    const __allFormCloseModal=window.closeModal;
+    window.closeModal=function(){
+      const dirty=hasDirtyVisibleForm();
+      if(dirty) window.ucapTerimaKasihPengisian();
+      const r=__allFormCloseModal.apply(this,arguments);
+      clearDirty(document.getElementById("modalBackdrop"));
+      return r;
+    };
+  }
+
+  // Some modal-close controls may not call closeModal directly. Catch their click as a fallback.
+  document.addEventListener("click",e=>{
+    const btn=e.target?.closest?.("button");
+    if(!btn) return;
+    const t=(btn.textContent||"").replace(/\s+/g," ").trim().toLowerCase();
+    const oc=String(btn.getAttribute?.("onclick")||"").toLowerCase();
+    const closing=/^(tutup|batal|close|cancel)$/.test(t) || /closemodal\s*\(/.test(oc);
+    if(closing && hasDirtyVisibleForm()) window.ucapTerimaKasihPengisian();
+  },true);
+
+  // Browser voices can arrive asynchronously; no action is required, but touching
+  // the list here helps some engines initialise speech synthesis earlier.
+  try{
+    window.speechSynthesis?.getVoices?.();
+    window.speechSynthesis?.addEventListener?.("voiceschanged",()=>window.speechSynthesis.getVoices());
+  }catch(_){ }
+})();
+</script>
+
+
+
+<script id="krk-universal-draft-manager">
+/* =========================================================
+   UNIVERSAL DRAFT MANAGER — LAMAN LEGASI KAJAI
+   - Adds Simpan Draf to every real DATA form
+   - Dynamic modal forms are supported
+   - Non-<form> data-entry modals (e.g. some DIAKA flows) are supported
+   - Auto-saves quietly while typing and before close/navigation
+   - Restores the draft when the same form is opened again
+   - Existing Alumni Profil Saya cloud/Supabase draft is preserved
+   - Password/authentication forms are intentionally excluded
+   - Browser security prevents restoring file inputs; file names are remembered
+========================================================= */
+(function(){
+  const PREFIX='krk_universal_draft_v3:';
+  const AUTO_DELAY=900;
+  let lastSubmitted=null;
+  const timers=new WeakMap();
+
+  function escDraft(s){
+    return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function actorKey(){
+    const email=(sessionStorage.getItem('laman_legasi_kajai_email')||'').trim().toLowerCase();
+    const role=(sessionStorage.getItem('laman_legasi_kajai_role')||window.currentRole||'Pelawat');
+    return email || ('role-'+String(role).toLowerCase().replace(/\s+/g,'-'));
+  }
+  function hashString(str){
+    let h=2166136261;
+    for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}
+    return (h>>>0).toString(36);
+  }
+  function modalTitle(root){
+    const modal=root?.closest?.('#modalBackdrop') || (root?.id==='modalBackdrop'?root:null);
+    return (modal?.querySelector?.('#modalTitle')?.textContent||'').replace(/\s+/g,' ').trim();
+  }
+  function pageKey(){
+    return String(window.currentPage||'dashboard');
+  }
+  function controlsIn(root){
+    return [...(root?.querySelectorAll?.('input,select,textarea,[contenteditable="true"]')||[])];
+  }
+  function isSensitiveControl(el){
+    const type=String(el.type||'').toLowerCase();
+    return type==='password' || type==='submit' || type==='button' || type==='reset';
+  }
+  function isAuthOrSensitiveForm(form){
+    if(!form) return true;
+    if(form.id==='alumniSelfForm') return true; // already has superior Supabase cloud draft
+    if(form.id==='loginForm' || form.id==='alumniAccountRegisterForm') return true;
+    if(form.closest('#authBackdrop')) return true;
+    if(form.querySelector('input[type="password"]')) return true;
+    return false;
+  }
+  function isDataModalContainer(root){
+    if(!root || root.id!=='modalBody') return false;
+    if(root.querySelector('form')) return false;
+    const controls=controlsIn(root).filter(x=>!isSensitiveControl(x));
+    if(!controls.length) return false;
+    if(root.querySelector('input[type="password"]')) return false;
+    return true;
+  }
+  function rootFingerprint(root){
+    const controls=controlsIn(root);
+    const sig=controls.map((el,i)=>{
+      const nm=el.name||el.id||el.getAttribute('data-field')||('field'+i);
+      return nm+':'+String(el.type||el.tagName);
+    }).join('|');
+    const submit=root.tagName==='FORM' ? (root.getAttribute('onsubmit')||'') : 'nonform-modal';
+    return [pageKey(),modalTitle(root),root.id||'',submit,sig].join('||');
+  }
+  function draftKey(root){
+    if(root?.dataset?.krkUniversalDraftKey) return root.dataset.krkUniversalDraftKey;
+    const k=PREFIX+encodeURIComponent(actorKey())+':'+hashString(rootFingerprint(root));
+    if(root?.dataset) root.dataset.krkUniversalDraftKey=k;
+    return k;
+  }
+  function fieldKey(el,index){
+    const type=String(el.type||'').toLowerCase();
+    if(el.id) return 'id:'+el.id;
+    if(el.name && (type==='radio' || type==='checkbox')) return 'name:'+el.name+'|'+type+'|value:'+String(el.value||'on')+'|i:'+index;
+    if(el.name) return 'name:'+el.name;
+    const df=el.getAttribute('data-field'); if(df) return 'data:'+df;
+    return 'field-'+index;
+  }
+  function serializeRoot(root){
+    const values={}; const files=[];
+    controlsIn(root).forEach((el,i)=>{
+      if(isSensitiveControl(el)) return;
+      const key=fieldKey(el,i);
+      const type=String(el.type||'').toLowerCase();
+      if(type==='file'){
+        const names=[...(el.files||[])].map(f=>f.name);
+        if(names.length) files.push({key,names});
+        return;
+      }
+      if(el.isContentEditable){values[key]={kind:'contenteditable',value:el.innerHTML};return}
+      if(type==='checkbox' || type==='radio'){values[key]={kind:type,checked:!!el.checked,value:el.value};return}
+      if(el.tagName==='SELECT' && el.multiple){values[key]={kind:'select-multiple',value:[...el.selectedOptions].map(o=>o.value)};return}
+      values[key]={kind:'value',value:el.value};
+    });
+    return {
+      version:3, savedAt:new Date().toISOString(), actor:actorKey(), page:pageKey(),
+      title:modalTitle(root), fingerprint:rootFingerprint(root), values, files
+    };
+  }
+  function saveDraft(root,notify=true){
+    if(!root) return false;
+    if(root.tagName==='FORM' && isAuthOrSensitiveForm(root)) return false;
+    if(root.id==='modalBody' && !isDataModalContainer(root)) return false;
+    try{
+      const d=serializeRoot(root);
+      localStorage.setItem(draftKey(root),JSON.stringify(d));
+      root.dataset.krkDraftDirty='0';
+      if(notify && typeof window.toast==='function') window.toast('Draf disimpan. Anda boleh sambung semula apabila borang ini dibuka semula.','success');
+      return true;
+    }catch(err){
+      console.warn('Universal draft save failed',err);
+      if(notify && typeof window.toast==='function') window.toast('Draf tidak dapat disimpan pada browser ini.','error');
+      return false;
+    }
+  }
+  window.saveUniversalLegasiDraft=function(btnOrRoot){
+    let root=btnOrRoot?.closest?.('form');
+    if(!root){
+      const mb=btnOrRoot?.closest?.('#modalBody') || document.getElementById('modalBody');
+      if(isDataModalContainer(mb)) root=mb;
+    }
+    if(root) saveDraft(root,true);
+  };
+
+  function findControl(root,key){
+    const controls=controlsIn(root);
+    return controls.find((el,i)=>fieldKey(el,i)===key);
+  }
+  function restoreDraft(root){
+    if(!root || root.dataset.krkDraftRestored==='1') return;
+    if(root.tagName==='FORM' && isAuthOrSensitiveForm(root)) return;
+    if(root.id==='modalBody' && !isDataModalContainer(root)) return;
+    root.dataset.krkDraftRestored='1';
+    let d=null;
+    try{d=JSON.parse(localStorage.getItem(draftKey(root))||'null')}catch(_){ }
+    if(!d?.values) return;
+    Object.entries(d.values).forEach(([key,obj])=>{
+      const el=findControl(root,key); if(!el || isSensitiveControl(el) || String(el.type||'').toLowerCase()==='file') return;
+      try{
+        if(obj.kind==='checkbox' || obj.kind==='radio') el.checked=!!obj.checked;
+        else if(obj.kind==='select-multiple'){[...el.options].forEach(o=>o.selected=(obj.value||[]).includes(o.value));}
+        else if(obj.kind==='contenteditable') el.innerHTML=obj.value||'';
+        else el.value=obj.value??'';
+        if(el.matches('select,input[type="checkbox"],input[type="radio"]')) el.dispatchEvent(new Event('change',{bubbles:true}));
+      }catch(_){ }
+    });
+    showDraftNotice(root,d);
+  }
+  function clearDraft(root,notify=false){
+    if(!root) return;
+    try{localStorage.removeItem(draftKey(root))}catch(_){ }
+    root.querySelector?.('.krk-draft-restored-note')?.remove?.();
+    root.dataset.krkDraftRestored='0';
+    root.dataset.krkDraftDirty='0';
+    if(notify && typeof window.toast==='function') window.toast('Draf borang telah dikosongkan.','success');
+  }
+  window.clearUniversalLegasiDraft=function(btnOrRoot){
+    const root=btnOrRoot?.closest?.('form') || btnOrRoot?.closest?.('#modalBody');
+    if(root && confirm('Kosongkan draf tersimpan untuk borang ini?')) clearDraft(root,true);
+  };
+  function showDraftNotice(root,d){
+    if(root.querySelector?.('.krk-draft-restored-note')) return;
+    const dt=d.savedAt ? new Date(d.savedAt).toLocaleString('ms-MY') : 'sebelum ini';
+    const fileNote=(d.files||[]).flatMap(x=>x.names||[]);
+    const note=document.createElement('div');
+    note.className='form-group full revision-note krk-draft-restored-note';
+    note.style.cssText='grid-column:1/-1;background:#fff8ec;border:1px solid #ead3a2;border-radius:12px;padding:12px 14px;margin-bottom:10px';
+    note.innerHTML='<strong>💾 Draf dipulihkan</strong><br><span class="small">Simpanan terakhir: '+escDraft(dt)+'. Anda boleh sambung mengisi dari sini.</span>'+
+      (fileNote.length?'<br><span class="small"><b>Nota:</b> Atas sebab keselamatan browser, fail perlu dipilih semula: '+fileNote.map(escDraft).join(', ')+'</span>':'')+
+      '<div style="margin-top:8px"><button type="button" class="btn btn-small" onclick="clearUniversalLegasiDraft(this)">Kosongkan Draf</button></div>';
+    root.prepend(note);
+  }
+  function draftButton(){
+    const b=document.createElement('button');
+    b.type='button'; b.className='btn krk-universal-draft-btn';
+    b.innerHTML='💾 Simpan Draf';
+    b.addEventListener('click',()=>window.saveUniversalLegasiDraft(b));
+    return b;
+  }
+  function hasDraftButton(root){
+    return [...root.querySelectorAll('button')].some(b=>/simpan\s+draf|save\s+draft/i.test((b.textContent||'').trim()));
+  }
+  function injectIntoForm(form){
+    if(!form || form.dataset.krkDraftEnhanced==='1' || isAuthOrSensitiveForm(form)) return;
+    form.dataset.krkDraftEnhanced='1';
+    if(!hasDraftButton(form)){
+      let actions=form.querySelector('.form-actions');
+      if(!actions){
+        actions=document.createElement('div'); actions.className='form-actions full';
+        form.appendChild(actions);
+      }
+      actions.insertBefore(draftButton(),actions.firstChild);
+    }
+    restoreDraft(form);
+  }
+  function injectIntoNonFormModal(){
+    const body=document.getElementById('modalBody');
+    const backdrop=document.getElementById('modalBackdrop');
+    if(!body || !backdrop || backdrop.classList.contains('hidden') || !isDataModalContainer(body)) return;
+    if(body.dataset.krkDraftEnhanced!=='1'){
+      body.dataset.krkDraftEnhanced='1';
+      if(!hasDraftButton(body)){
+        let actions=body.querySelector('.form-actions');
+        if(!actions){actions=document.createElement('div');actions.className='form-actions full';body.appendChild(actions)}
+        actions.insertBefore(draftButton(),actions.firstChild);
+      }
+    }
+    restoreDraft(body);
+  }
+  function enhanceAll(){
+    document.querySelectorAll('form').forEach(injectIntoForm);
+    injectIntoNonFormModal();
+  }
+  window.enhanceAllLegasiDraftForms=enhanceAll;
+
+  function contextRoot(el){
+    const form=el?.closest?.('form');
+    if(form && !isAuthOrSensitiveForm(form)) return form;
+    const body=el?.closest?.('#modalBody');
+    if(body && isDataModalContainer(body)) return body;
+    return null;
+  }
+  function scheduleAuto(root){
+    if(!root) return;
+    root.dataset.krkDraftDirty='1';
+    clearTimeout(timers.get(root));
+    const t=setTimeout(()=>saveDraft(root,false),AUTO_DELAY);
+    timers.set(root,t);
+  }
+  document.addEventListener('input',e=>{const root=contextRoot(e.target);if(root)scheduleAuto(root)},true);
+  document.addEventListener('change',e=>{
+    if(String(e.target?.type||'').toLowerCase()==='file'){const root=contextRoot(e.target);if(root)scheduleAuto(root);return}
+    const root=contextRoot(e.target);if(root)scheduleAuto(root);
+  },true);
+
+  // Preserve current values before any real submit. Do NOT clear until success is observed.
+  document.addEventListener('submit',e=>{
+    const root=e.target; if(!(root instanceof HTMLFormElement) || isAuthOrSensitiveForm(root)) return;
+    saveDraft(root,false);
+    lastSubmitted={root,key:draftKey(root),at:Date.now()};
+  },true);
+
+  // Some modules use onclick buttons instead of native form submit (notably some DIAKA flows).
+  document.addEventListener('click',e=>{
+    const btn=e.target?.closest?.('button,[role="button"]'); if(!btn) return;
+    const root=contextRoot(btn); if(!root) return;
+    const text=(btn.textContent||'').replace(/\s+/g,' ').trim();
+    if(/simpan\s+draf|save\s+draft/i.test(text)) return;
+    const oc=String(btn.getAttribute?.('onclick')||'');
+    const finalAction=/^(hantar|simpan|daftar|cadangkan|mohon|kemas kini|lulus|sahkan|submit)\b/i.test(text) || /submit[A-Z_a-z0-9]*\s*\(|save[A-Z_a-z0-9]*\s*\(/.test(oc);
+    if(finalAction && String(btn.type||'').toLowerCase()!=='submit'){
+      saveDraft(root,false);
+      lastSubmitted={root,key:draftKey(root),at:Date.now()};
+    }
+  },true);
+
+  // A success toast after submission is the safest generic signal to remove stale drafts.
+  if(typeof window.toast==='function'){
+    const __draftToast=window.toast;
+    window.toast=function(message,type=''){
+      const msg=String(message||'');
+      const result=__draftToast.apply(this,arguments);
+      const recent=lastSubmitted && (Date.now()-lastSubmitted.at<15000);
+      const draftMessage=/draf/i.test(msg);
+      if(recent && String(type).toLowerCase()==='success' && !draftMessage){
+        try{localStorage.removeItem(lastSubmitted.key)}catch(_){ }
+        lastSubmitted.root?.querySelector?.('.krk-draft-restored-note')?.remove?.();
+        lastSubmitted=null;
+      }
+      return result;
+    };
+  }
+
+  // Save silently before the user closes a modal, even if they forgot to press Simpan Draf.
+  if(typeof window.closeModal==='function'){
+    const __draftCloseModal=window.closeModal;
+    window.closeModal=function(){
+      const body=document.getElementById('modalBody');
+      const roots=[...(body?.querySelectorAll?.('form')||[])].filter(f=>!isAuthOrSensitiveForm(f));
+      if(body && isDataModalContainer(body)) roots.push(body);
+      roots.forEach(root=>{
+        if(root.dataset.krkDraftDirty==='1') saveDraft(root,false);
+      });
+      // If this close happened immediately after a successful click/submit and no toast exists,
+      // leave the draft for safety rather than deleting potentially unsaved work.
+      return __draftCloseModal.apply(this,arguments);
+    };
+  }
+
+  // Autosave page-embedded forms before leaving/reloading.
+  window.addEventListener('beforeunload',()=>{
+    document.querySelectorAll('form[data-krk-draft-dirty="1"]').forEach(f=>{if(!isAuthOrSensitiveForm(f))saveDraft(f,false)});
+  });
+
+  // Dynamic forms/modal content are common throughout the app.
+  const obs=new MutationObserver(()=>setTimeout(enhanceAll,0));
+  obs.observe(document.documentElement,{childList:true,subtree:true});
+  document.addEventListener('DOMContentLoaded',enhanceAll);
+  setTimeout(enhanceAll,0);
+
+  // Re-enhance after application render and modal creation.
+  if(typeof window.render==='function'){
+    const __draftRender=window.render;
+    window.render=function(){
+      const r=__draftRender.apply(this,arguments);
+      setTimeout(enhanceAll,0);
+      return r;
+    };
+  }
+  if(typeof window.openModal==='function'){
+    const __draftOpenModal=window.openModal;
+    window.openModal=function(){
+      const r=__draftOpenModal.apply(this,arguments);
+      setTimeout(enhanceAll,0);
+      return r;
+    };
+  }
+})();
+</script>
+
 </body>
 </html>
 
