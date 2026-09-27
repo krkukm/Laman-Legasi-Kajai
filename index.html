@@ -7936,6 +7936,36 @@ function pageReports(){
 
 
 /* =========================================================
+   LEGACY IDENTITY SETTINGS MIGRATION
+   Menukar nilai prototaip lama kepada identiti semasa tanpa
+   menindih tetapan tersuai yang bukan nilai legacy.
+========================================================= */
+(function migrateLegacyIdentitySettings(){
+  try{
+    if(!window.data || !data.config) return;
+    let changed=false;
+    const legacySubtitle=["Data • Perkasa • Jaringan","Data · Perkasa · Jaringan"];
+    const legacyWelcome=["Legasi Melangkaui Generasi"];
+    if(legacySubtitle.includes(String(data.config.subtitle||"").trim())){
+      data.config.subtitle="KARISMA • Alumni • Sejarah • Jaringan";
+      changed=true;
+    }
+    if(legacyWelcome.includes(String(data.config.welcome||"").trim())){
+      data.config.welcome="Menghimpun Nama. Menyusun Sejarah. Menjaga Legasi.";
+      changed=true;
+    }
+    if(String(data.config.privacyDefault||"").trim()==="Pasukan Sahaja"){
+      data.config.privacyDefault="Dalaman Sahaja";
+      changed=true;
+    }
+    if(!data.config.name || /laman legasi kajai/i.test(data.config.name)){
+      data.config.name="LAMAN LEGASI KAJAI";
+    }
+    if(changed && typeof save==="function") save();
+  }catch(err){console.warn("Legacy settings migration skipped:",err);}
+})();
+
+/* =========================================================
    SETTINGS
 ========================================================= */
 
@@ -7960,7 +7990,10 @@ function pageSettings(){
          <div class="card">
 
           <div class="card-head">
-           <div class="card-title">Identiti Laman</div>
+           <div>
+   <div class="card-title">Identiti Laman</div>
+   <div class="small muted" style="margin-top:5px">Identiti rasmi yang digunakan pada Dashboard, sidebar dan paparan utama Laman Legasi Kajai.</div>
+  </div>
 
 </div>
 
@@ -7976,7 +8009,7 @@ function pageSettings(){
  )}
 
  ${inputField(
-   "Subtitle",
+   "Subtajuk / Fokus Sistem",
    "subtitle",
    data.config.subtitle,
    "text",
@@ -7984,7 +8017,7 @@ function pageSettings(){
  )}
 
  ${inputField(
-   "Tagline / Welcome",
+   "Tagline / Ucapan Dashboard",
    "welcome",
    data.config.welcome,
    "text",
@@ -7992,7 +8025,7 @@ function pageSettings(){
  )}
 
  ${inputField(
-   "Tahun Semasa",
+   "Tahun Operasi Semasa",
    "currentYear",
    data.config.currentYear,
    "number",
@@ -8000,11 +8033,20 @@ function pageSettings(){
  )}
 
  ${selectField(
-   "Default Privasi",
+   "Privasi Lalai Maklumat Hubungan",
    "privacyDefault",
    ["Dalaman Sahaja","Pasukan Sahaja","Boleh Dipaparkan"],
    data.config.privacyDefault
  )}
+
+ <div class="form-group full">
+  <div class="revision-note" style="margin-top:0">
+   <strong>Cadangan tetapan rasmi:</strong><br>
+   Subtajuk: <strong>KARISMA • Alumni • Sejarah • Jaringan</strong><br>
+   Tagline: <strong>Menghimpun Nama. Menyusun Sejarah. Menjaga Legasi.</strong><br>
+   Privasi lalai: <strong>Dalaman Sahaja</strong> bagi melindungi maklumat hubungan sebelum kebenaran paparan diberikan.
+  </div>
+ </div>
 
   <div class="form-actions">
 
@@ -8895,7 +8937,30 @@ function pageKarismaAnalytics(){const rows=unitStats(),max=Math.max(1,...rows.ma
 
 function countBy(arr,keyfn){const m={};arr.forEach(x=>{const k=keyfn(x);if(k)m[k]=(m[k]||0)+1});return Object.entries(m).sort((a,b)=>b[1]-a[1])}
 function pageInsights(){const batches=data.batches.filter(b=>b.active!==false).map(b=>{const a=data.alumni.filter(x=>Number(x.batch)===Number(b.year));return{year:b.year,n:a.length,p:a.length?Math.round(a.reduce((s,x)=>s+completeness(x),0)/a.length):0,rep:data.reps.some(r=>Number(r.batch)===Number(b.year))}}),best=[...batches].filter(x=>x.n).sort((a,b)=>b.p-a.p)[0],noRep=batches.filter(x=>!x.rep).map(x=>x.year),fields=countBy(data.alumni,a=>a.jobField||""),orgs=countBy(data.alumni,a=>a.employer||""),places=countBy(data.alumni,a=>a.currentLocation||a.country||""),old=data.alumni.filter(a=>Number(a.batch)>=1983&&Number(a.batch)<=1995),oldNoCareer=old.length?Math.round(old.filter(a=>!a.employer&&!a.jobTitle&&!a.jobField).length/old.length*100):0,top=unitStats()[0];return `<div class="page-header"><div><h1 class="page-title">Kajai Insights</h1><p class="page-subtitle">Analitik tindakan untuk HELAA mengenal pasti kekuatan, jaringan dan jurang data.</p></div></div><div class="grid grid-3"><div class="card"><div class="small muted">Batch paling lengkap</div><div class="stat-number">${best?best.year:"—"}</div><b>${best?best.p+"% kelengkapan":"Belum ada data"}</b></div><div class="card"><div class="small muted">Bidang kerjaya terbesar</div><div class="stat-number" style="font-size:22px">${esc(fields[0]?.[0]||"—")}</div><b>${fields[0]?.[1]||0} alumni</b></div><div class="card"><div class="small muted">Unit KARISMA tertinggi</div><div class="stat-number" style="font-size:22px">${esc(top?.u?.name||"—")}</div><b>${top?.average?.toFixed(2)||0} merit purata • ${top?.merit?.toFixed(0)||0} total</b></div></div><div style="height:16px"></div><div class="grid grid-2"><div class="card"><div class="card-title">Jaringan Organisasi</div><div class="network-grid" style="margin-top:12px">${orgs.slice(0,12).map(([k,v])=>`<div class="network-node"><strong>${v}</strong>${esc(k)}</div>`).join("")||empty("◇","Belum ada organisasi","Isi organisasi/majikan alumni untuk membina network map.")}</div></div><div class="card"><div class="card-title">Heatmap Lokasi Alumni</div><div class="heat-grid" style="margin-top:12px">${places.slice(0,12).map(([k,v])=>`<div class="heat-node"><strong>${v}</strong>${esc(k)}</div>`).join("")||empty("⌖","Belum ada lokasi","Isi lokasi semasa alumni untuk membina heatmap.")}</div></div></div><div style="height:16px"></div><div class="card"><div class="card-title">Jurang Data & Tindakan</div><div class="insight-callout" style="margin-top:12px"><b>${old.length?oldNoCareer+"%":"—"}</b> alumni Batch 1983–1995 belum mempunyai maklumat kerjaya yang mencukupi.</div><div style="height:12px"></div><b>Batch tanpa wakil</b><div class="gap-list" style="margin-top:8px">${noRep.slice(0,50).map(y=>`<span class="gap-pill">${y}</span>`).join("")||"Semua batch mempunyai wakil."}</div></div>`}
-function pageUsers(){if(!isAdmin())return `<div class="card">${empty("♟","Akses Pentadbir","Halaman pengguna hanya untuk Pentadbir.")}</div>`;return `<div class="page-header"><div><h1 class="page-title">Pengguna</h1><p class="page-subtitle">Model akses dan persediaan authentication.</p></div></div><div class="cloud-banner"><div><b>Supabase Auth belum disambungkan</b><div class="small">Role semasa masih client-side. Sambungkan Auth + RLS sebelum produksi sebenar.</div></div><span class="badge pending">Perlu Cloud Auth</span></div><div style="height:16px"></div><div class="grid grid-4">${["Pelawat","Alumni","Pasukan HELAA / Admin","Pentadbir"].map((r,i)=>`<div class="card"><b>${r}</b><p class="small muted">${["Paparan awam sahaja","Profil sendiri + cadangan Alumni/Galeri","Tambah & semak data operasi","Kawal pengguna, pengesahan, sistem & audit"][i]}</p></div>`).join("")}</div>`}
+function pageUsers(){
+  if(!isAdmin())return `<div class="card">${empty("♟","Akses Pentadbir","Halaman pengguna hanya untuk Pentadbir.")}</div>`;
+  const roleCards=[
+    {name:"Pelawat",status:"Akses Awam",cls:"badge-gray",desc:"Paparan kandungan awam dan penerokaan Laman Legasi Kajai."},
+    {name:"Alumni",status:"Supabase Auth Aktif",cls:"badge-green",desc:"Login akaun Alumni, Profil Saya, draf cloud dan penghantaran maklumat untuk pengesahan."},
+    {name:"Pasukan HELAA / Admin",status:"Auth + Kod Akses",cls:"badge-orange",desc:"Akses pengurusan operasi dengan pengesahan role dan kod akses tambahan."},
+    {name:"Pentadbir",status:"Auth + Kod Akses Khas",cls:"badge-orange",desc:"Kawalan pengguna, pengesahan, sistem, audit, tetapan dan fungsi pengurusan tertinggi."}
+  ];
+  const systemStatus=[
+    ["Supabase Authentication","Alumni","Aktif","badge-green"],
+    ["Database Cloud","Alumni Registration","Aktif","badge-green"],
+    ["Storage","Alumni Photos","Public","badge-green"],
+    ["Storage","Gallery","Public","badge-green"],
+    ["Storage","Alumni Documents","Private","badge-blue"],
+    ["Akses Admin","Pasukan HELAA","Hybrid","badge-orange"],
+    ["Akses Pentadbir","Pentadbir","Hybrid","badge-orange"],
+    ["RLS Keseluruhan Modul","Migrasi Penuh","Dalam Pelaksanaan","badge-orange"]
+  ];
+  return `<div class="page-header"><div><h1 class="page-title">Pengguna</h1><p class="page-subtitle">Status akses, authentication dan migrasi cloud Laman Legasi Kajai.</p></div></div>
+  <div class="cloud-banner"><div><b>Sistem Authentication Hibrid Aktif</b><div class="small">Laman Legasi Kajai menggunakan gabungan Supabase Authentication dan kawalan akses dalaman mengikut peranan. Akaun Alumni telah disambungkan kepada Supabase Authentication manakala Pasukan HELAA / Admin dan Pentadbir masih menggunakan lapisan pengesahan role serta kod akses tambahan.</div></div><span class="badge badge-green">Hybrid Auth Aktif</span></div>
+  <div style="height:16px"></div>
+  <div class="grid grid-4">${roleCards.map(r=>`<div class="card"><div class="card-head"><b>${r.name}</b><span class="badge ${r.cls}">${r.status}</span></div><p class="small muted">${r.desc}</p></div>`).join("")}</div>
+  <div class="card" style="margin-top:16px"><div class="card-head"><div><div class="card-title">Status Sambungan Sistem</div><div class="small muted">Ringkasan komponen yang telah disambungkan dan komponen yang masih menggunakan pendekatan hibrid.</div></div></div><div class="table-wrap"><table><thead><tr><th>Komponen</th><th>Skop</th><th>Status</th></tr></thead><tbody>${systemStatus.map(x=>`<tr><td><b>${x[0]}</b></td><td>${x[1]}</td><td><span class="badge ${x[3]}">${x[2]}</span></td></tr>`).join("")}</tbody></table></div></div>`
+}
 function pageAuditLog(){if(!isAdmin())return `<div class="card">${empty("≡","Akses Pentadbir","Audit log hanya untuk Pentadbir.")}</div>`;const rows=[...data.audit].sort((a,b)=>new Date(b.at)-new Date(a.at));return `<div class="page-header"><div><h1 class="page-title">Audit Log</h1><p class="page-subtitle">Jejak tindakan penting dalam sistem.</p></div></div><div class="card"><div style="overflow:auto"><table><thead><tr><th>Masa</th><th>Dikemas kini oleh</th><th>E-mel</th><th>Tindakan</th><th>Jenis</th><th>Peranan</th></tr></thead><tbody>${rows.map(x=>`<tr><td>${esc(x.at?new Date(x.at).toLocaleString("ms-MY"):"")}</td><td class="audit-actor">${esc(x.actorName||x.name||x.role||"Pengguna")}</td><td>${esc(x.actorEmail||"")}</td><td>${esc(x.action||"")}</td><td>${esc(x.type||"")}</td><td>${esc(x.role||"")}</td></tr>`).join("")||`<tr><td colspan="6">Tiada audit log.</td></tr>`}</tbody></table></div></div>`}
 
 /* =========================================================
@@ -9879,7 +9944,7 @@ function filterRecycleBin(){
 }
 
 // Post-render enhancement: Data page archive/recovery + production readiness warning.
-const __v11Render=render;render=function(){ensureInstitutionCodes();__v11Render();if(currentPage==='data'&&isAdmin()){const c=document.getElementById('content');if(c&&!c.querySelector('.v11-archive'))c.insertAdjacentHTML('beforeend',archivePanel())}if(currentPage==='users'&&isAdmin()){const c=document.getElementById('content');if(c&&!c.querySelector('.v11-security'))c.insertAdjacentHTML('beforeend',`<div class="card v11-security" style="margin-top:16px"><div class="card-title">Production Security Gate</div><p class="small muted">UI role, passcode dan localStorage sesuai untuk prototaip sahaja. Sebelum penggunaan rasmi multi-peranti, aktifkan Supabase Auth + Row Level Security (RLS) dan pindahkan CRUD/Storage ke cloud. Service-role key tidak boleh diletakkan dalam HTML.</p><span class="badge pending">Cloud migration required</span></div>`)} };
+const __v11Render=render;render=function(){ensureInstitutionCodes();__v11Render();if(currentPage==='data'&&isAdmin()){const c=document.getElementById('content');if(c&&!c.querySelector('.v11-archive'))c.insertAdjacentHTML('beforeend',archivePanel())}if(currentPage==='users'&&isAdmin()){const c=document.getElementById('content');if(c&&!c.querySelector('.v11-security'))c.insertAdjacentHTML('beforeend',`<div class="card v11-security" style="margin-top:16px"><div class="card-head"><div><div class="card-title">Status Migrasi Sistem</div><div class="small muted">Migrasi cloud dilaksanakan secara berperingkat mengikut modul.</div></div><span class="badge badge-orange">Migrasi Cloud Berperingkat</span></div><p class="small muted">Sebahagian fungsi Laman Legasi Kajai telah menggunakan Supabase Authentication, Database dan Storage. Migrasi penuh bagi modul pengurusan, CRUD, audit dan kawalan akses masih dilaksanakan secara berperingkat. Row Level Security perlu dikekalkan dan diperluaskan mengikut modul sebelum sistem digunakan sebagai persekitaran produksi sepenuhnya.</p><div class="revision-note" style="margin-top:12px"><b>Keselamatan:</b> Service-role key tidak boleh diletakkan dalam HTML atau kod frontend. Gunakan hanya publishable/anon key yang sesuai bersama polisi RLS yang betul.</div></div>`)} };
 
 /* =========================================================
    ALUMNI SELF-REGISTRATION + SUPABASE AUTH (ADDITIVE PATCH)
